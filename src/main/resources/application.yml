@@ -1,0 +1,18 @@
+#开发配置
+spring:
+  #数据源配置
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/oa?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: oujiajun123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+#公共配置与profiles选择无关
+mybatis-plus:
+  mapper-locations: mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+  type-aliases-package: com.jjou.ouOffice.entity
+server:
+  port: 8081
