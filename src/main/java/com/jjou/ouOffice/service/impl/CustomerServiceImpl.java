@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -30,7 +31,9 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
             return Result.error().message("客户手机号不能为空！");
         }
         Date date = new Date();
+//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         customer.setCreateTime(date);
+        save(customer);
         return Result.ok().message("添加客户成功！");
     }
 }

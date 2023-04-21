@@ -44,6 +44,11 @@ public class Customer implements Serializable {
      */
     private Date createTime;
 
+    /**
+     * 客户备注
+     */
+    private String remarks;
+
     @TableField("is_deleted")
     @TableLogic
     private Integer isDeleted;

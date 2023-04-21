@@ -144,7 +144,6 @@ export default {
       editForm: {
         name: "",
         status: "",
-        // birth: '',
         remarks: "",
       },
       addHysForm: {
