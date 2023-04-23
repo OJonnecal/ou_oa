@@ -9,7 +9,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ * 通讯录对象
  * </p>
  *
  * @author jjou

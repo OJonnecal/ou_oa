@@ -169,7 +169,7 @@ export default {
     getGonggao() {
       var user = sessionStorage.getItem("user");
       user = JSON.parse(user);
-      user.permission <= "5" ? (this.ifAdmin = true) : (this.ifAdmin = false);
+      user.permission == "1" ? (this.ifAdmin = true) : (this.ifAdmin = false);
       getGg().then((res) => {
         this.GgList = res.data.noticeList;
       });

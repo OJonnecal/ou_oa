@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ * 会议通知对象
  * </p>
  *
  * @author jjou

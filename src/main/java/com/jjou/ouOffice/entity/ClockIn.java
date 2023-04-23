@@ -12,7 +12,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ * 打卡对象
  * </p>
  *
  * @author jjou

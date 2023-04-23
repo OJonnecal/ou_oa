@@ -12,7 +12,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ * 用户对象
  * </p>
  *
  * @author jjou
@@ -62,7 +62,12 @@ public class User implements Serializable {
     private Integer permission;
 
     /**
-     * 逻辑删除 1（true）已删除， 0（false）未删除
+     * 创建时间
+     */
+    private String createTime;
+
+    /**
+     * 逻辑删除 1（true）已删除， 0（false）未删除11111111
      */
     @TableField("is_deleted")
     @TableLogic

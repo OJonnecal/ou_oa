@@ -11,10 +11,10 @@
     >
     <el-dialog title="添加客户" :visible="addCustomerFormVisible">
       <el-form :model="addCustomerForm" label-width="100px" ref="addCustomerForm">
-        <el-form-item label="客户名称" prop="title">
+        <el-form-item label="姓名" prop="title">
           <el-input v-model="addCustomerForm.name"></el-input>
         </el-form-item>
-        <el-form-item label="客户手机号" prop="title">
+        <el-form-item label="手机号" prop="title">
           <el-input v-model="addCustomerForm.phone"></el-input>
         </el-form-item>
         <el-form-item label="备注" prop="title">
@@ -254,7 +254,7 @@ export default {
   mounted() {
     var user = sessionStorage.getItem("user");
     user = JSON.parse(user);
-    user.permission <= "5" ? (this.ifAdmin = true) : (this.ifAdmin = false);
+    user.permission == "1" ? (this.ifAdmin = true) : (this.ifAdmin = false);
     this.getTableData();
     this.getUserData();
   },

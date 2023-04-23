@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ * 报销申请对象
  * </p>
  *
  * @author jjou
