@@ -32,7 +32,12 @@ public class User implements Serializable {
     private Integer id;
 
     /**
-     * 姓名
+     * 账号
+     */
+    private String account;
+
+    /**
+     * 昵称
      */
     private String name;
 
