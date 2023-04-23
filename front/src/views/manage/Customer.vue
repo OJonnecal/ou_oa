@@ -160,6 +160,7 @@ export default {
         name: this.addCustomerForm.name,
         phone: this.addCustomerForm.phone,
         remarks: this.addCustomerForm.remarks,
+        // createTime: dateFtt("yyyy-MM-dd hh:mm:ss", new Date()),
       };
       addCustomer(param).then((res) => {
         const statusCode = res.code;
