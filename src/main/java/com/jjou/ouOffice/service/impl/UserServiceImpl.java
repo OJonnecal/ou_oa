@@ -30,13 +30,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 //        User loginUser = baseMapper.selectById(user.getId());
         User loginUser = baseMapper.selectOne(wrapper);
         if(loginUser == null){
-            return Result.error().message("账号不存在");
+            return Result.error().message("账号不存在！");
         }
 
         if(!loginUser.getPwd().equals(user.getPwd())){
-            return Result.error().message("密码错误");
+            return Result.error().message("密码错误！");
         }
-        return Result.ok().data("user", loginUser);
+        return Result.ok().data("user", loginUser).message("登录成功！");
     }
 
     @Override

@@ -138,7 +138,7 @@
 <script>
 import util from "../common/js/util.js";
 import { getGg, addGg, delGg } from "../api/notice.js";
-import { getJd } from "../api/project.js";
+import { getProjectList } from "../api/project.js";
 import {
   getTopContactsList,
   addTopContacts,
@@ -175,7 +175,7 @@ export default {
       });
     },
     getJindu() {
-      getJd().then((res) => {
+      getProjectList().then((res) => {
         this.jdArr = res.data.projectList;
       });
     },

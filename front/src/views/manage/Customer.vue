@@ -42,7 +42,7 @@
         <el-table-column type="index" width="60"> </el-table-column>
         <el-table-column prop="name" label="客户姓名" width="150">
         </el-table-column>
-        <el-table-column prop="phone" label="客户手机号" width="150">
+        <el-table-column prop="phone" label="手机号" width="150">
         </el-table-column>
         <el-table-column prop="remarks" label="备注" min-width="180">
         </el-table-column>
@@ -73,16 +73,16 @@
       :close-on-click-modal="false"
     >
       <el-form :model="editForm" label-width="100px" ref="editForm">
-        <el-form-item label="客户姓名" prop="name">
+        <el-form-item label="姓名" prop="name">
           <el-input v-model="editForm.name"></el-input>
         </el-form-item>
-        <el-form-item label="客户手机号" prop="phone">
+        <el-form-item label="手机号" prop="phone">
           <el-input v-model="editForm.phone"></el-input>
         </el-form-item>
         <el-form-item label="备注" prop="remarks">
           <el-input type="textarea" v-model="editForm.remarks"></el-input>
         </el-form-item>
-        <el-form-item label="客户创建时间" prop="createTime">
+        <el-form-item label="创建时间" prop="createTime">
           <el-input v-model="editForm.createTime" :disabled="read"></el-input>
         </el-form-item>
       </el-form>

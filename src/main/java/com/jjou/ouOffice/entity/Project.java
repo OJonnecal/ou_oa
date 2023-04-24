@@ -46,8 +46,13 @@ public class Project implements Serializable {
     /**
      * 项目负责人
      */
-    @TableField("user_id")
-    private Integer userId;
+    @TableField("user_name")
+    private String userName;
+
+    /**
+     * 项目创建时间
+     */
+    private String createTime;
 
     /**
      * 逻辑删除 1（true）已删除， 0（false）未删除
