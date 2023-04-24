@@ -11,7 +11,7 @@
  Target Server Version : 80028
  File Encoding         : 65001
 
- Date: 23/04/2023 17:27:21
+ Date: 24/04/2023 17:23:23
 */
 
 SET NAMES utf8mb4;
@@ -44,9 +44,9 @@ CREATE TABLE `assignment`  (
   `user_id` int NULL DEFAULT NULL COMMENT '用户id',
   `title` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '任务标题',
   `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '任务内容',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '任务创建时间',
-  `end_time` datetime NULL DEFAULT NULL COMMENT '任务截至时间',
-  `is_deleted` tinyint NULL DEFAULT 0,
+  `create_time` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '任务创建时间',
+  `status` tinyint NULL DEFAULT 0 COMMENT '任务状态 1（true）已完成， 0（false）未完成',
+  `is_deleted` tinyint NULL DEFAULT 0 COMMENT '逻辑删除 1（true）已删除， 0（false）未删除',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `user_id`(`user_id`) USING BTREE,
   CONSTRAINT `assignment_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
@@ -55,6 +55,10 @@ CREATE TABLE `assignment`  (
 -- ----------------------------
 -- Records of assignment
 -- ----------------------------
+INSERT INTO `assignment` VALUES (1, NULL, '1', '1', '2023-04-24 05:04:44', 0, 1);
+INSERT INTO `assignment` VALUES (2, NULL, '1', '1', '2023-04-24 05:07:41', 1, 1);
+INSERT INTO `assignment` VALUES (3, NULL, '1', '1', '2023-04-24 05:11:44', 1, 1);
+INSERT INTO `assignment` VALUES (4, NULL, '加班', '加班', '2023-04-24 05:12:09', 0, 0);
 
 -- ----------------------------
 -- Table structure for clock_in
@@ -96,7 +100,7 @@ CREATE TABLE `customer`  (
   `create_time` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '客户创建时间',
   `remarks` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '客户备注',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '客户表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '客户表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of customer
@@ -218,7 +222,7 @@ CREATE TABLE `notice`  (
   `is_show` tinyint NULL DEFAULT 1 COMMENT '是否展示，0不展示，1展示',
   `is_deleted` tinyint NULL DEFAULT 0 COMMENT '逻辑删除 1（true）已删除， 0（false）未删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 52 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '公告表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 55 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '公告表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of notice
@@ -235,19 +239,19 @@ CREATE TABLE `project`  (
   `name` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '项目名称',
   `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '项目描述',
   `rate` int NULL DEFAULT 0 COMMENT '项目进度',
-  `user_id` int NULL DEFAULT NULL COMMENT '项目负责人',
+  `user_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '项目负责人',
+  `create_time` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '项目创建时间',
   `is_deleted` tinyint NULL DEFAULT 0 COMMENT '逻辑删除 1（true）已删除， 0（false）未删除',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `user_id`(`user_id`) USING BTREE,
-  CONSTRAINT `project_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  INDEX `user_id`(`user_name`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '项目表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of project
 -- ----------------------------
-INSERT INTO `project` VALUES (5, '项目1', '1', 11, 1, 0);
-INSERT INTO `project` VALUES (6, '项目2', '2', 22, 1, 0);
-INSERT INTO `project` VALUES (7, '项目3', '3', 33, 1, 0);
+INSERT INTO `project` VALUES (5, '项目1', '1', 12, 'ojj', NULL, 0);
+INSERT INTO `project` VALUES (6, '项目2', '2', 22, 'ojj', NULL, 0);
+INSERT INTO `project` VALUES (7, '项目3', '3', 33, 'ojj', NULL, 0);
 
 -- ----------------------------
 -- Table structure for quit
@@ -306,14 +310,13 @@ CREATE TABLE `user`  (
   `create_time` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户创建时间',
   `is_deleted` tinyint UNSIGNED NULL DEFAULT 0 COMMENT '逻辑删除 1（true）已删除， 0（false）未删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, 'admin', NULL, '1', NULL, NULL, '经理', 1, NULL, 0);
-INSERT INTO `user` VALUES (3, 'tony', NULL, '3', '111', '111', '员工', 1, NULL, 0);
-INSERT INTO `user` VALUES (4, '2', NULL, '2', '2', '2', '2', 2, NULL, 0);
-INSERT INTO `user` VALUES (7, '2', NULL, '2', '2', '2', '2', 2, NULL, 0);
+INSERT INTO `user` VALUES (1, 'admin', 'admin', '1', NULL, NULL, '经理', 1, NULL, 0);
+INSERT INTO `user` VALUES (3, 'tony', 'tony', '3', '111', '111', '员工', 1, NULL, 0);
+INSERT INTO `user` VALUES (8, '欧家俊', 'ojj', '123456', '15915095796', '294557741@qq.com', '开发人员', 1, '2023-04-24 09:11:06', 0);
 
 SET FOREIGN_KEY_CHECKS = 1;

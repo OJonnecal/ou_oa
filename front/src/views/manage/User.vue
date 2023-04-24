@@ -56,18 +56,18 @@
         style="width: 100%"
         max-height="550"
       >
-        <el-table-column type="index" width="60"> </el-table-column>
-        <el-table-column prop="account" label="账号" width="150">
+        <el-table-column type="index" width="60" label="序号" align="center"> </el-table-column>
+        <el-table-column prop="account" label="账号" width="150" align="center">
         </el-table-column>
-        <el-table-column prop="name" label="昵称">
+        <el-table-column prop="name" label="昵称" align="center">
         </el-table-column>
-        <el-table-column prop="phone" label="手机号" width="120">
+        <el-table-column prop="phone" label="手机号" width="120" align="center">
         </el-table-column>
-        <el-table-column prop="email" label="邮箱" width="180">
+        <el-table-column prop="email" label="邮箱" width="180" align="center">
         </el-table-column>
-        <el-table-column prop="position" label="职位">
+        <el-table-column prop="position" label="职位" align="center">
         </el-table-column>
-        <el-table-column prop="permission" label="权限">
+        <el-table-column prop="permission" label="权限" align="center">
           <template #default="scope">
           <template v-if="scope.row.permission == '1'">
             <el-tag type="success"> 管理员 </el-tag>
@@ -79,9 +79,10 @@
           label="用户创建时间"
           min-width="150"
           sortable
+          align="center"
         >
         </el-table-column>
-        <el-table-column label="操作" width="150" v-if="ifAdmin">
+        <el-table-column label="操作" width="150" v-if="ifAdmin" align="center">
           <template scope="scope">
             <el-button size="small" @click="handleEdit(scope.row)"
               >编辑</el-button

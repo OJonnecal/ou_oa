@@ -64,14 +64,14 @@
         style="width: 100%"
         max-height="550"
       >
-        <el-table-column type="index" width="60"> </el-table-column>
-        <el-table-column prop="name" label="会议室名称" width="150" sortable>
+        <el-table-column type="index" width="60" label="序号" align="center"> </el-table-column>
+        <el-table-column prop="name" label="会议室名称" width="200" sortable align="center">
         </el-table-column>
-        <el-table-column prop="status" label="会议室状态" width="150" sortable>
+        <el-table-column prop="status" label="会议室状态" width="200" sortable align="center">
         </el-table-column>
-        <el-table-column prop="remarks" label="备注" min-width="180">
+        <el-table-column prop="remarks" label="备注" min-width="180" align="center">
         </el-table-column>
-        <el-table-column label="操作" width="150" v-if="ifAdmin">
+        <el-table-column label="操作" width="150" v-if="ifAdmin" align="center">
           <template scope="scope">
             <el-button size="small" @click="handleEdit(scope.row)">编辑</el-button>
             <el-button type="danger" size="small" @click="handleDel(scope.row)"
