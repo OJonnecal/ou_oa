@@ -1,5 +1,6 @@
 package com.jjou.ouOffice.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jjou.ouOffice.common.Result;
 import com.jjou.ouOffice.entity.User;
 import com.jjou.ouOffice.mapper.UserMapper;
@@ -24,12 +25,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public Result login(User user) {
-//        QueryWrapper<User> wrapper = new QueryWrapper<>();
-//        wrapper.eq("id", user.getId()).eq("pwd", user.getPwd());
-        User loginUser = baseMapper.selectById(user.getId());
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.eq("account", user.getAccount());
+//        User loginUser = baseMapper.selectById(user.getId());
+        User loginUser = baseMapper.selectOne(wrapper);
+        if(loginUser == null){
+            return Result.error().message("账号不存在");
+        }
 
-        if(loginUser == null || !loginUser.getPwd().equals(user.getPwd())){
-            return Result.error();
+        if(!loginUser.getPwd().equals(user.getPwd())){
+            return Result.error().message("密码错误");
         }
         return Result.ok().data("user", loginUser);
     }

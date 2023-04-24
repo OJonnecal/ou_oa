@@ -72,7 +72,7 @@ public class User implements Serializable {
     private String createTime;
 
     /**
-     * 逻辑删除 1（true）已删除， 0（false）未删除11111111
+     * 逻辑删除 1（true）已删除， 0（false）未删除
      */
     @TableField("is_deleted")
     @TableLogic

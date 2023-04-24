@@ -11,11 +11,14 @@
     >
     <el-dialog title="添加用户" :visible="addUserFormVisible">
       <el-form :model="addUserForm" label-width="100px" ref="addUserForm">
-        <el-form-item label="名称" prop="name">
-          <el-input v-model="addUserForm.name"></el-input>
+        <el-form-item label="账号" prop="account">
+          <el-input v-model="addUserForm.account"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="pwd">
           <el-input v-model="addUserForm.pwd"></el-input>
+        </el-form-item>
+        <el-form-item label="昵称" prop="name">
+          <el-input v-model="addUserForm.name"></el-input>
         </el-form-item>
         <el-form-item label="手机号" prop="phone">
           <el-input v-model="addUserForm.phone"></el-input>
@@ -54,15 +57,17 @@
         max-height="550"
       >
         <el-table-column type="index" width="60"> </el-table-column>
-        <el-table-column prop="name" label="姓名" width="150">
+        <el-table-column prop="account" label="账号" width="150">
         </el-table-column>
-        <el-table-column prop="phone" label="手机号" width="150">
+        <el-table-column prop="name" label="昵称">
         </el-table-column>
-        <el-table-column prop="email" label="邮箱" width="150">
+        <el-table-column prop="phone" label="手机号" width="120">
         </el-table-column>
-        <el-table-column prop="position" label="职位" min-width="180">
+        <el-table-column prop="email" label="邮箱" width="180">
         </el-table-column>
-        <el-table-column prop="permission" label="权限" min-width="180">
+        <el-table-column prop="position" label="职位">
+        </el-table-column>
+        <el-table-column prop="permission" label="权限">
           <template #default="scope">
           <template v-if="scope.row.permission == '1'">
             <el-tag type="success"> 管理员 </el-tag>
@@ -72,7 +77,7 @@
         <el-table-column
           prop="createTime"
           label="用户创建时间"
-          min-width="180"
+          min-width="150"
           sortable
         >
         </el-table-column>
@@ -96,7 +101,10 @@
       :close-on-click-modal="false"
     >
       <el-form :model="editForm" label-width="100px" ref="editForm">
-        <el-form-item label="姓名" prop="name">
+        <el-form-item label="账号" prop="account">
+          <el-input v-model="editForm.account"></el-input>
+        </el-form-item>
+        <el-form-item label="昵称" prop="name">
           <el-input v-model="editForm.name"></el-input>
         </el-form-item>
         <el-form-item label="手机号" prop="phone">
@@ -156,6 +164,7 @@ export default {
       isAdmin: false,
       editForm: {
         id: "",
+        account: "",
         name: "",
         phone: "",
         email: "",
@@ -164,6 +173,7 @@ export default {
         permission: "",
       },
       addUserForm: {
+        account: "",
         name: "",
         pwd: "",
         phone: "",
@@ -197,6 +207,7 @@ export default {
     },
     addUserSubmit() {
       let param = {
+        account :this.addUserForm.account,
         name: this.addUserForm.name,
         pwd: this.addUserForm.pwd,
         phone: this.addUserForm.phone,
@@ -253,6 +264,7 @@ export default {
     handleEdit: function (row) {
       this.editFormVisible = true;
       this.editForm.id = row.id;
+      this.editForm.account = row.account;
       this.editForm.name = row.name;
       this.editForm.phone = row.phone;
       this.editForm.email = row.email;
@@ -267,6 +279,7 @@ export default {
       //NProgress.start();
       var obj = {
         id: this.editForm.id,
+        account: this.editForm.account,
         name: this.editForm.name,
         phone: this.editForm.phone,
         email: this.editForm.email,

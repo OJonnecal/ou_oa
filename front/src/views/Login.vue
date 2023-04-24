@@ -58,11 +58,15 @@
               const user = data.data.user;
               if (statusCode !== 200) {
                 this.$message({
-                  message: '登陆失败',
+                  message: res.message,
                   type: 'error'
                 });
               } else {
                 sessionStorage.setItem('user', JSON.stringify(user));
+                this.$message({
+                  message: res.message,
+                  type: 'success'
+                });
                 this.$router.push({ path: '/information' });
               }
             });
