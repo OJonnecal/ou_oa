@@ -24,13 +24,8 @@ import java.util.List;
 public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> implements ProjectService {
 
     @Override
-    public List<Project> getProjectList() {
-        return list();
-    }
-
-    @Override
     public Result addProject(Project project) {
-        if(project.getName() == null || StringUtils.isEmpty(project.getName())){
+        if(project.getTitle() == null || StringUtils.isEmpty(project.getTitle())){
             return Result.error().message("项目名称不能为空！");
         }
         if(project.getUserName() == null || StringUtils.isEmpty(project.getUserName())){
@@ -40,6 +35,21 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         project.setCreateTime(sdf.format(date));
         save(project);
-        return Result.ok().message("项目审批通过！");
+        return Result.ok().message("项目申请添加成功！");
+    }
+
+    @Override
+    public Result agreeProject(Project project) {
+        boolean isSuccess = updateById(project);
+
+        if (isSuccess) {
+            if(project.getStatus() == 1) {
+                return Result.ok().message("项目通过！");
+            }else{
+                return Result.ok().message("项目未通过！");
+            }
+        }else{
+            return Result.error().message("审批失败！");
+        }
     }
 }

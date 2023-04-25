@@ -1,32 +1,51 @@
 <template>
   <section>
+    <el-button
+      style="margin: 10px 0"
+      type="primary"
+      size="small"
+      icon="el-icon-plus"
+      @click="addContacts"
+      >添加联系人</el-button
+    >
+    <el-dialog title="添加联系人" :visible="addContactsFormVisible">
+      <el-form :model="addContactsForm" label-width="100px" ref="addContactsForm">
+        <el-form-item label="姓名" prop="title">
+          <el-input v-model="addContactsForm.name"></el-input>
+        </el-form-item>
+        <el-form-item label="手机号" prop="title">
+          <el-input v-model="addContactsForm.phone"></el-input>
+        </el-form-item>
+        <el-form-item label="备注" prop="title">
+          <el-input v-model="addContactsForm.remarks"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button size="small" @click.native="addContactsFormVisible = false"
+          >取消</el-button
+        >
+        <el-button size="small" type="primary" @click.native="addContactsSubmit"
+          >提交</el-button
+        >
+      </div>
+    </el-dialog>
     <!--列表-->
     <template>
       <el-table
-        :data="projectList"
+        :data="contactsList"
         highlight-current-row
         v-loading="loading"
         style="width: 100%"
         max-height="550"
       >
         <el-table-column type="index" width="60" label="序号" align="center"> </el-table-column>
-        <el-table-column prop="title" label="项目名称" width="150" align="center">
+        <el-table-column prop="name" label="联系人姓名" width="200" align="center">
         </el-table-column>
-        <el-table-column prop="description" label="项目描述" width="240" align="center">
+        <el-table-column prop="phone" label="手机号" width="200" align="center">
         </el-table-column>
-        <el-table-column prop="rate" label="项目进度" min-width="100" align="center">
+        <el-table-column prop="remarks" label="备注" min-width="180" align="center">
         </el-table-column>
-        <el-table-column prop="userName" label="项目负责人" min-width="100" align="center">
-        </el-table-column>
-        <el-table-column
-          prop="createTime"
-          label="项目创建时间"
-          min-width="180"
-          sortable
-          align="center"
-        >
-        </el-table-column>
-        <el-table-column label="操作" width="150" v-if="ifAdmin" align="center">
+        <el-table-column label="操作" width="150" align="center">
           <template scope="scope">
             <el-button size="small" @click="handleEdit(scope.row)"
               >编辑</el-button
@@ -41,25 +60,19 @@
 
     <!--编辑界面-->
     <el-dialog
-      title="编辑项目信息"
+      title="编辑客户信息"
       :visible.sync="editFormVisible"
       :close-on-click-modal="false"
     >
       <el-form :model="editForm" label-width="100px" ref="editForm">
-        <el-form-item label="名称" prop="title">
-          <el-input v-model="editForm.title"></el-input>
+        <el-form-item label="姓名" prop="name">
+          <el-input v-model="editForm.name"></el-input>
         </el-form-item>
-        <el-form-item label="描述" prop="description">
-          <el-input type="textarea" v-model="editForm.description"></el-input>
+        <el-form-item label="手机号" prop="phone">
+          <el-input v-model="editForm.phone"></el-input>
         </el-form-item>
-        <el-form-item label="进度" prop="rate">
-          <el-input v-model="editForm.rate"></el-input>
-        </el-form-item>
-        <el-form-item label="负责人" prop="userName">
-          <el-input v-model="editForm.userName"></el-input>
-        </el-form-item>
-        <el-form-item label="创建时间" prop="createTime">
-          <el-input v-model="editForm.createTime" :disabled="read"></el-input>
+        <el-form-item label="备注" prop="remarks">
+          <el-input type="textarea" v-model="editForm.remarks"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -78,11 +91,11 @@
 <script>
 import util from "../../common/js/util";
 import {
-  getProjectList,
-  editProject,
-  delProject,
-  addProject,
-} from "../../api/project.js";
+  getContactsList,
+  editContacts,
+  delContacts,
+  addContacts,
+} from "../../api/contacts.js";
 export default {
   data() {
     return {
@@ -90,26 +103,22 @@ export default {
         name: "",
       },
       read: true,
-      ifAdmin: true,
       loading: false,
       editLoading: false,
       editFormVisible: false,
-      projectList: [],
+      contactsList: [],
       editForm: {
         id: "",
-        title: "",
-        description: "",
-        rate: "",
-        userName: "",
-        createTime: "",
+        name: "",
+        phone: "",
+        remarks: "",
       },
-      addProjectForm: {
-        title: "",
-        description: "",
-        rate: "",
-        userName: "",
+      addContactsForm: {
+        name: "",
+        phone: "",
+        remarks: "",
       },
-      addProjectFormVisible: false,
+      addContactsFormVisible: false,
     };
   },
   methods: {
@@ -122,26 +131,24 @@ export default {
       // 	hysbh: this.search.hysbh
       // };
       this.loading = true;
-      getProjectList().then((res) => {
+      getContactsList().then((res) => {
         console.log(res);
-        this.projectList = res.data.projectList;
-        console.log(this.projectList, "projectList");
+        this.contactsList = res.data.contactsList;
+        console.log(this.contactsList, "contactsList");
         this.loading = false;
       });
     },
-    addProject() {
-      this.addProjectFormVisible = true;
+    addContacts() {
+      this.addContactsFormVisible = true;
     },
-    addProjectSubmit() {
-      //   this.addCustomerForm.time = new Date().toLocaleDateString();
+    addContactsSubmit() {
+      //   this.addContactsForm.time = new Date().toLocaleDateString();
       let param = {
-        title: this.addProjectForm.title,
-        description: this.addProjectForm.description,
-        rate: this.addProjectForm.rate,
-        userName: this.addProjectForm.userName,
-        // createTime: dateFtt("yyyy-MM-dd hh:mm:ss", new Date()),
+        name: this.addContactsForm.name,
+        phone: this.addContactsForm.phone,
+        remarks: this.addContactsForm.remarks,
       };
-      addProject(param).then((res) => {
+      addContacts(param).then((res) => {
         const statusCode = res.code;
         if (statusCode == 200) {
           this.$message({
@@ -156,7 +163,7 @@ export default {
           });
         }
       });
-      this.addProjectFormVisible = false;
+      this.addContactsFormVisible = false;
     },
     handleDel(row) {
       var obj = {
@@ -166,7 +173,7 @@ export default {
         type: "warning",
       })
         .then(() => {
-          delProject(obj).then((res) => {
+          delContacts(obj).then((res) => {
             const statusCode = res.code;
             if (statusCode == 200) {
               this.$message({
@@ -189,11 +196,9 @@ export default {
     handleEdit: function (row) {
       this.editFormVisible = true;
       this.editForm.id = row.id;
-      this.editForm.title = row.title;
-      this.editForm.description = row.description;
-      this.editForm.rate = row.rate;
-      this.editForm.userName = row.userName;
-      this.editForm.createTime = row.createTime;
+      this.editForm.name = row.name;
+      this.editForm.phone = row.phone;
+      this.editForm.remarks = row.remarks;
     },
     editSubmit: function () {
       // this.$refs.editForm.validate((valid) => {
@@ -202,16 +207,15 @@ export default {
       //NProgress.start();
       var obj = {
         id: this.editForm.id,
-        title: this.editForm.title,
-        description: this.editForm.description,
-        rate: this.editForm.rate,
-        userName: this.editForm.userName,
+        name: this.editForm.name,
+        phone: this.editForm.phone,
+        remarks: this.editForm.remarks,
       };
       console.log(obj);
       // if (obj.status == "空闲") {
       //   obj.remarks = "";
       // }
-      editProject(obj).then((res) => {
+      editContacts(obj).then((res) => {
         this.editLoading = false;
         this.$message({
           message: res.message,
@@ -233,9 +237,6 @@ export default {
     },
   },
   mounted() {
-    var user = sessionStorage.getItem("user");
-    user = JSON.parse(user);
-    user.permission == "1" ? (this.ifAdmin = true) : (this.ifAdmin = false);
     this.getTableData();
     this.getUserData();
   },

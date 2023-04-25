@@ -12,7 +12,7 @@ import Project from './views/manage/Project.vue'
 import Clockin from './views/personal/Clockin.vue'
 import Assignment from './views/personal/Assignment.vue'
 import Message from './views/personal/Message.vue'
-import Addresslist from './views/personal/Addresslist.vue'
+import Contacts from './views/personal/Contacts.vue'
 import Leave from './views/process/Leave.vue'
 import Expense from './views/process/Expense.vue'
 import AskForProject from './views/process/AskForProject.vue'
@@ -74,7 +74,7 @@ let routes = [
         children: [
             { path: '/Clockin', component: Clockin, name: '考勤列表' },
             { path: '/Assignment', component: Assignment, name: '任务清单' },
-            { path: '/Addresslist', component: Addresslist, name: '通讯录' },
+            { path: '/Contacts', component: Contacts, name: '通讯录' },
             { path: '/Message', component: Message, name: '消息提醒' },
         ]
     },

@@ -33,10 +33,22 @@ public class Contacts implements Serializable {
     private Integer userId;
 
     /**
-     * 联系人id
+     * 联系人姓名
      */
-    @TableField("contacts_id")
-    private Integer contactsId;
+    @TableField("name")
+    private String name;
+
+    /**
+     * 联系人电话
+     */
+    @TableField("phone")
+    private String phone;
+
+    /**
+     * 备注
+     */
+    @TableField("remarks")
+    private String remarks;
 
     @TableField("is_deleted")
     @TableLogic

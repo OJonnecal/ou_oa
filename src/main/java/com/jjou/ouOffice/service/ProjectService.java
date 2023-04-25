@@ -5,6 +5,7 @@ import com.jjou.ouOffice.entity.Project;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
+import java.util.Properties;
 
 /**
  * <p>
@@ -16,7 +17,7 @@ import java.util.List;
  */
 public interface ProjectService extends IService<Project> {
 
-    List<Project> getProjectList();
-
     Result addProject(Project project);
+
+    Result agreeProject(Project project);
 }

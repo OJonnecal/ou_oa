@@ -52,9 +52,9 @@ public class Leave implements Serializable {
     private LocalDateTime endTime;
 
     /**
-     * 请假状态
+     * 请假状态 1（true）已审核， 0（false）未审核
      */
-    private String status;
+    private Integer status;
 
     /**
      * 请假人

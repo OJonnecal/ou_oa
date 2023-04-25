@@ -3,6 +3,7 @@ package com.jjou.ouOffice.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jjou.ouOffice.common.Result;
+import com.jjou.ouOffice.entity.Assignment;
 import com.jjou.ouOffice.entity.Project;
 import com.jjou.ouOffice.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +32,25 @@ public class ProjectController {
     @PostMapping(value = "/getProjectList")
     @ResponseBody
     public Result getProjectList() {
-        List<Project> list = projectService.getProjectList();
-        return Result.ok().data("projectList", list);
+        QueryWrapper<Project> wrapper = new QueryWrapper<>();
+        wrapper.eq("status", 1);
+        return Result.ok().data("projectList", projectService.list(wrapper));
+    }
+
+    @PostMapping(value = "/getApplyProjectList")
+    @ResponseBody
+    public Result getApplyProjectList() {
+        QueryWrapper<Project> wrapper = new QueryWrapper<>();
+        wrapper.eq("status", 0);
+        return Result.ok().data("applyProjectList", projectService.list(wrapper));
+    }
+
+    @PostMapping(value = "/getFailProjectList")
+    @ResponseBody
+    public Result getFailProjectList() {
+        QueryWrapper<Project> wrapper = new QueryWrapper<>();
+        wrapper.eq("status", 2);
+        return Result.ok().data("failProjectList", projectService.list(wrapper));
     }
 
     @PostMapping("/delProject")
@@ -65,6 +83,12 @@ public class ProjectController {
     @ResponseBody
     public Result addProject(@RequestBody Project project){
         return projectService.addProject(project);
+    }
+
+    @PostMapping("/agreeProject")
+    @ResponseBody
+    public Result agreeProject(@RequestBody Project project){
+        return projectService.agreeProject(project);
     }
 }
 

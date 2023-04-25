@@ -46,9 +46,9 @@ public class Expense implements Serializable {
     private LocalDateTime createTime;
 
     /**
-     * 申请状态
+     * 申请状态 1（true）已审核， 0（false）未审核
      */
-    private String status;
+    private Integer status;
 
     /**
      * 申请人id

@@ -64,9 +64,6 @@
           </el-table-column>
           <el-table-column label="操作" width="150" align="center">
             <template scope="scope">
-              <el-button size="small" @click="handleComplete(scope.row)"
-                >完成</el-button
-              >
               <el-button
                 type="danger"
                 size="small"
