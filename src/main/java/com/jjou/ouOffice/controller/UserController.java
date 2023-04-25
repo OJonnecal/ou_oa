@@ -3,7 +3,6 @@ package com.jjou.ouOffice.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jjou.ouOffice.common.Result;
-import com.jjou.ouOffice.entity.Customer;
 import com.jjou.ouOffice.entity.User;
 import com.jjou.ouOffice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
