@@ -28,7 +28,7 @@ public class AssignmentServiceImpl extends ServiceImpl<AssignmentMapper, Assignm
             return Result.error().message("任务标题不能为空！");
         }
         Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         assignment.setCreateTime(sdf.format(date));
         save(assignment);
         return Result.ok().message("添加任务成功！");

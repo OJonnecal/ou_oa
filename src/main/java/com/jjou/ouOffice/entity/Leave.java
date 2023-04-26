@@ -1,12 +1,10 @@
 package com.jjou.ouOffice.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.time.LocalDateTime;
-import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -22,6 +20,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
+@TableName("`leave`")
 public class Leave implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -55,6 +54,11 @@ public class Leave implements Serializable {
      * 请假状态 1（true）已审核， 0（false）未审核
      */
     private Integer status;
+
+    /**
+     * 请假申请时间
+     */
+    private String createTime;
 
     /**
      * 请假人

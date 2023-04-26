@@ -50,6 +50,11 @@ public class Project implements Serializable {
     private String userName;
 
     /**
+     * 项目申请时间
+     */
+    private String applyTime;
+
+    /**
      * 项目创建时间
      */
     private String createTime;

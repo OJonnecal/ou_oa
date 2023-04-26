@@ -33,7 +33,7 @@ public class ProjectController {
     @ResponseBody
     public Result getApplyProjectList() {
         QueryWrapper<Project> wrapper = new QueryWrapper<>();
-        wrapper.eq("status", 0);
+        wrapper.eq("status", 0).orderByDesc("apply_time");
         return Result.ok().data("applyProjectList", projectService.list(wrapper));
     }
 
@@ -41,7 +41,7 @@ public class ProjectController {
     @ResponseBody
     public Result getProjectList() {
         QueryWrapper<Project> wrapper = new QueryWrapper<>();
-        wrapper.eq("status", 1);
+        wrapper.eq("status", 1).orderByDesc("create_time");
         return Result.ok().data("projectList", projectService.list(wrapper));
     }
 
@@ -49,7 +49,7 @@ public class ProjectController {
     @ResponseBody
     public Result getFailProjectList() {
         QueryWrapper<Project> wrapper = new QueryWrapper<>();
-        wrapper.eq("status", 2);
+        wrapper.eq("status", 2).orderByDesc("apply_time");
         return Result.ok().data("failProjectList", projectService.list(wrapper));
     }
 

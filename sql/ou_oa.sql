@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : MySQL80
+ Source Server         : MySQL
  Source Server Type    : MySQL
  Source Server Version : 80028
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80028
  File Encoding         : 65001
 
- Date: 26/04/2023 00:22:18
+ Date: 26/04/2023 17:05:13
 */
 
 SET NAMES utf8mb4;
@@ -83,7 +83,7 @@ CREATE TABLE `contacts`  (
   `is_deleted` tinyint NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `user_id`(`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '通讯录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '通讯录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of contacts
@@ -117,7 +117,7 @@ CREATE TABLE `expense`  (
   `id` int NOT NULL AUTO_INCREMENT,
   `reason` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '报销原因',
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '报销描述',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '报销申请时间',
+  `create_time` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '报销申请时间',
   `status` tinyint NULL DEFAULT NULL COMMENT '申请状态 2 未通过，1 通过，0 未审核',
   `user_id` int NULL DEFAULT NULL COMMENT '申请人id',
   `is_deleted` tinyint NULL DEFAULT 0,
@@ -141,6 +141,7 @@ CREATE TABLE `leave`  (
   `begin_time` datetime NULL DEFAULT NULL COMMENT '请假开始时间',
   `end_time` datetime NULL DEFAULT NULL COMMENT '请假结束时间',
   `status` tinyint NULL DEFAULT NULL COMMENT '状态 2 未通过，1 通过，0 未审核',
+  `create_time` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '申请时间',
   `user_id` int NULL DEFAULT NULL COMMENT '请假人',
   `is_deleted` tinyint NULL DEFAULT 0 COMMENT '逻辑删除 1（true）已删除， 0（false）未删除',
   PRIMARY KEY (`id`) USING BTREE,
@@ -241,21 +242,26 @@ CREATE TABLE `project`  (
   `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '项目描述',
   `rate` int NULL DEFAULT 0 COMMENT '项目进度',
   `user_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '项目负责人',
+  `apply_time` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '项目申请时间',
   `create_time` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '项目创建时间',
   `status` tinyint NULL DEFAULT NULL COMMENT '状态 2 未通过，1 通过，0 未审核',
   `is_deleted` tinyint NULL DEFAULT 0 COMMENT '逻辑删除 1（true）已删除， 0（false）未删除',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `user_id`(`user_name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '项目表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '项目表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of project
 -- ----------------------------
-INSERT INTO `project` VALUES (5, '项目1', '1', 12, 'ojj', NULL, 1, 0);
-INSERT INTO `project` VALUES (6, '项目2', '2', 22, 'ojj', NULL, 1, 0);
-INSERT INTO `project` VALUES (7, '项目3', '3', 33, 'ojj', NULL, 1, 0);
-INSERT INTO `project` VALUES (9, '项目4', '4', 0, '欧家俊', '2023-04-25 11:57:19', 0, 0);
-INSERT INTO `project` VALUES (10, '5', '5', 0, '5', '2023-04-26 12:00:05', 0, 0);
+INSERT INTO `project` VALUES (5, '项目1', '1', 12, 'ojj', NULL, NULL, 1, 0);
+INSERT INTO `project` VALUES (6, '项目2', '2', 22, 'ojj', NULL, NULL, 1, 0);
+INSERT INTO `project` VALUES (7, '项目3', '3', 33, 'ojj', NULL, NULL, 1, 0);
+INSERT INTO `project` VALUES (9, '项目4', '4', 0, '欧家俊', NULL, '2023-04-25 11:57:19', 0, 0);
+INSERT INTO `project` VALUES (10, '5', '5', 0, '5', NULL, '2023-04-26 12:00:05', 0, 0);
+INSERT INTO `project` VALUES (11, '6', '6', 0, '莫子晴', NULL, '2023-04-26 04:27:33', 0, 0);
+INSERT INTO `project` VALUES (12, '6', '6', 0, '6', '2023-04-26 04:41:09', NULL, 0, 0);
+INSERT INTO `project` VALUES (13, '7', '7', 0, '7', '2023-04-26 16:44:12', NULL, 0, 0);
+INSERT INTO `project` VALUES (14, '1', '1', 0, '1', '2023-04-26 16:52:40', NULL, 0, 0);
 
 -- ----------------------------
 -- Table structure for quit
@@ -265,7 +271,7 @@ CREATE TABLE `quit`  (
   `id` int NOT NULL AUTO_INCREMENT,
   `reason` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '离职原因',
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '离职描述',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '离职申请时间',
+  `create_time` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '离职申请时间',
   `status` tinyint NULL DEFAULT NULL COMMENT '申请状态 状态 2 未通过，1 通过，0 未审核',
   `user_id` int NULL DEFAULT NULL COMMENT '离职申请人',
   `is_deleted` tinyint NULL DEFAULT 0,
@@ -314,7 +320,7 @@ CREATE TABLE `user`  (
   `create_time` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户创建时间',
   `is_deleted` tinyint UNSIGNED NULL DEFAULT 0 COMMENT '逻辑删除 1（true）已删除， 0（false）未删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of user

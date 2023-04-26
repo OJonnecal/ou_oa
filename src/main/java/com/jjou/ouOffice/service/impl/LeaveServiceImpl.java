@@ -27,9 +27,9 @@ public class LeaveServiceImpl extends ServiceImpl<LeaveMapper, Leave> implements
         if(leave.getReason() == null || StringUtils.isEmpty(leave.getReason())){
             return Result.error().message("请假原因不能为空！");
         }
-//        Date date = new Date();
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-//        leave.setCreateTime(sdf.format(date));
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        leave.setCreateTime(sdf.format(date));
         save(leave);
         return Result.ok().message("请假申请添加成功！");
     }

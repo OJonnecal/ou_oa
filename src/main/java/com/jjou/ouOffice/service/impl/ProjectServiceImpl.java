@@ -32,8 +32,12 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
             return Result.error().message("项目负责人不能为空！");
         }
         Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        project.setCreateTime(sdf.format(date));
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        if(project.getStatus() == 0){
+            project.setApplyTime(sdf.format(date));
+        }else if(project.getStatus() == 1){
+            project.setCreateTime(sdf.format(date));
+        }
         save(project);
         return Result.ok().message("项目申请添加成功！");
     }

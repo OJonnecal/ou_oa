@@ -30,7 +30,7 @@ public class AssignmentController {
     @ResponseBody
     public Result getAssignmentInCompleteList(){
         QueryWrapper<Assignment> wrapper = new QueryWrapper<>();
-        wrapper.eq("status", 0);
+        wrapper.eq("status", 0).orderByDesc("create_time");
         return Result.ok().data("assignmentInCompleteList", assignmentService.list(wrapper));
     }
 

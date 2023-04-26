@@ -43,7 +43,7 @@ public class Quit implements Serializable {
      * 离职申请时间
      */
     @TableField("create_time")
-    private LocalDateTime createTime;
+    private String createTime;
 
     /**
      * 申请状态 1（true）已审核， 0（false）未审核

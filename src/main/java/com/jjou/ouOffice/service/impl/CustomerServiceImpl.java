@@ -31,7 +31,7 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
             return Result.error().message("客户手机号不能为空！");
         }
         Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         customer.setCreateTime(sdf.format(date));
         save(customer);
         return Result.ok().message("添加客户成功！");
