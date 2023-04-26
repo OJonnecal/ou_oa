@@ -44,9 +44,9 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
 
         if (isSuccess) {
             if(project.getStatus() == 1) {
-                return Result.ok().message("项目通过！");
+                return Result.ok().message("项目通过审批！");
             }else{
-                return Result.ok().message("项目未通过！");
+                return Result.ok().message("项目未通过审批！");
             }
         }else{
             return Result.error().message("审批失败！");

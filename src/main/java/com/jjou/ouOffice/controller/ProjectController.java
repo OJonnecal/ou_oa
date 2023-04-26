@@ -29,20 +29,20 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
-    @PostMapping(value = "/getProjectList")
-    @ResponseBody
-    public Result getProjectList() {
-        QueryWrapper<Project> wrapper = new QueryWrapper<>();
-        wrapper.eq("status", 1);
-        return Result.ok().data("projectList", projectService.list(wrapper));
-    }
-
     @PostMapping(value = "/getApplyProjectList")
     @ResponseBody
     public Result getApplyProjectList() {
         QueryWrapper<Project> wrapper = new QueryWrapper<>();
         wrapper.eq("status", 0);
         return Result.ok().data("applyProjectList", projectService.list(wrapper));
+    }
+
+    @PostMapping(value = "/getProjectList")
+    @ResponseBody
+    public Result getProjectList() {
+        QueryWrapper<Project> wrapper = new QueryWrapper<>();
+        wrapper.eq("status", 1);
+        return Result.ok().data("projectList", projectService.list(wrapper));
     }
 
     @PostMapping(value = "/getFailProjectList")
