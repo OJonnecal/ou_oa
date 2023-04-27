@@ -1,7 +1,6 @@
 <template>
   <div>
     <el-button
-      v-if="!ifAdmin"
       type="primary"
       size="small"
       @click="apply"
@@ -130,9 +129,6 @@
         <el-form-item label="描述" prop="description">
           <el-input type="textarea" v-model="addForm.description"></el-input>
         </el-form-item>
-        <el-form-item label="负责人" prop="userName">
-          <el-input v-model="addForm.userName"></el-input>
-        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click.native="addFormVisible = false"
@@ -165,7 +161,6 @@ export default {
       addForm: {
         title: "",
         description: "",
-        userName: "",
       },
     };
   },
@@ -208,7 +203,7 @@ export default {
       user = JSON.parse(user);
       user.permission == "1" ? (this.ifAdmin = true) : (this.ifAdmin = false);
       var params = {
-        userId: user.userId,
+        userName: user.name,
       };
       getApplyProjectList(params).then((res) => {
         this.applyProjectList = res.data.applyProjectList;
@@ -228,10 +223,12 @@ export default {
       this.addFormVisible = true;
     },
     addSubmit() {
+      var user = sessionStorage.getItem('user');
+			user = JSON.parse(user)
       let param = {
         title: this.addForm.title,
         description: this.addForm.description,
-        userName: this.addForm.userName,
+        userName: user.name,
         status: "0",
       };
       addProject(param).then((res) => {

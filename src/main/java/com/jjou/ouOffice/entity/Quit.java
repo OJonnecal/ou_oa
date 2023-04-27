@@ -40,6 +40,11 @@ public class Quit implements Serializable {
     private String description;
 
     /**
+     * 离职时间
+     */
+    private String quitTime;
+
+    /**
      * 离职申请时间
      */
     @TableField("create_time")

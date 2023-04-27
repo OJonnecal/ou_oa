@@ -8,8 +8,6 @@ export const getApplyLeaveList = params => { return axios.post(`${base}/leave/ge
 
 export const getFailLeaveList = params => { return axios.post(`${base}/leave/getFailLeaveList`, params).then(res => res.data); };
 
-export const editLeave = params => { return axios.post(`${base}/leave/updateLeave`, params).then(res => res.data); };
-
 export const delLeave = params => { return axios.post(`${base}/leave/delLeave`, params).then(res => res.data); };
 
 export const addLeave = params => { return axios.post(`${base}/leave/addLeave`, params).then(res => res.data); };

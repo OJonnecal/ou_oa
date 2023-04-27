@@ -7,12 +7,9 @@ import com.jjou.ouOffice.entity.Leave;
 import com.jjou.ouOffice.entity.Project;
 import com.jjou.ouOffice.service.LeaveService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 请假申请/审批控制器
@@ -29,25 +26,26 @@ public class LeaveController {
 
     @PostMapping(value = "/getApplyLeaveList")
     @ResponseBody
-    public Result getApplyLeaveList() {
+    public Result getApplyLeaveList(@RequestBody Leave leave) {
         QueryWrapper<Leave> wrapper = new QueryWrapper<>();
-        wrapper.eq("status", 0).orderByDesc("create_time");
+        wrapper.eq("status", 0).eq("user_id", leave.getUserId()).orderByDesc("create_time");
         return Result.ok().data("applyLeaveList", leaveService.list(wrapper));
+
     }
 
     @PostMapping(value = "/getLeaveList")
     @ResponseBody
-    public Result getLeaveList() {
+    public Result getLeaveList(@RequestBody Leave leave) {
         QueryWrapper<Leave> wrapper = new QueryWrapper<>();
-        wrapper.eq("status", 1).orderByDesc("approve_time");
+        wrapper.eq("status", 1).eq("user_id", leave.getUserId()).orderByDesc("approve_time");
         return Result.ok().data("leaveList", leaveService.list(wrapper));
     }
 
     @PostMapping(value = "/getFailLeaveList")
     @ResponseBody
-    public Result getFailLeaveList() {
+    public Result getFailLeaveList(@RequestBody Leave leave) {
         QueryWrapper<Leave> wrapper = new QueryWrapper<>();
-        wrapper.eq("status", 2).orderByDesc("approve_time");
+        wrapper.eq("status", 2).eq("user_id", leave.getUserId()).orderByDesc("approve_time");
         return Result.ok().data("failLeaveList", leaveService.list(wrapper));
     }
 

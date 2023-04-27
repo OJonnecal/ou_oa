@@ -1,7 +1,6 @@
 <template>
   <div>
     <el-button
-      v-if="!ifAdmin"
       type="primary"
       size="small"
       @click="apply"
@@ -289,7 +288,7 @@ export default {
       user = JSON.parse(user);
       user.permission == "1" ? (this.ifAdmin = true) : (this.ifAdmin = false);
       var params = {
-        userId: user.userId,
+        userId: user.id,
       };
       getApplyLeaveList(params).then((res) => {
         this.applyLeaveList = res.data.applyLeaveList;
@@ -344,7 +343,7 @@ export default {
       var obj = {
         id: row.id,
       };
-      this.$confirm("确定要删除此未通过项目吗", "提示", {
+      this.$confirm("确定要删除此未通过请假申请吗", "提示", {
         type: "warning",
       })
         .then(() => {

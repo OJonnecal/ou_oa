@@ -40,6 +40,11 @@ public class Expense implements Serializable {
     private String description;
 
     /**
+     * 报销金额
+     */
+    private Integer amount;
+
+    /**
      * 报销申请时间
      */
     @TableField("create_time")

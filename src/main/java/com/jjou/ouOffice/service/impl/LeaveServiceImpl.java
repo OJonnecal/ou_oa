@@ -1,10 +1,13 @@
 package com.jjou.ouOffice.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jjou.ouOffice.common.Result;
 import com.jjou.ouOffice.entity.Leave;
 import com.jjou.ouOffice.mapper.LeaveMapper;
+import com.jjou.ouOffice.mapper.UserMapper;
 import com.jjou.ouOffice.service.LeaveService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -51,4 +54,5 @@ public class LeaveServiceImpl extends ServiceImpl<LeaveMapper, Leave> implements
             return Result.error().message("审批失败！");
         }
     }
+
 }
