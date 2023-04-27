@@ -33,6 +33,7 @@
             prop="userName"
             label="负责人"
             width="180"
+            align="center"
           ></el-table-column>
           <el-table-column
             prop="applyTime"
@@ -59,7 +60,7 @@
                 type="danger"
                 size="small"
                 :disabled="buttonAble(scope.row)"
-                @click="handleAgree(scope.row, 0)"
+                @click="handleAgree(scope.row, 2)"
                 >拒绝</el-button
               >
             </template>
@@ -90,10 +91,11 @@
             prop="userName"
             label="负责人"
             width="180"
+            align="center"
           ></el-table-column>
           <el-table-column
-            prop="applyTime"
-            label="申请时间"
+            prop="approveTime"
+            label="审批时间"
             min-width="180"
             sortable
             align="center"

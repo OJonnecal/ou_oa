@@ -51,7 +51,7 @@ public class Leave implements Serializable {
     private LocalDateTime endTime;
 
     /**
-     * 请假状态 1（true）已审核， 0（false）未审核
+     * 请假状态 2 未通过，1 通过，0 未审核
      */
     private Integer status;
 
@@ -59,6 +59,11 @@ public class Leave implements Serializable {
      * 请假申请时间
      */
     private String createTime;
+
+    /**
+     * 请假审批时间
+     */
+    private String approveTime;
 
     /**
      * 请假人

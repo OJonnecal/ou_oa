@@ -46,7 +46,13 @@ public class Expense implements Serializable {
     private String createTime;
 
     /**
-     * 申请状态 1（true）已审核， 0（false）未审核
+     * 报销审批时间
+     */
+    @TableField("approve_time")
+    private String approveTime;
+
+    /**
+     * 申请状态 2 未通过，1 通过，0 未审核
      */
     private Integer status;
 

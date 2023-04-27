@@ -49,6 +49,9 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
 
     @Override
     public Result agreeProject(Project project) {
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        project.setApproveTime((sdf.format(date)));
         boolean isSuccess = updateById(project);
 
         if (isSuccess) {

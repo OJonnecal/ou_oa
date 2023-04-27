@@ -60,7 +60,12 @@ public class Project implements Serializable {
     private String createTime;
 
     /**
-     * 状态 1（true）已审核， 0（false）未审核
+     * 项目审批时间
+     */
+    private String approveTime;
+
+    /**
+     * 状态 2 未通过，1 通过，0 未审核
      */
     private Integer status;
 

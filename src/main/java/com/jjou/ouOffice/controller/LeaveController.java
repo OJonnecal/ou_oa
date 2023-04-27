@@ -31,7 +31,7 @@ public class LeaveController {
     @ResponseBody
     public Result getApplyLeaveList() {
         QueryWrapper<Leave> wrapper = new QueryWrapper<>();
-        wrapper.eq("status", 0);
+        wrapper.eq("status", 0).orderByDesc("create_time");
         return Result.ok().data("applyLeaveList", leaveService.list(wrapper));
     }
 
@@ -39,7 +39,7 @@ public class LeaveController {
     @ResponseBody
     public Result getLeaveList() {
         QueryWrapper<Leave> wrapper = new QueryWrapper<>();
-        wrapper.eq("status", 1);
+        wrapper.eq("status", 1).orderByDesc("approve_time");
         return Result.ok().data("leaveList", leaveService.list(wrapper));
     }
 
@@ -47,7 +47,7 @@ public class LeaveController {
     @ResponseBody
     public Result getFailLeaveList() {
         QueryWrapper<Leave> wrapper = new QueryWrapper<>();
-        wrapper.eq("status", 2);
+        wrapper.eq("status", 2).orderByDesc("approve_time");
         return Result.ok().data("failLeaveList", leaveService.list(wrapper));
     }
 
@@ -70,6 +70,11 @@ public class LeaveController {
         return leaveService.addLeave(leave);
     }
 
+    /**
+     * 请假审批
+     * @param leave
+     * @return
+     */
     @PostMapping("/agreeLeave")
     @ResponseBody
     public Result agreeLeave(@RequestBody Leave leave){

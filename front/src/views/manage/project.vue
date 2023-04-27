@@ -9,14 +9,35 @@
         style="width: 100%"
         max-height="550"
       >
-        <el-table-column type="index" width="60" label="序号" align="center"> </el-table-column>
-        <el-table-column prop="title" label="项目名称" width="150" align="center">
+        <el-table-column type="index" width="60" label="序号" align="center">
         </el-table-column>
-        <el-table-column prop="description" label="项目描述" width="240" align="center">
+        <el-table-column
+          prop="title"
+          label="项目名称"
+          width="150"
+          align="center"
+        >
         </el-table-column>
-        <el-table-column prop="rate" label="项目进度" min-width="100" align="center">
+        <el-table-column
+          prop="description"
+          label="项目描述"
+          width="240"
+          align="center"
+        >
         </el-table-column>
-        <el-table-column prop="userName" label="项目负责人" min-width="100" align="center">
+        <el-table-column
+          prop="rate"
+          label="项目进度"
+          min-width="100"
+          align="center"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="userName"
+          label="项目负责人"
+          min-width="100"
+          align="center"
+        >
         </el-table-column>
         <el-table-column
           prop="createTime"
@@ -213,12 +234,19 @@ export default {
       // }
       editProject(obj).then((res) => {
         this.editLoading = false;
-        this.$message({
-          message: res.message,
-          type: "success",
-        });
-        console.log(obj, "1111");
-        // this.$refs['editForm'].resetFields();
+        const statusCode = res.code;
+        if (statusCode == 200) {
+          this.$message({
+            message: res.message,
+            type: "success",
+          });
+          this.getTableData();
+        } else {
+          this.$message({
+            message: res.message,
+            type: "error",
+          });
+        }
         this.editFormVisible = false;
         this.getTableData();
       });

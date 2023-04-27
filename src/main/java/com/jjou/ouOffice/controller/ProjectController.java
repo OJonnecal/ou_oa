@@ -49,7 +49,7 @@ public class ProjectController {
     @ResponseBody
     public Result getFailProjectList() {
         QueryWrapper<Project> wrapper = new QueryWrapper<>();
-        wrapper.eq("status", 2).orderByDesc("apply_time");
+        wrapper.eq("status", 2).orderByDesc("approve_time");
         return Result.ok().data("failProjectList", projectService.list(wrapper));
     }
 
@@ -78,6 +78,11 @@ public class ProjectController {
         return projectService.addProject(project);
     }
 
+    /**
+     * 项目审批
+     * @param project
+     * @return
+     */
     @PostMapping("/agreeProject")
     @ResponseBody
     public Result agreeProject(@RequestBody Project project){

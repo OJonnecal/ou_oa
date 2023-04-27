@@ -68,7 +68,7 @@
                 type="danger"
                 size="small"
                 :disabled="buttonAble(scope.row)"
-                @click="handleAgree(scope.row, 0)"
+                @click="handleAgree(scope.row, 2)"
                 >拒绝</el-button
               >
             </template>
@@ -110,8 +110,8 @@
             align="center"
           ></el-table-column>
           <el-table-column
-            prop="createTime"
-            label="申请时间"
+            prop="approveTime"
+            label="审批时间"
             min-width="200"
             sortable
             align="center"
@@ -168,8 +168,8 @@
             align="center"
           ></el-table-column>
           <el-table-column
-            prop="createTime"
-            label="申请时间"
+            prop="approveTime"
+            label="审批时间"
             min-width="200"
             sortable
             align="center"
@@ -231,6 +231,7 @@
 <script>
 import util from "../../common/js/util";
 import {
+  getLeaveList,
   getApplyLeaveList,
   getFailLeaveList,
   agreeLeave,

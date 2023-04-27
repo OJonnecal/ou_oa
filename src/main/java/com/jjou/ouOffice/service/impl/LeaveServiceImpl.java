@@ -36,6 +36,9 @@ public class LeaveServiceImpl extends ServiceImpl<LeaveMapper, Leave> implements
 
     @Override
     public Result agreeLeave(Leave leave) {
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        leave.setApproveTime((sdf.format(date)));
         boolean isSuccess = updateById(leave);
 
         if (isSuccess) {
