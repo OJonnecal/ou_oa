@@ -32,7 +32,7 @@ public class LeaveController {
     public Result getApplyLeaveList() {
         QueryWrapper<Leave> wrapper = new QueryWrapper<>();
         wrapper.eq("status", 0);
-        return Result.ok().data("applyProjectList", leaveService.list(wrapper));
+        return Result.ok().data("applyLeaveList", leaveService.list(wrapper));
     }
 
     @PostMapping(value = "/getLeaveList")
@@ -40,7 +40,7 @@ public class LeaveController {
     public Result getLeaveList() {
         QueryWrapper<Leave> wrapper = new QueryWrapper<>();
         wrapper.eq("status", 1);
-        return Result.ok().data("projectList", leaveService.list(wrapper));
+        return Result.ok().data("leaveList", leaveService.list(wrapper));
     }
 
     @PostMapping(value = "/getFailLeaveList")
@@ -48,7 +48,7 @@ public class LeaveController {
     public Result getFailLeaveList() {
         QueryWrapper<Leave> wrapper = new QueryWrapper<>();
         wrapper.eq("status", 2);
-        return Result.ok().data("failProjectList", leaveService.list(wrapper));
+        return Result.ok().data("failLeaveList", leaveService.list(wrapper));
     }
 
     @PostMapping("/delLeave")

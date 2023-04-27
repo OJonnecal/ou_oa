@@ -1,5 +1,6 @@
 package com.jjou.ouOffice.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jjou.ouOffice.common.Result;
 import com.jjou.ouOffice.entity.Project;
 import com.jjou.ouOffice.mapper.ProjectMapper;
@@ -31,6 +32,10 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
         if(project.getUserName() == null || StringUtils.isEmpty(project.getUserName())){
             return Result.error().message("项目负责人不能为空！");
         }
+        if(project.getRate() != null && (project.getRate() < 0 || project.getRate() > 100)){
+            return Result.error().message("项目进度范围为0-100");
+        }
+
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         if(project.getStatus() == 0){
@@ -54,6 +59,21 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
             }
         }else{
             return Result.error().message("审批失败！");
+        }
+    }
+
+    @Override
+    public Result updateProject(Project project) {
+        QueryWrapper<Project> wrapper = new QueryWrapper<>();
+        wrapper.eq("id", project.getId());
+        if(project.getRate() != null && (project.getRate() < 0 || project.getRate() > 100)){
+            return Result.error().message("项目进度范围为0-100");
+        }
+        boolean isSuccess = update(project, wrapper);
+        if (isSuccess){
+            return Result.ok().message("修改成功");
+        }else{
+            return Result.error().message("修改失败");
         }
     }
 }

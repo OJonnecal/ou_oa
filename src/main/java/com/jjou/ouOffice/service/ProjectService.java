@@ -20,4 +20,6 @@ public interface ProjectService extends IService<Project> {
     Result addProject(Project project);
 
     Result agreeProject(Project project);
+
+    Result updateProject(Project project);
 }

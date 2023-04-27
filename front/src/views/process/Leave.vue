@@ -30,9 +30,23 @@
             align="center"
           ></el-table-column>
           <el-table-column
-            prop="applyTime"
+            prop="beginTime"
+            label="请假开始时间"
+            width="200"
+            sortable
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="endTime"
+            label="结束时间"
+            width="200"
+            sortable
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="createTime"
             label="申请时间"
-            width="300"
+            width="200"
             sortable
             align="center"
           ></el-table-column>
@@ -61,6 +75,64 @@
           </el-table-column>
         </el-table>
       </el-tab-pane>
+      <el-tab-pane label="已通过">
+        <el-table
+          :data="leaveList"
+          highlight-current-row
+          style="width: 100%"
+          max-height="550"
+        >
+          <el-table-column type="index" width="60" label="序号" align="center">
+          </el-table-column>
+          <el-table-column
+            prop="reason"
+            label="请假原因"
+            width="200"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="description"
+            label="描述"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="beginTime"
+            label="请假开始时间"
+            width="200"
+            sortable
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="endTime"
+            label="结束时间"
+            width="200"
+            sortable
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="createTime"
+            label="申请时间"
+            min-width="200"
+            sortable
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            label="操作"
+            width="200"
+            v-if="ifAdmin"
+            align="center"
+          >
+            <template scope="scope">
+              <el-button
+                type="danger"
+                size="small"
+                @click="handleDel(scope.row)"
+                >删除</el-button
+              >
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-tab-pane>
       <el-tab-pane label="未通过">
         <el-table
           :data="failLeaveList"
@@ -82,9 +154,23 @@
             align="center"
           ></el-table-column>
           <el-table-column
-            prop="applyTime"
+            prop="beginTime"
+            label="请假开始时间"
+            width="200"
+            sortable
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="endTime"
+            label="结束时间"
+            width="200"
+            sortable
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="createTime"
             label="申请时间"
-            min-width="180"
+            min-width="200"
             sortable
             align="center"
           ></el-table-column>
@@ -212,6 +298,9 @@ export default {
       });
       getFailLeaveList(params).then((res) => {
         this.failLeaveList = res.data.failLeaveList;
+      });
+      getLeaveList(params).then((res) => {
+        this.leaveList = res.data.leaveList;
       });
     },
     buttonAble(row) {

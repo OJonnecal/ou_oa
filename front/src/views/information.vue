@@ -48,13 +48,12 @@
         <template>
           <div>
             <div class="jdt" v-for="item in jdArr" :key="item.id">
-              <div class="word" style="display: inline">{{ item.name }}</div>
+              <div class="word" style="display: inline">{{ item.title }}</div>
               <el-progress
                 :percentage="item.rate"
                 style="margin: 0 15px"
                 type="circle"
                 :stroke-width="18"
-                :status="item.status"
               ></el-progress>
             </div>
           </div>

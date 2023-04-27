@@ -68,15 +68,8 @@ public class ProjectController {
     @PostMapping("/updateProject")
     @ResponseBody
     public Result updateProject(@RequestBody Project project){
-        QueryWrapper<Project> wrapper = new QueryWrapper<>();
-        wrapper.eq("id", project.getId());
-        boolean isSuccess = projectService.update(project, wrapper);
+        return projectService.updateProject(project);
 
-        if (isSuccess){
-            return Result.ok().message("修改成功");
-        }else{
-            return Result.error().message("修改失败");
-        }
     }
 
     @PostMapping("/addProject")
