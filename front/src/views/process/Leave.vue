@@ -46,13 +46,12 @@
           <el-table-column
             prop="createTime"
             label="申请时间"
-            width="200"
+            width="250"
             sortable
             align="center"
           ></el-table-column>
           <el-table-column
             label="操作"
-            width="200"
             v-if="ifAdmin"
             align="center"
           >
@@ -118,7 +117,6 @@
           ></el-table-column>
           <el-table-column
             label="操作"
-            width="200"
             v-if="ifAdmin"
             align="center"
           >
@@ -176,7 +174,6 @@
           ></el-table-column>
           <el-table-column
             label="操作"
-            width="200"
             v-if="ifAdmin"
             align="center"
           >
@@ -315,12 +312,15 @@ export default {
       this.addFormVisible = true;
     },
     addSubmit() {
+      var user = sessionStorage.getItem('user');
+			user = JSON.parse(user)
       let param = {
         reason: this.addForm.reason,
         description: this.addForm.description,
         beginTime: this.leaveTime[0],
         endTime: this.leaveTime[1],
         status: "0",
+        userId: user.id,
       };
       addLeave(param).then((res) => {
         const statusCode = res.code;
