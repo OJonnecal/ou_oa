@@ -1,5 +1,6 @@
 package com.jjou.ouOffice.service;
 
+import com.jjou.ouOffice.common.Result;
 import com.jjou.ouOffice.entity.Leave;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +14,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface LeaveService extends IService<Leave> {
 
+    Result addLeave(Leave leave);
+
+    Result agreeLeave(Leave leave);
 }

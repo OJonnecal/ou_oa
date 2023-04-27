@@ -1,6 +1,6 @@
 package com.jjou.ouOffice.mapper;
 
-import com.jjou.ouOffice.entity.AddressList;
+import com.jjou.ouOffice.entity.Contacts;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -13,6 +13,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 2023-01-03
  */
 @Mapper
-public interface AddressListMapper extends BaseMapper<AddressList> {
+public interface ContactsMapper extends BaseMapper<Contacts> {
 
 }

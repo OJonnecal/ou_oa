@@ -12,7 +12,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ * 用户对象
  * </p>
  *
  * @author jjou
@@ -32,7 +32,12 @@ public class User implements Serializable {
     private Integer id;
 
     /**
-     * 姓名
+     * 账号
+     */
+    private String account;
+
+    /**
+     * 昵称
      */
     private String name;
 
@@ -60,6 +65,11 @@ public class User implements Serializable {
      * 权限
      */
     private Integer permission;
+
+    /**
+     * 创建时间
+     */
+    private String createTime;
 
     /**
      * 逻辑删除 1（true）已删除， 0（false）未删除

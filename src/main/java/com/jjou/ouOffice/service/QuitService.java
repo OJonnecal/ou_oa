@@ -1,5 +1,6 @@
 package com.jjou.ouOffice.service;
 
+import com.jjou.ouOffice.common.Result;
 import com.jjou.ouOffice.entity.Quit;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +14,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface QuitService extends IService<Quit> {
 
+    Result addQuit(Quit quit);
+
+    Result agreeQuit(Quit quit);
 }

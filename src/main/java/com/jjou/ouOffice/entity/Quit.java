@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ * 离职申请对象
  * </p>
  *
  * @author jjou
@@ -40,15 +40,25 @@ public class Quit implements Serializable {
     private String description;
 
     /**
+     * 离职时间
+     */
+    private String quitTime;
+
+    /**
      * 离职申请时间
      */
     @TableField("create_time")
-    private LocalDateTime createTime;
+    private String createTime;
 
     /**
-     * 申请状态
+     * 离职审批时间
      */
-    private String status;
+    private String approveTime;
+
+    /**
+     * 申请状态 2 未通过，1 通过，0 未审核
+     */
+    private Integer status;
 
     /**
      * 离职申请人

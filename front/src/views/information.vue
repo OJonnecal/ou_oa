@@ -48,13 +48,12 @@
         <template>
           <div>
             <div class="jdt" v-for="item in jdArr" :key="item.id">
-              <div class="word" style="display: inline">{{ item.name }}</div>
+              <div class="word" style="display: inline">{{ item.title }}</div>
               <el-progress
                 :percentage="item.rate"
                 style="margin: 0 15px"
                 type="circle"
                 :stroke-width="18"
-                :status="item.status"
               ></el-progress>
             </div>
           </div>
@@ -138,7 +137,7 @@
 <script>
 import util from "../common/js/util.js";
 import { getGg, addGg, delGg } from "../api/notice.js";
-import { getJd } from "../api/project.js";
+import { getProjectList } from "../api/project.js";
 import {
   getTopContactsList,
   addTopContacts,
@@ -169,13 +168,13 @@ export default {
     getGonggao() {
       var user = sessionStorage.getItem("user");
       user = JSON.parse(user);
-      user.permission <= "5" ? (this.ifAdmin = true) : (this.ifAdmin = false);
+      user.permission == "1" ? (this.ifAdmin = true) : (this.ifAdmin = false);
       getGg().then((res) => {
         this.GgList = res.data.noticeList;
       });
     },
     getJindu() {
-      getJd().then((res) => {
+      getProjectList().then((res) => {
         this.jdArr = res.data.projectList;
       });
     },

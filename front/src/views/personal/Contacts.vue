@@ -3,29 +3,28 @@
     <el-button
       style="margin: 10px 0"
       type="primary"
-      v-if="ifAdmin"
       size="small"
       icon="el-icon-plus"
-      @click="addCustomer"
-      >添加客户</el-button
+      @click="addContacts"
+      >添加联系人</el-button
     >
-    <el-dialog title="添加客户" :visible="addCustomerFormVisible">
-      <el-form :model="addCustomerForm" label-width="100px" ref="addCustomerForm">
+    <el-dialog title="添加联系人" :visible="addContactsFormVisible">
+      <el-form :model="addContactsForm" label-width="100px" ref="addContactsForm">
         <el-form-item label="姓名" prop="title">
-          <el-input v-model="addCustomerForm.name"></el-input>
+          <el-input v-model="addContactsForm.name"></el-input>
         </el-form-item>
         <el-form-item label="手机号" prop="title">
-          <el-input v-model="addCustomerForm.phone"></el-input>
+          <el-input v-model="addContactsForm.phone"></el-input>
         </el-form-item>
         <el-form-item label="备注" prop="title">
-          <el-input v-model="addCustomerForm.remarks"></el-input>
+          <el-input v-model="addContactsForm.remarks"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button size="small" @click.native="addCustomerFormVisible = false"
+        <el-button size="small" @click.native="addContactsFormVisible = false"
           >取消</el-button
         >
-        <el-button size="small" type="primary" @click.native="addCustomerSubmit"
+        <el-button size="small" type="primary" @click.native="addContactsSubmit"
           >提交</el-button
         >
       </div>
@@ -33,28 +32,20 @@
     <!--列表-->
     <template>
       <el-table
-        :data="customerList"
+        :data="contactsList"
         highlight-current-row
         v-loading="loading"
         style="width: 100%"
         max-height="550"
       >
         <el-table-column type="index" width="60" label="序号" align="center"> </el-table-column>
-        <el-table-column prop="name" label="客户姓名" width="200" align="center">
+        <el-table-column prop="name" label="联系人姓名" width="200" align="center">
         </el-table-column>
         <el-table-column prop="phone" label="手机号" width="200" align="center">
         </el-table-column>
         <el-table-column prop="remarks" label="备注" min-width="180" align="center">
         </el-table-column>
-        <el-table-column
-          prop="createTime"
-          label="客户创建时间"
-          min-width="180"
-          sortable
-          align="center"
-        >
-        </el-table-column>
-        <el-table-column label="操作" width="150" v-if="ifAdmin" align="center">
+        <el-table-column label="操作" width="150" align="center">
           <template scope="scope">
             <el-button size="small" @click="handleEdit(scope.row)"
               >编辑</el-button
@@ -83,9 +74,6 @@
         <el-form-item label="备注" prop="remarks">
           <el-input type="textarea" v-model="editForm.remarks"></el-input>
         </el-form-item>
-        <el-form-item label="创建时间" prop="createTime">
-          <el-input v-model="editForm.createTime" :disabled="read"></el-input>
-        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="cancel" size="small">取消</el-button>
@@ -103,11 +91,11 @@
 <script>
 import util from "../../common/js/util";
 import {
-  getCustomerList,
-  editCustomer,
-  delCustomer,
-  addCustomer,
-} from "../../api/customer.js";
+  getContactsList,
+  editContacts,
+  delContacts,
+  addContacts,
+} from "../../api/contacts.js";
 export default {
   data() {
     return {
@@ -115,24 +103,22 @@ export default {
         name: "",
       },
       read: true,
-      ifAdmin: true,
       loading: false,
       editLoading: false,
       editFormVisible: false,
-      customerList: [],
+      contactsList: [],
       editForm: {
         id: "",
         name: "",
         phone: "",
         remarks: "",
-        createTime: "",
       },
-      addCustomerForm: {
+      addContactsForm: {
         name: "",
         phone: "",
         remarks: "",
       },
-      addCustomerFormVisible: false,
+      addContactsFormVisible: false,
     };
   },
   methods: {
@@ -145,25 +131,24 @@ export default {
       // 	hysbh: this.search.hysbh
       // };
       this.loading = true;
-      getCustomerList().then((res) => {
+      getContactsList().then((res) => {
         console.log(res);
-        this.customerList = res.data.customerList;
-        console.log(this.customerList, "user");
+        this.contactsList = res.data.contactsList;
+        console.log(this.contactsList, "contactsList");
         this.loading = false;
       });
     },
-    addCustomer() {
-      this.addCustomerFormVisible = true;
+    addContacts() {
+      this.addContactsFormVisible = true;
     },
-    addCustomerSubmit() {
-      //   this.addCustomerForm.time = new Date().toLocaleDateString();
+    addContactsSubmit() {
+      //   this.addContactsForm.time = new Date().toLocaleDateString();
       let param = {
-        name: this.addCustomerForm.name,
-        phone: this.addCustomerForm.phone,
-        remarks: this.addCustomerForm.remarks,
-        // createTime: dateFtt("yyyy-MM-dd hh:mm:ss", new Date()),
+        name: this.addContactsForm.name,
+        phone: this.addContactsForm.phone,
+        remarks: this.addContactsForm.remarks,
       };
-      addCustomer(param).then((res) => {
+      addContacts(param).then((res) => {
         const statusCode = res.code;
         if (statusCode == 200) {
           this.$message({
@@ -178,7 +163,7 @@ export default {
           });
         }
       });
-      this.addCustomerFormVisible = false;
+      this.addContactsFormVisible = false;
     },
     handleDel(row) {
       var obj = {
@@ -188,7 +173,7 @@ export default {
         type: "warning",
       })
         .then(() => {
-          delCustomer(obj).then((res) => {
+          delContacts(obj).then((res) => {
             const statusCode = res.code;
             if (statusCode == 200) {
               this.$message({
@@ -214,7 +199,6 @@ export default {
       this.editForm.name = row.name;
       this.editForm.phone = row.phone;
       this.editForm.remarks = row.remarks;
-      this.editForm.createTime = row.createTime;
     },
     editSubmit: function () {
       // this.$refs.editForm.validate((valid) => {
@@ -231,7 +215,7 @@ export default {
       // if (obj.status == "空闲") {
       //   obj.remarks = "";
       // }
-      editCustomer(obj).then((res) => {
+      editContacts(obj).then((res) => {
         this.editLoading = false;
         this.$message({
           message: res.message,
@@ -253,9 +237,6 @@ export default {
     },
   },
   mounted() {
-    var user = sessionStorage.getItem("user");
-    user = JSON.parse(user);
-    user.permission == "1" ? (this.ifAdmin = true) : (this.ifAdmin = false);
     this.getTableData();
     this.getUserData();
   },

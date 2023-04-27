@@ -7,12 +7,12 @@ import information from './views/information.vue'
 import Log from './views/Log.vue'
 import Meetingroom from './views/manage/Meetingroom.vue'
 import Customer from './views/manage/Customer.vue'
-import Authority from './views/manage/Authority.vue'
+import User from './views/manage/User.vue'
 import Project from './views/manage/Project.vue'
 import Clockin from './views/personal/Clockin.vue'
 import Assignment from './views/personal/Assignment.vue'
 import Message from './views/personal/Message.vue'
-import Addresslist from './views/personal/Addresslist.vue'
+import Contacts from './views/personal/Contacts.vue'
 import Leave from './views/process/Leave.vue'
 import Expense from './views/process/Expense.vue'
 import AskForProject from './views/process/AskForProject.vue'
@@ -62,7 +62,7 @@ let routes = [
             // { path: '/Log', component: Log, name: '日志系统' },
             { path: '/Meetingroom', component: Meetingroom, name: '会议管理' },
             { path: '/Customer', component: Customer, name: '客户管理' },
-            { path: '/Authority', component: Authority, name: '权限管理' },
+            { path: '/User', component: User, name: '用户管理' },
             { path: '/Project', component: Project, name: '项目管理' },
         ]
     },
@@ -74,7 +74,7 @@ let routes = [
         children: [
             { path: '/Clockin', component: Clockin, name: '考勤列表' },
             { path: '/Assignment', component: Assignment, name: '任务清单' },
-            { path: '/Addresslist', component: Addresslist, name: '通讯录' },
+            { path: '/Contacts', component: Contacts, name: '通讯录' },
             { path: '/Message', component: Message, name: '消息提醒' },
         ]
     },

@@ -1,6 +1,5 @@
 package com.jjou.ouOffice.controller;
 
-
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jjou.ouOffice.common.Result;
 import com.jjou.ouOffice.entity.MeetingRoom;
@@ -13,9 +12,7 @@ import org.springframework.stereotype.Controller;
 import java.util.List;
 
 /**
- * <p>
- *  前端控制器
- * </p>
+ * 会议室控制器
  *
  * @author jjou
  * @since 2023-01-03

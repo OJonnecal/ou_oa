@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ * 任务清单对象
  * </p>
  *
  * @author jjou
@@ -46,16 +46,15 @@ public class Assignment implements Serializable {
     private String content;
 
     /**
+     * 任务状态
+     */
+    private Integer status;
+
+    /**
      * 任务创建时间
      */
     @TableField("create_time")
-    private LocalDateTime createTime;
-
-    /**
-     * 任务截至时间
-     */
-    @TableField("end_time")
-    private LocalDateTime endTime;
+    private String createTime;
 
     @TableField("is_deleted")
     @TableLogic
