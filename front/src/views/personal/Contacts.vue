@@ -8,7 +8,7 @@
       @click="addContacts"
       >添加联系人</el-button
     >
-    <el-dialog title="添加联系人" :visible="addContactsFormVisible">
+    <el-dialog title="添加联系人" :visible.sync="addContactsFormVisible">
       <el-form :model="addContactsForm" label-width="100px" ref="addContactsForm">
         <el-form-item label="姓名" prop="title">
           <el-input v-model="addContactsForm.name"></el-input>

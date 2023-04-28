@@ -76,7 +76,7 @@
       </el-tab-pane>
     </el-tabs>
 
- <el-dialog title="添加任务" :visible="addAssignmentFormVisible">
+ <el-dialog title="添加任务" :visible.sync="addAssignmentFormVisible">
       <el-form
         :model="addAssignmentForm"
         label-width="100px"

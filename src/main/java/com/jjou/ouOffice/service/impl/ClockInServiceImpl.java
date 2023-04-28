@@ -30,11 +30,18 @@ public class ClockInServiceImpl extends ServiceImpl<ClockInMapper, ClockIn> impl
         if (user == null) {
             return Result.error().message("请先登录");
         }
-        //TODO 判断是否在上班打卡指定时间
-        //判断是否已经上班打卡
+
         Integer userId = user.getId();
         LocalDateTime time = LocalDateTime.now();
         LocalDate date = LocalDate.now();
+
+        //判断是否在上班打卡指定时间
+        int hour = time.getHour();
+        if(!(hour <= 9 && hour >= 6)){
+            return Result.error().message("不在上班打卡时间！");
+        }
+
+        //判断是否已经上班打卡
         Integer count = query().eq("user_id", userId)
                 .eq("date", date)
                 .eq("type", 1)
@@ -61,18 +68,16 @@ public class ClockInServiceImpl extends ServiceImpl<ClockInMapper, ClockIn> impl
             return Result.error().message("请先登录");
         }
 
-        //TODO 判断是否在下班打卡指定时间
-        //判断是否已经上班打卡
         Integer userId = user.getId();
         LocalDateTime time = LocalDateTime.now();
         LocalDate date = LocalDate.now();
-        Integer startCount = query().eq("user_id", userId)
-                .eq("date", date)
-                .eq("type", 1)
-                .count();
-        if(startCount == 0){
-            return Result.error().message("请先进行上班打卡");
+
+        //判断是否在下班打卡指定时间
+        int hour = time.getHour();
+        if(hour < 17){
+            return Result.error().message("不在下班打卡时间！");
         }
+
 
         //判断是否已经下班打卡
         Integer endCount = query().eq("user_id", userId)

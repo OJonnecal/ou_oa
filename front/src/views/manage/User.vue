@@ -9,7 +9,7 @@
       @click="addUser"
       >添加用户</el-button
     >
-    <el-dialog title="添加用户" :visible="addUserFormVisible">
+    <el-dialog title="添加用户" :visible.sync="addUserFormVisible">
       <el-form :model="addUserForm" label-width="100px" ref="addUserForm">
         <el-form-item label="账号" prop="account">
           <el-input v-model="addUserForm.account"></el-input>

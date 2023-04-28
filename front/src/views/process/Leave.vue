@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-button
+      style="margin: 10px 0"
       type="primary"
       size="small"
       @click="apply"
@@ -190,7 +191,7 @@
     </el-tabs>
     <el-dialog
       title="请假申请"
-      :visible="addFormVisible"
+      :visible.sync="addFormVisible"
       :close-on-click-modal="false"
     >
       <el-form :model="addForm" label-width="100px" ref="addForm">

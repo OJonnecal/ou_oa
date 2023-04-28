@@ -9,7 +9,7 @@
       @click="addCustomer"
       >添加客户</el-button
     >
-    <el-dialog title="添加客户" :visible="addCustomerFormVisible">
+    <el-dialog title="添加客户" :visible.sync="addCustomerFormVisible">
       <el-form :model="addCustomerForm" label-width="100px" ref="addCustomerForm">
         <el-form-item label="姓名" prop="title">
           <el-input v-model="addCustomerForm.name"></el-input>

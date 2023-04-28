@@ -30,7 +30,7 @@
       @click="addHys"
       >添加会议室</el-button
     >
-    <el-dialog title="添加会议室" :visible="addHysFormVisible">
+    <el-dialog title="添加会议室" :visible.sync="addHysFormVisible">
       <el-form :model="addHysForm" label-width="100px" ref="addHysForm">
         <el-form-item label="会议室名称" prop="title">
           <el-input v-model="addHysForm.name"></el-input>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button type="primary" size="small" @click="apply" icon="el-icon-plus"
+    <el-button style="margin: 10px 0" type="primary" size="small" @click="apply" icon="el-icon-plus"
       >报销申请</el-button
     >
     <el-tabs type="border-card">
@@ -150,7 +150,7 @@
     </el-tabs>
     <el-dialog
       title="请假申请"
-      :visible="addFormVisible"
+      :visible.sync="addFormVisible"
       :close-on-click-modal="false"
     >
       <el-form :model="addForm" label-width="100px" ref="addForm">

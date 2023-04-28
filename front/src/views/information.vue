@@ -83,7 +83,7 @@
         </template>
       </el-tab-pane>
     </el-tabs>
-    <el-dialog title="添加公告" :visible="addGgFormVisible">
+    <el-dialog title="添加公告" :visible.sync="addGgFormVisible">
       <el-form :model="addGgForm" label-width="100px" ref="addGgForm">
         <el-form-item label="公告名称" prop="title">
           <el-input v-model="addGgForm.title"></el-input>
@@ -101,7 +101,7 @@
         >
       </div>
     </el-dialog>
-    <el-dialog title="添加常用联系人" :visible="addTopContactsFormVisible">
+    <el-dialog title="添加常用联系人" :visible.sync="addTopContactsFormVisible">
       <el-form
         :model="addTopContactsForm"
         label-width="100px"
