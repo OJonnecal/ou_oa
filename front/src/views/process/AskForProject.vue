@@ -11,7 +11,12 @@
     <el-tabs type="border-card">
       <el-tab-pane label="待审批项目">
         <el-table
-          :data="applyProjectList"
+          :data="
+            applyProjectList.slice(
+              (currentPage - 1) * pageSize,
+              currentPage * pageSize
+            )
+          "
           highlight-current-row
           style="width: 100%"
           max-height="550"
@@ -66,10 +71,29 @@
             </template>
           </el-table-column>
         </el-table>
+        <!-- 分页器 -->
+        <div class="block" style="margin-top: 15px">
+          <el-pagination
+            align="center"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[1, 5, 10, 20]"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="applyProjectList.length"
+          >
+          </el-pagination>
+        </div>
       </el-tab-pane>
       <el-tab-pane label="未通过项目">
         <el-table
-          :data="failProjectList"
+          :data="
+            failProjectList.slice(
+              (currentPage - 1) * pageSize,
+              currentPage * pageSize
+            )
+          "
           highlight-current-row
           style="width: 100%"
           max-height="550"
@@ -116,6 +140,20 @@
             </template>
           </el-table-column>
         </el-table>
+        <!-- 分页器 -->
+        <div class="block" style="margin-top: 15px">
+          <el-pagination
+            align="center"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[1, 5, 10, 20]"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="failProjectList.length"
+          >
+          </el-pagination>
+        </div>
       </el-tab-pane>
     </el-tabs>
     <el-dialog
@@ -163,12 +201,26 @@ export default {
         title: "",
         description: "",
       },
+      currentPage: 1, // 当前页码
+      total: 20, // 总条数
+      pageSize: 5, // 每页的数据条数
     };
   },
   mounted() {
     this.getTableData();
   },
   methods: {
+    //每页条数改变时触发 选择一页显示多少行
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+      this.currentPage = 1;
+      this.pageSize = val;
+    },
+    //当前页改变时触发 跳转其他页
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.currentPage = val;
+    },
     handleAgree(row, value) {
       console.log(row, value);
       if (value == 1) {
@@ -224,8 +276,8 @@ export default {
       this.addFormVisible = true;
     },
     addSubmit() {
-      var user = sessionStorage.getItem('user');
-			user = JSON.parse(user)
+      var user = sessionStorage.getItem("user");
+      user = JSON.parse(user);
       let param = {
         title: this.addForm.title,
         description: this.addForm.description,

@@ -11,7 +11,12 @@
     <el-tabs type="border-card">
       <el-tab-pane label="待审批">
         <el-table
-          :data="applyLeaveList"
+          :data="
+            applyLeaveList.slice(
+              (currentPage - 1) * pageSize,
+              currentPage * pageSize
+            )
+          "
           highlight-current-row
           style="width: 100%"
           max-height="550"
@@ -35,6 +40,7 @@
             width="200"
             sortable
             align="center"
+            :formatter="formatDate"
           ></el-table-column>
           <el-table-column
             prop="endTime"
@@ -42,6 +48,7 @@
             width="200"
             sortable
             align="center"
+            :formatter="formatDate"
           ></el-table-column>
           <el-table-column
             prop="createTime"
@@ -50,11 +57,7 @@
             sortable
             align="center"
           ></el-table-column>
-          <el-table-column
-            label="操作"
-            v-if="ifAdmin"
-            align="center"
-          >
+          <el-table-column label="操作" v-if="ifAdmin" align="center">
             <template scope="scope">
               <el-button
                 type="success"
@@ -73,10 +76,29 @@
             </template>
           </el-table-column>
         </el-table>
+        <!-- 分页器 -->
+        <div class="block" style="margin-top: 15px">
+          <el-pagination
+            align="center"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[1, 5, 10, 20]"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="applyLeaveList.length"
+          >
+          </el-pagination>
+        </div>
       </el-tab-pane>
       <el-tab-pane label="已通过">
         <el-table
-          :data="leaveList"
+          :data="
+            leaveList.slice(
+              (currentPage - 1) * pageSize,
+              currentPage * pageSize
+            )
+          "
           highlight-current-row
           style="width: 100%"
           max-height="550"
@@ -100,6 +122,7 @@
             width="200"
             sortable
             align="center"
+            :formatter="formatDate"
           ></el-table-column>
           <el-table-column
             prop="endTime"
@@ -107,6 +130,7 @@
             width="200"
             sortable
             align="center"
+            :formatter="formatDate"
           ></el-table-column>
           <el-table-column
             prop="approveTime"
@@ -115,11 +139,7 @@
             sortable
             align="center"
           ></el-table-column>
-          <el-table-column
-            label="操作"
-            v-if="ifAdmin"
-            align="center"
-          >
+          <el-table-column label="操作" v-if="ifAdmin" align="center">
             <template scope="scope">
               <el-button
                 type="danger"
@@ -130,10 +150,30 @@
             </template>
           </el-table-column>
         </el-table>
+
+        <!-- 分页器 -->
+        <div class="block" style="margin-top: 15px">
+          <el-pagination
+            align="center"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[1, 5, 10, 20]"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="leaveList.length"
+          >
+          </el-pagination>
+        </div>
       </el-tab-pane>
       <el-tab-pane label="未通过">
         <el-table
-          :data="failLeaveList"
+          :data="
+            failLeaveList.slice(
+              (currentPage - 1) * pageSize,
+              currentPage * pageSize
+            )
+          "
           highlight-current-row
           style="width: 100%"
           max-height="550"
@@ -157,6 +197,7 @@
             width="200"
             sortable
             align="center"
+            :formatter="formatDate"
           ></el-table-column>
           <el-table-column
             prop="endTime"
@@ -164,6 +205,7 @@
             width="200"
             sortable
             align="center"
+            :formatter="formatDate"
           ></el-table-column>
           <el-table-column
             prop="approveTime"
@@ -172,11 +214,7 @@
             sortable
             align="center"
           ></el-table-column>
-          <el-table-column
-            label="操作"
-            v-if="ifAdmin"
-            align="center"
-          >
+          <el-table-column label="操作" v-if="ifAdmin" align="center">
             <template scope="scope">
               <el-button
                 type="danger"
@@ -187,6 +225,20 @@
             </template>
           </el-table-column>
         </el-table>
+        <!-- 分页器 -->
+        <div class="block" style="margin-top: 15px">
+          <el-pagination
+            align="center"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[1, 5, 10, 20]"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="failLeaveList.length"
+          >
+          </el-pagination>
+        </div>
       </el-tab-pane>
     </el-tabs>
     <el-dialog
@@ -248,12 +300,66 @@ export default {
         reason: "",
         description: "",
       },
+      currentPage: 1, // 当前页码
+      total: 20, // 总条数
+      pageSize: 5, // 每页的数据条数
     };
   },
   mounted() {
     this.getTableData();
   },
   methods: {
+    //时间格式化
+    formatDate(row, column) {
+      // 获取单元格数据
+      let datac = row[column.property];
+      let dtc = new Date(datac);
+      //获取月,默认月份从0开始
+      let dtuMonth = dtc.getMonth() + 1;
+      //获取日
+      let dtuDay = dtc.getDate();
+      //处理1-9月前面加0
+      if (dtuMonth < 10) {
+        dtuMonth = "0" + (dtc.getMonth() + 1);
+      }
+      //处理1-9天前面加0
+      if (dtuDay < 10) {
+        dtuDay = "0" + dtc.getDate();
+      }
+      //获取小时
+      let dtuHours = dtc.getHours();
+      //处理1-9时前面加0
+      if (dtuHours < 10) {
+        dtuHours = "0" + dtc.getHours();
+      }
+      //获取分钟
+      let dtuMinutes = dtc.getMinutes();
+      //处理1-9分前面加0
+      if (dtuMinutes < 10) {
+        dtuMinutes = "0" + dtc.getMinutes();
+      }
+      //获取秒
+      let dtuSeconds = dtc.getSeconds();
+      //处理1-9秒前面加0
+      if (dtuSeconds < 10) {
+        dtuSeconds = "0" + dtc.getSeconds();
+      }
+      //组装年月日时分秒,按自己的要求来
+      let dd = dtc.getFullYear() + "-" + dtuMonth + "-" + dtuDay + " " + dtuHours + ":" + dtuMinutes + ":" + dtuSeconds;
+      return (row.TableIsbibei = dd);
+      //+ " " + dtuHours + ":" + dtuMinutes + ":" + dtuSeconds
+    },
+    //每页条数改变时触发 选择一页显示多少行
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+      this.currentPage = 1;
+      this.pageSize = val;
+    },
+    //当前页改变时触发 跳转其他页
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.currentPage = val;
+    },
     handleAgree(row, value) {
       console.log(row, value);
       if (value == 1) {
@@ -312,8 +418,8 @@ export default {
       this.addFormVisible = true;
     },
     addSubmit() {
-      var user = sessionStorage.getItem('user');
-			user = JSON.parse(user)
+      var user = sessionStorage.getItem("user");
+      user = JSON.parse(user);
       let param = {
         reason: this.addForm.reason,
         description: this.addForm.description,

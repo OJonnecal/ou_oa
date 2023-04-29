@@ -50,7 +50,10 @@
     <!--列表-->
     <template>
       <el-table
-        :data="userList"
+        :data="userList.slice(
+            (currentPage - 1) * pageSize,
+            currentPage * pageSize
+          )"
         highlight-current-row
         v-loading="loading"
         style="width: 100%"
@@ -93,6 +96,20 @@
           </template>
         </el-table-column>
       </el-table>
+      <!-- 分页器 -->
+      <div class="block" style="margin-top: 15px">
+        <el-pagination
+          align="center"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[1, 5, 10, 20]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="userList.length"
+        >
+        </el-pagination>
+      </div>
     </template>
 
     <!--编辑界面-->
@@ -184,6 +201,9 @@ export default {
         permission: "",
       },
       addUserFormVisible: false,
+      currentPage: 1, // 当前页码
+      total: 20, // 总条数
+      pageSize: 5, // 每页的数据条数
     };
   },
   methods: {
@@ -310,6 +330,17 @@ export default {
     },
     cancelNotice() {
       this.noticeFormVisible = false;
+    },
+    //每页条数改变时触发 选择一页显示多少行
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+      this.currentPage = 1;
+      this.pageSize = val;
+    },
+    //当前页改变时触发 跳转其他页
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.currentPage = val;
     },
   },
   mounted() {
