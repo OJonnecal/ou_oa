@@ -46,6 +46,11 @@ public class Assignment implements Serializable {
     private String content;
 
     /**
+     * 任务紧急程度 1 紧急 2 正常 3 不紧急
+     */
+    private Integer level;
+
+    /**
      * 任务状态
      */
     private Integer status;

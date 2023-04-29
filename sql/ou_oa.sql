@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : MySQL
+ Source Server         : MySQL80
  Source Server Type    : MySQL
  Source Server Version : 80028
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80028
  File Encoding         : 65001
 
- Date: 27/04/2023 17:25:39
+ Date: 29/04/2023 12:26:38
 */
 
 SET NAMES utf8mb4;
@@ -26,6 +26,7 @@ CREATE TABLE `assignment`  (
   `user_id` int NULL DEFAULT NULL COMMENT '用户id',
   `title` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '任务标题',
   `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '任务内容',
+  `level` int NULL DEFAULT NULL COMMENT '紧急程度 1 紧急 2 正常 3 不紧急',
   `create_time` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '任务创建时间',
   `status` tinyint NULL DEFAULT 0 COMMENT '任务状态 1（true）已完成， 0（false）未完成',
   `is_deleted` tinyint NULL DEFAULT 0 COMMENT '逻辑删除 1（true）已删除， 0（false）未删除',
@@ -37,10 +38,11 @@ CREATE TABLE `assignment`  (
 -- ----------------------------
 -- Records of assignment
 -- ----------------------------
-INSERT INTO `assignment` VALUES (1, NULL, '1', '1', '2023-04-24 05:04:44', 0, 1);
-INSERT INTO `assignment` VALUES (2, NULL, '1', '1', '2023-04-24 05:07:41', 1, 1);
-INSERT INTO `assignment` VALUES (3, NULL, '1', '1', '2023-04-24 05:11:44', 1, 1);
-INSERT INTO `assignment` VALUES (4, NULL, '加班', '加班', '2023-04-24 05:12:09', 1, 0);
+INSERT INTO `assignment` VALUES (1, NULL, '1', '1', 1, '2023-04-24 05:04:44', 0, 1);
+INSERT INTO `assignment` VALUES (2, NULL, '1', '1', 1, '2023-04-24 05:07:41', 1, 1);
+INSERT INTO `assignment` VALUES (3, NULL, '1', '1', 1, '2023-04-24 05:11:44', 1, 1);
+INSERT INTO `assignment` VALUES (4, NULL, '加班', '加班', 1, '2023-04-24 05:12:09', 1, 0);
+INSERT INTO `assignment` VALUES (5, NULL, '1', '1', 3, '2023-04-29 12:10:42', 0, 0);
 
 -- ----------------------------
 -- Table structure for clock_in
@@ -68,7 +70,7 @@ INSERT INTO `clock_in` VALUES (13, 1, 2, '2023-03-19 14:37:44', '2023-03-19 00:0
 INSERT INTO `clock_in` VALUES (14, 1, 1, '2023-04-20 21:51:21', '2023-04-20 00:00:00', 0);
 INSERT INTO `clock_in` VALUES (15, 1, 2, '2023-04-20 21:51:23', '2023-04-20 00:00:00', 0);
 INSERT INTO `clock_in` VALUES (16, 1, 1, '2023-04-21 15:36:24', '2023-04-21 00:00:00', 0);
-INSERT INTO `clock_in` VALUES (17, 1, 2, '2023-04-21 15:36:25', '2023-04-21 00:00:00', 0);
+INSERT INTO `clock_in` VALUES (17, 8, 2, '2023-04-21 15:36:25', '2023-04-21 00:00:00', 0);
 
 -- ----------------------------
 -- Table structure for contacts
@@ -108,6 +110,7 @@ CREATE TABLE `customer`  (
 -- Records of customer
 -- ----------------------------
 INSERT INTO `customer` VALUES (1, '欧家俊', '15915095796', 0, '2023-04-21 17:12:54', '111');
+INSERT INTO `customer` VALUES (6, '1', '1', 0, '2023-04-29 11:04:59', '1');
 
 -- ----------------------------
 -- Table structure for expense
@@ -152,7 +155,7 @@ CREATE TABLE `leave`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `user_id`(`user_id`) USING BTREE,
   CONSTRAINT `leave_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '请假申请表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '请假申请表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of leave
@@ -162,9 +165,10 @@ INSERT INTO `leave` VALUES (20, '5', '5', '2023-04-12 17:00:00', '2023-04-13 18:
 INSERT INTO `leave` VALUES (22, '1', '1', '2023-04-03 18:00:00', '2023-04-04 18:00:00', 0, '2023-04-27 10:14:22', NULL, NULL, 0);
 INSERT INTO `leave` VALUES (23, '2', '2', '2023-04-03 18:00:00', '2023-04-04 18:00:00', 0, '2023-04-27 10:14:29', NULL, NULL, 0);
 INSERT INTO `leave` VALUES (24, '3', '3', '2023-04-04 16:00:00', '2023-04-05 16:00:00', 0, '2023-04-27 10:18:32', NULL, 9, 0);
-INSERT INTO `leave` VALUES (25, '1', '1', NULL, NULL, 1, '2023-04-27 11:04:42', '2023-04-27 17:03:09', 8, 0);
-INSERT INTO `leave` VALUES (26, '1', '1', '2023-04-05 16:00:00', '2023-04-06 16:00:00', 0, '2023-04-27 17:01:12', NULL, 8, 0);
+INSERT INTO `leave` VALUES (25, '1', '1', NULL, NULL, 1, '2023-04-27 11:04:42', '2023-04-27 17:03:09', 8, 1);
+INSERT INTO `leave` VALUES (26, '1', '1', '2023-04-05 16:00:00', '2023-04-06 16:00:00', 2, '2023-04-27 17:01:12', '2023-04-29 11:36:59', 8, 0);
 INSERT INTO `leave` VALUES (27, '9', '9', '2023-04-03 16:00:00', '2023-04-04 16:00:00', 0, '2023-04-27 17:03:28', NULL, 9, 0);
+INSERT INTO `leave` VALUES (28, '1', '1', '2023-04-04 16:00:00', '2023-04-05 16:00:00', 1, '2023-04-29 11:29:55', '2023-04-29 11:36:54', 8, 0);
 
 -- ----------------------------
 -- Table structure for meeting_notice
@@ -291,7 +295,7 @@ CREATE TABLE `quit`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `user_id`(`user_id`) USING BTREE,
   CONSTRAINT `quit_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '离职申请表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '离职申请表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of quit

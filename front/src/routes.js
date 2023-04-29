@@ -2,16 +2,13 @@ import Login from './views/Login.vue'
 import NotFound from './views/404.vue'
 import Home from './views/Home.vue'
 import Main from './views/Main.vue'
-import Approve from './views/Approve.vue'
 import information from './views/information.vue'
-import Log from './views/Log.vue'
 import Meetingroom from './views/manage/Meetingroom.vue'
 import Customer from './views/manage/Customer.vue'
 import User from './views/manage/User.vue'
 import Project from './views/manage/Project.vue'
 import Clockin from './views/personal/Clockin.vue'
 import Assignment from './views/personal/Assignment.vue'
-import Message from './views/personal/Message.vue'
 import Contacts from './views/personal/Contacts.vue'
 import Leave from './views/process/Leave.vue'
 import Expense from './views/process/Expense.vue'
@@ -75,7 +72,7 @@ let routes = [
             { path: '/Clockin', component: Clockin, name: '考勤列表' },
             { path: '/Assignment', component: Assignment, name: '任务清单' },
             { path: '/Contacts', component: Contacts, name: '通讯录' },
-            { path: '/Message', component: Message, name: '消息提醒' },
+            // { path: '/Message', component: Message, name: '消息提醒' },
         ]
     },
     {

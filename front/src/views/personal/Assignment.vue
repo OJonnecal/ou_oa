@@ -10,13 +10,40 @@
     >
     <el-tabs type="border-card">
       <el-tab-pane label="待完成任务">
-        <el-table
-          :data="assignmentInCompleteList"
-        >
-          <el-table-column label="序号" type="index" width="60" align="center"> </el-table-column>
-          <el-table-column prop="title" label="任务标题" width="200" align="center">
+        <el-table :data="assignmentInCompleteList">
+          <el-table-column label="序号" type="index" width="60" align="center">
           </el-table-column>
-          <el-table-column prop="content" label="内容" width="400" align="center">
+          <el-table-column
+            prop="title"
+            label="任务标题"
+            width="200"
+            align="center"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="content"
+            label="内容"
+            width="400"
+            align="center"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="level"
+            label="紧急程度"
+            width="200"
+            align="center"
+          >
+            <template #default="scope">
+              <template v-if="scope.row.level == '1'">
+                <el-tag type="warning"> 紧急 </el-tag>
+              </template>
+              <template v-if="scope.row.level == '2'">
+                <el-tag type="error"> 正常 </el-tag>
+              </template>
+              <template v-if="scope.row.level == '3'">
+                <el-tag type="success"> 不紧急 </el-tag>
+              </template>
+            </template>
           </el-table-column>
           <el-table-column
             prop="createTime"
@@ -49,10 +76,39 @@
           style="width: 100%"
           max-height="550"
         >
-          <el-table-column label="序号" type="index" width="60" align="center"> </el-table-column>
-          <el-table-column prop="title" label="任务标题" width="200" align="center">
+          <el-table-column label="序号" type="index" width="60" align="center">
           </el-table-column>
-          <el-table-column prop="content" label="内容" width="400" align="center">
+          <el-table-column
+            prop="title"
+            label="任务标题"
+            width="200"
+            align="center"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="content"
+            label="内容"
+            width="400"
+            align="center"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="level"
+            label="紧急程度"
+            width="200"
+            align="center"
+          >
+            <template #default="scope">
+              <template v-if="scope.row.level == '1'">
+                <el-tag type="warning"> 紧急 </el-tag>
+              </template>
+              <template v-if="scope.row.level == '2'">
+                <el-tag type="error"> 正常 </el-tag>
+              </template>
+              <template v-if="scope.row.level == '3'">
+                <el-tag type="success"> 不紧急 </el-tag>
+              </template>
+            </template>
           </el-table-column>
           <el-table-column
             prop="createTime"
@@ -76,7 +132,7 @@
       </el-tab-pane>
     </el-tabs>
 
- <el-dialog title="添加任务" :visible.sync="addAssignmentFormVisible">
+    <el-dialog title="添加任务" :visible.sync="addAssignmentFormVisible">
       <el-form
         :model="addAssignmentForm"
         label-width="100px"
@@ -87,6 +143,13 @@
         </el-form-item>
         <el-form-item label="内容" prop="content">
           <el-input v-model="addAssignmentForm.content"></el-input>
+        </el-form-item>
+        <el-form-item label="紧急程度">
+          <el-select v-model="addAssignmentForm.level">
+            <el-option label="紧急" value="1"></el-option>
+            <el-option label="正常" value="2"></el-option>
+            <el-option label="不紧急" value="3"></el-option>
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -125,6 +188,7 @@ export default {
       addAssignmentForm: {
         title: "",
         content: "",
+        level: "",
       },
       addAssignmentFormVisible: false,
     };
@@ -152,7 +216,7 @@ export default {
         this.loading = false;
       });
     },
-    
+
     addAssignment() {
       this.addAssignmentFormVisible = true;
     },
@@ -161,6 +225,7 @@ export default {
       let param = {
         title: this.addAssignmentForm.title,
         content: this.addAssignmentForm.content,
+        level: this.addAssignmentForm.level,
         // createTime: dateFtt("yyyy-MM-dd hh:mm:ss", new Date()),
       };
       addAssignment(param).then((res) => {

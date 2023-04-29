@@ -26,6 +26,8 @@ public class AssignmentServiceImpl extends ServiceImpl<AssignmentMapper, Assignm
     public Result addAssignment(Assignment assignment) {
         if(assignment.getTitle() == null || StringUtils.isEmpty(assignment.getTitle())){
             return Result.error().message("任务标题不能为空！");
+        }else if(assignment.getLevel() == null){
+            return Result.error().message("任务紧急程序不能为空！");
         }
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
