@@ -30,6 +30,38 @@
       @click="addHys"
       >添加会议室</el-button
     >
+    <el-form
+      :model="queryParams"
+      ref="queryForm"
+      size="small"
+      :inline="true"
+      label-width="68px"
+    >
+      <el-form-item label="名称" prop="name">
+        <el-input
+          v-model="queryParams.name"
+          clearable
+          placeholder="请输入会议室名称"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="状态" prop="status">
+        <el-select
+          v-model="queryParams.status"
+          :clearable="true"
+          placeholder="请选择"
+        >
+          <el-option key="1" label="使用中" value="使用中" />
+          <el-option key="2" label="空闲" value="空闲" />
+          <el-option key="3" label="维修中" value="维修中" />
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-button icon="Search" type="primary" @click="handleQuery"
+          >搜索</el-button
+        >
+      </el-form-item>
+    </el-form>
     <el-dialog title="添加会议室" :visible.sync="addHysFormVisible">
       <el-form :model="addHysForm" label-width="100px" ref="addHysForm">
         <el-form-item label="会议室名称" prop="title">
@@ -58,25 +90,47 @@
     <!--列表-->
     <template>
       <el-table
-        :data="meetingroomList.slice(
+        :data="
+          meetingroomList.slice(
             (currentPage - 1) * pageSize,
             currentPage * pageSize
-          )"
+          )
+        "
         highlight-current-row
         v-loading="loading"
         style="width: 100%"
         max-height="550"
       >
-        <el-table-column type="index" width="60" label="序号" align="center"> </el-table-column>
-        <el-table-column prop="name" label="会议室名称" width="200" sortable align="center">
+        <el-table-column type="index" width="60" label="序号" align="center">
         </el-table-column>
-        <el-table-column prop="status" label="会议室状态" width="200" sortable align="center">
+        <el-table-column
+          prop="name"
+          label="会议室名称"
+          width="200"
+          sortable
+          align="center"
+        >
         </el-table-column>
-        <el-table-column prop="remarks" label="备注" min-width="180" align="center">
+        <el-table-column
+          prop="status"
+          label="会议室状态"
+          width="200"
+          sortable
+          align="center"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="remarks"
+          label="备注"
+          min-width="180"
+          align="center"
+        >
         </el-table-column>
         <el-table-column label="操作" width="150" v-if="ifAdmin" align="center">
           <template scope="scope">
-            <el-button size="small" @click="handleEdit(scope.row)">编辑</el-button>
+            <el-button size="small" @click="handleEdit(scope.row)"
+              >编辑</el-button
+            >
             <el-button type="danger" size="small" @click="handleDel(scope.row)"
               >删除</el-button
             >
@@ -110,7 +164,7 @@
           <el-input v-model="editForm.name" :disabled="read"></el-input>
         </el-form-item>
         <el-form-item label="会议室状态" prop="status">
-          <el-select v-model="editForm.status" @change="changee">
+          <el-select v-model="editForm.status">
             <el-option label="使用中" value="使用中"></el-option>
             <el-option label="空闲" value="空闲"></el-option>
             <el-option label="维修中" value="维修中"></el-option>
@@ -134,7 +188,6 @@
         >
       </div>
     </el-dialog>
-
   </section>
 </template>
 <script>
@@ -168,6 +221,10 @@ export default {
         status: "",
         remarks: "",
       },
+      queryParams: {
+        name: "",
+        status: "",
+      },
       addHysFormVisible: false,
       currentPage: 1, // 当前页码
       total: 20, // 总条数
@@ -175,8 +232,8 @@ export default {
     };
   },
   methods: {
-    changee() {
-      console.log(this.editForm.status);
+    handleQuery() {
+      this.getTableData();
     },
     //获取用户列表
     getUserData() {
@@ -190,14 +247,9 @@ export default {
     },
     //获取会议室列表
     getTableData: function () {
-      // let obj = {
-      // 	hysbh: this.search.hysbh
-      // };
       this.loading = true;
-      getHys().then((res) => {
-        console.log(res);
+      getHys(this.queryParams).then((res) => {
         this.meetingroomList = res.data.meetingRoomList;
-        console.log(this.meetingroomList, "user");
         this.loading = false;
       });
     },
@@ -234,7 +286,8 @@ export default {
       };
       this.$confirm("确定要删除此会议室吗", "提示", {
         type: "warning",
-      }).then(() => {
+      })
+        .then(() => {
           delHys(obj).then((res) => {
             const statusCode = res.code;
             if (statusCode == 200) {
@@ -264,28 +317,28 @@ export default {
     editSubmit: function () {
       // this.$refs.editForm.validate((valid) => {
       // 	if (valid) {
-        this.editLoading = true;
-        //NProgress.start();
-        var obj = {
-          name: this.editForm.name,
-          status: this.editForm.status,
-          remarks: this.editForm.remarks,
-        };
-        console.log(obj);
-        // if (obj.status == "空闲") {
-        //   obj.remarks = "";
-        // }
-        editHys(obj).then((res) => {
-          this.editLoading = false;
-          this.$message({
-            message: res.message,
-            type: "success",
-          });
-          console.log(obj, "1111");
-          // this.$refs['editForm'].resetFields();
-          this.editFormVisible = false;
-          this.getTableData();
+      this.editLoading = true;
+      //NProgress.start();
+      var obj = {
+        name: this.editForm.name,
+        status: this.editForm.status,
+        remarks: this.editForm.remarks,
+      };
+      console.log(obj);
+      // if (obj.status == "空闲") {
+      //   obj.remarks = "";
+      // }
+      editHys(obj).then((res) => {
+        this.editLoading = false;
+        this.$message({
+          message: res.message,
+          type: "success",
         });
+        console.log(obj, "1111");
+        // this.$refs['editForm'].resetFields();
+        this.editFormVisible = false;
+        this.getTableData();
+      });
       // 	}
       // });
     },

@@ -1,5 +1,6 @@
 package com.jjou.ouOffice.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jjou.ouOffice.common.Result;
 import com.jjou.ouOffice.entity.Customer;
 import com.jjou.ouOffice.mapper.CustomerMapper;
@@ -35,5 +36,17 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
         customer.setCreateTime(sdf.format(date));
         save(customer);
         return Result.ok().message("添加客户成功！");
+    }
+
+    @Override
+    public Result getCustomerList(Customer customer) {
+        QueryWrapper<Customer> wrapper = new QueryWrapper<>();
+        if (customer != null && customer.getName() != null && !StringUtils.isEmpty(customer.getName())){
+            wrapper.like("name", customer.getName());
+        }
+        if(customer != null && customer.getPhone() != null && !StringUtils.isEmpty(customer.getPhone())){
+            wrapper.like("phone", customer.getPhone());
+        }
+        return Result.ok().data("customerList", list(wrapper));
     }
 }

@@ -15,4 +15,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface MeetingRoomService extends IService<MeetingRoom> {
 
     Result addMeetingRoom(MeetingRoom meetingRoom);
+
+    Result getMeetingRoomList(MeetingRoom meetingRoom);
 }

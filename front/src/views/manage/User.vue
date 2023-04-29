@@ -9,6 +9,45 @@
       @click="addUser"
       >添加用户</el-button
     >
+    <el-form
+      ref="queryForm"
+      :inline="true"
+      :model="queryParams"
+      label-width="68px"
+    >
+      <el-form-item label="昵称" prop="name">
+        <el-input
+          v-model="queryParams.name"
+          clearable
+          placeholder="请输入用户昵称"
+          style="width: 240px"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="手机号" prop="phone">
+        <el-input
+          v-model="queryParams.phone"
+          clearable
+          placeholder="请输入用户手机号"
+          style="width: 240px"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="职位" prop="position">
+        <el-input
+          v-model="queryParams.position"
+          clearable
+          placeholder="请输入用户职位"
+          style="width: 240px"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-button icon="Search" type="primary" @click="handleQuery"
+          >搜索</el-button
+        >
+      </el-form-item>
+    </el-form>
     <el-dialog title="添加用户" :visible.sync="addUserFormVisible">
       <el-form :model="addUserForm" label-width="100px" ref="addUserForm">
         <el-form-item label="账号" prop="account">
@@ -50,16 +89,16 @@
     <!--列表-->
     <template>
       <el-table
-        :data="userList.slice(
-            (currentPage - 1) * pageSize,
-            currentPage * pageSize
-          )"
+        :data="
+          userList.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+        "
         highlight-current-row
         v-loading="loading"
         style="width: 100%"
         max-height="550"
       >
-        <el-table-column type="index" width="60" label="序号" align="center"> </el-table-column>
+        <el-table-column type="index" width="60" label="序号" align="center">
+        </el-table-column>
         <el-table-column prop="account" label="账号" width="150" align="center">
         </el-table-column>
         <el-table-column prop="name" label="昵称" align="center">
@@ -72,10 +111,10 @@
         </el-table-column>
         <el-table-column prop="permission" label="权限" align="center">
           <template #default="scope">
-          <template v-if="scope.row.permission == '1'">
-            <el-tag type="success"> 管理员 </el-tag>
+            <template v-if="scope.row.permission == '1'">
+              <el-tag type="success"> 管理员 </el-tag>
+            </template>
           </template>
-        </template>
         </el-table-column>
         <el-table-column
           prop="createTime"
@@ -161,12 +200,7 @@
 </template>
 <script>
 import util from "../../common/js/util";
-import {
-  getUserList,
-  editUser,
-  delUser,
-  addUser,
-} from "../../api/user.js";
+import { getUserList, editUser, delUser, addUser } from "../../api/user.js";
 export default {
   data() {
     return {
@@ -200,6 +234,11 @@ export default {
         createTime: "",
         permission: "",
       },
+      queryParams: {
+        name: "",
+        phone: "",
+        position: "",
+      },
       addUserFormVisible: false,
       currentPage: 1, // 当前页码
       total: 20, // 总条数
@@ -207,19 +246,14 @@ export default {
     };
   },
   methods: {
-    changee() {
-      console.log(this.editForm.status);
+    handleQuery() {
+      this.getTableData();
     },
     //获取客户列表
     getTableData: function () {
-      // let obj = {
-      // 	hysbh: this.search.hysbh
-      // };
       this.loading = true;
-      getUserList().then((res) => {
-        console.log(res);
+      getUserList(this.queryParams).then((res) => {
         this.userList = res.data.userList;
-        console.log(this.userList, "userList");
         this.loading = false;
       });
     },
@@ -228,7 +262,7 @@ export default {
     },
     addUserSubmit() {
       let param = {
-        account :this.addUserForm.account,
+        account: this.addUserForm.account,
         name: this.addUserForm.name,
         pwd: this.addUserForm.pwd,
         phone: this.addUserForm.phone,
@@ -317,7 +351,8 @@ export default {
           message: res.message,
           type: "success",
         });
-        console.log(obj, "1111");1111
+        console.log(obj, "1111");
+        1111;
         // this.$refs['editForm'].resetFields();
         this.editFormVisible = false;
         this.getTableData();
@@ -348,7 +383,6 @@ export default {
     user = JSON.parse(user);
     user.permission == "1" ? (this.ifAdmin = true) : (this.ifAdmin = false);
     this.getTableData();
-    this.getUserData();
   },
 };
 </script>

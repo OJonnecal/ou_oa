@@ -2,6 +2,7 @@ package com.jjou.ouOffice.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jjou.ouOffice.common.Result;
+import com.jjou.ouOffice.entity.MeetingRoom;
 import com.jjou.ouOffice.entity.User;
 import com.jjou.ouOffice.mapper.UserMapper;
 import com.jjou.ouOffice.service.UserService;
@@ -59,5 +60,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         user.setCreateTime(sdf.format(date));
         save(user);
         return Result.ok().message("添加用户成功！");
+    }
+
+    @Override
+    public Result getUserList(User user) {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        if (user != null && user.getName() != null && !StringUtils.isEmpty(user.getName())){
+            wrapper.like("name", user.getName());
+        }
+        if(user != null && user.getPhone() != null && !StringUtils.isEmpty(user.getPhone())){
+            wrapper.like("phone", user.getPhone());
+        }
+        if(user != null && user.getPosition() != null && !StringUtils.isEmpty(user.getPosition())){
+            wrapper.like("position", user.getPosition());
+        }
+        wrapper.orderByDesc("create_time");
+        return Result.ok().data("userList", list(wrapper));
     }
 }

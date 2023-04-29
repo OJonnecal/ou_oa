@@ -10,7 +10,10 @@
     >
     <el-tabs type="border-card">
       <el-tab-pane label="待完成任务">
-        <el-table :data="assignmentInCompleteList">
+        <el-table :data="assignmentInCompleteList.slice(
+            (currentPage - 1) * pageSize,
+            currentPage * pageSize
+          )">
           <el-table-column label="序号" type="index" width="60" align="center">
           </el-table-column>
           <el-table-column
@@ -67,10 +70,27 @@
             </template>
           </el-table-column>
         </el-table>
+        <!-- 分页器 -->
+      <div class="block" style="margin-top: 15px">
+        <el-pagination
+          align="center"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[1, 5, 10, 20]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="assignmentInCompleteList.length"
+        >
+        </el-pagination>
+      </div>
       </el-tab-pane>
       <el-tab-pane label="已完成任务">
         <el-table
-          :data="assignmentCompleteList"
+          :data="assignmentCompleteList.slice(
+            (currentPage - 1) * pageSize,
+            currentPage * pageSize
+          )"
           highlight-current-row
           v-loading="loading"
           style="width: 100%"
@@ -129,6 +149,20 @@
             </template>
           </el-table-column>
         </el-table>
+        <!-- 分页器 -->
+      <div class="block" style="margin-top: 15px">
+        <el-pagination
+          align="center"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[1, 5, 10, 20]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="assignmentCompleteList.length"
+        >
+        </el-pagination>
+      </div>
       </el-tab-pane>
     </el-tabs>
 
@@ -191,28 +225,21 @@ export default {
         level: "",
       },
       addAssignmentFormVisible: false,
+      currentPage: 1, // 当前页码
+      total: 20, // 总条数
+      pageSize: 5, // 每页的数据条数
     };
   },
   methods: {
-    change() {
-      console.log(this.editForm.status);
-    },
     //获取任务列表
     getTableData: function () {
-      // let obj = {
-      // 	hysbh: this.search.hysbh
-      // };
       this.loading = true;
       getAssignmentInCompleteList().then((res) => {
-        console.log(res);
         this.assignmentInCompleteList = res.data.assignmentInCompleteList;
-        console.log(this.assignmentInCompleteList, "assignmentInCompleteList");
         this.loading = false;
       });
       getAssignmentCompleteList().then((res) => {
-        console.log(res);
         this.assignmentCompleteList = res.data.assignmentCompleteList;
-        console.log(this.assignmentCompleteList, "assignmentCompleteList");
         this.loading = false;
       });
     },
@@ -221,12 +248,10 @@ export default {
       this.addAssignmentFormVisible = true;
     },
     addAssignmentSubmit() {
-      //   this.addCustomerForm.time = new Date().toLocaleDateString();
       let param = {
         title: this.addAssignmentForm.title,
         content: this.addAssignmentForm.content,
         level: this.addAssignmentForm.level,
-        // createTime: dateFtt("yyyy-MM-dd hh:mm:ss", new Date()),
       };
       addAssignment(param).then((res) => {
         const statusCode = res.code;
@@ -288,6 +313,17 @@ export default {
     },
     cancelNotice() {
       this.noticeFormVisible = false;
+    },
+    //每页条数改变时触发 选择一页显示多少行
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+      this.currentPage = 1;
+      this.pageSize = val;
+    },
+    //当前页改变时触发 跳转其他页
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.currentPage = val;
     },
   },
   mounted() {

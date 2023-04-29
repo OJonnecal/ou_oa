@@ -32,9 +32,8 @@ public class MeetingRoomController {
 
     @PostMapping("/getMeetingRoomList")
     @ResponseBody
-    public Result getMeetingRoomList(){
-        List<MeetingRoom> list = meetingRoomService.list();
-        return Result.ok().data("meetingRoomList", list);
+    public Result getMeetingRoomList(@RequestBody MeetingRoom meetingRoom){
+        return meetingRoomService.getMeetingRoomList(meetingRoom);
     }
 
     @PostMapping("/updateMeetingRoom")

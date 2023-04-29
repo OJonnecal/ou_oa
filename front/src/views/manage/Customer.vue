@@ -9,8 +9,41 @@
       @click="addCustomer"
       >添加客户</el-button
     >
+    <el-form
+      ref="queryForm"
+      :inline="true"
+      :model="queryParams"
+      label-width="68px"
+    >
+      <el-form-item label="姓名" prop="userName">
+        <el-input
+          v-model="queryParams.name"
+          clearable
+          placeholder="请输入客户姓名"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="手机号" prop="phone">
+        <el-input
+          v-model="queryParams.phone"
+          clearable
+          placeholder="请输入客户手机号"
+
+          @keyup.enter="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-button icon="Search" type="primary" @click="handleQuery"
+          >搜索</el-button
+        >
+      </el-form-item>
+    </el-form>
     <el-dialog title="添加客户" :visible.sync="addCustomerFormVisible">
-      <el-form :model="addCustomerForm" label-width="100px" ref="addCustomerForm">
+      <el-form
+        :model="addCustomerForm"
+        label-width="100px"
+        ref="addCustomerForm"
+      >
         <el-form-item label="姓名" prop="title">
           <el-input v-model="addCustomerForm.name"></el-input>
         </el-form-item>
@@ -33,21 +66,34 @@
     <!--列表-->
     <template>
       <el-table
-        :data="customerList.slice(
+        :data="
+          customerList.slice(
             (currentPage - 1) * pageSize,
             currentPage * pageSize
-          )"
+          )
+        "
         highlight-current-row
         v-loading="loading"
         style="width: 100%"
         max-height="550"
       >
-        <el-table-column type="index" width="60" label="序号" align="center"> </el-table-column>
-        <el-table-column prop="name" label="客户姓名" width="200" align="center">
+        <el-table-column type="index" width="60" label="序号" align="center">
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          label="客户姓名"
+          width="200"
+          align="center"
+        >
         </el-table-column>
         <el-table-column prop="phone" label="手机号" width="200" align="center">
         </el-table-column>
-        <el-table-column prop="remarks" label="备注" min-width="180" align="center">
+        <el-table-column
+          prop="remarks"
+          label="备注"
+          min-width="180"
+          align="center"
+        >
         </el-table-column>
         <el-table-column
           prop="createTime"
@@ -118,7 +164,6 @@
   </section>
 </template>
 <script>
-import util from "../../common/js/util";
 import {
   getCustomerList,
   editCustomer,
@@ -149,6 +194,10 @@ export default {
         phone: "",
         remarks: "",
       },
+      queryParams: {
+        name: "",
+        phone: "",
+      },
       addCustomerFormVisible: false,
       currentPage: 1, // 当前页码
       total: 20, // 总条数
@@ -156,6 +205,9 @@ export default {
     };
   },
   methods: {
+    handleQuery() {
+      this.getTableData();
+    },
     changee() {
       console.log(this.editForm.status);
     },
@@ -165,10 +217,8 @@ export default {
       // 	hysbh: this.search.hysbh
       // };
       this.loading = true;
-      getCustomerList().then((res) => {
-        console.log(res);
+      getCustomerList(this.queryParams).then((res) => {
         this.customerList = res.data.customerList;
-        console.log(this.customerList, "user");
         this.loading = false;
       });
     },
@@ -288,7 +338,6 @@ export default {
     user = JSON.parse(user);
     user.permission == "1" ? (this.ifAdmin = true) : (this.ifAdmin = false);
     this.getTableData();
-    this.getUserData();
   },
 };
 </script>

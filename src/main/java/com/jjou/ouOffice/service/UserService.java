@@ -17,4 +17,6 @@ public interface UserService extends IService<User> {
     Result login(User user);
 
     Result addUser(User user);
+
+    Result getUserList(User user);
 }

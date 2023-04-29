@@ -39,10 +39,8 @@ public class ProjectController {
 
     @PostMapping(value = "/getProjectList")
     @ResponseBody
-    public Result getProjectList() {
-        QueryWrapper<Project> wrapper = new QueryWrapper<>();
-        wrapper.eq("status", 1).orderByDesc("create_time");
-        return Result.ok().data("projectList", projectService.list(wrapper));
+    public Result getProjectList(@RequestBody Project project) {
+        return projectService.getProjectList(project);
     }
 
     @PostMapping(value = "/getFailProjectList")

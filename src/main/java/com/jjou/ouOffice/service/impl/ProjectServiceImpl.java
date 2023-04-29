@@ -2,6 +2,7 @@ package com.jjou.ouOffice.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jjou.ouOffice.common.Result;
+import com.jjou.ouOffice.entity.Customer;
 import com.jjou.ouOffice.entity.Project;
 import com.jjou.ouOffice.mapper.ProjectMapper;
 import com.jjou.ouOffice.service.ProjectService;
@@ -78,5 +79,18 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
         }else{
             return Result.error().message("修改失败");
         }
+    }
+
+    @Override
+    public Result getProjectList(Project project) {
+        QueryWrapper<Project> wrapper = new QueryWrapper<>();
+        if (project != null && project.getTitle() != null && !StringUtils.isEmpty(project.getTitle())){
+            wrapper.like("title", project.getTitle());
+        }
+        if(project != null && project.getUserName() != null && !StringUtils.isEmpty(project.getUserName())){
+            wrapper.like("user_name", project.getUserName());
+        }
+        wrapper.eq("status", 1).orderByDesc("create_time");
+        return Result.ok().data("projectList", list(wrapper));
     }
 }

@@ -34,11 +34,8 @@ public class UserController {
 
     @PostMapping("/getUserList")
     @ResponseBody
-    public Result getUserList() {
-        QueryWrapper<User> wrapper = new QueryWrapper<>();
-        wrapper.orderByDesc("create_time");
-        List<User> list = userService.list(wrapper);
-        return Result.ok().data("userList", list);
+    public Result getUserList(@RequestBody User user) {
+        return userService.getUserList(user);
     }
 
     @PostMapping("/addUser")

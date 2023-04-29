@@ -1,5 +1,35 @@
 <template>
   <section>
+    <el-form
+      ref="queryForm"
+      :inline="true"
+      :model="queryParams"
+      label-width="68px"
+    >
+      <el-form-item label="名称" prop="title">
+        <el-input
+          v-model="queryParams.title"
+          clearable
+          placeholder="请输入项目名称"
+          style="width: 240px"
+          @keyup.enter="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="负责人" prop="userName">
+        <el-input
+          v-model="queryParams.userName"
+          clearable
+          placeholder="请输入项目负责人"
+          style="width: 240px"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-button icon="Search" type="primary" @click="handleQuery"
+          >搜索</el-button
+        >
+      </el-form-item>
+    </el-form>
     <!--列表-->
     <template>
       <el-table
@@ -149,6 +179,10 @@ export default {
         rate: "",
         userName: "",
       },
+      queryParams: {
+        title: "",
+        userName: "",
+      },
       addProjectFormVisible: false,
       currentPage: 1, // 当前页码
       total: 20, // 总条数
@@ -156,8 +190,8 @@ export default {
     };
   },
   methods: {
-    changee() {
-      console.log(this.editForm.status);
+    handleQuery() {
+      this.getTableData();
     },
     //获取客户列表
     getTableData: function () {
@@ -165,10 +199,8 @@ export default {
       // 	hysbh: this.search.hysbh
       // };
       this.loading = true;
-      getProjectList().then((res) => {
-        console.log(res);
+      getProjectList(this.queryParams).then((res) => {
         this.projectList = res.data.projectList;
-        console.log(this.projectList, "projectList");
         this.loading = false;
       });
     },
@@ -298,7 +330,6 @@ export default {
     user = JSON.parse(user);
     user.permission == "1" ? (this.ifAdmin = true) : (this.ifAdmin = false);
     this.getTableData();
-    this.getUserData();
   },
 };
 </script>

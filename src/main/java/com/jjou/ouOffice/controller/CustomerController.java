@@ -32,8 +32,8 @@ public class CustomerController {
 
     @PostMapping("/getCustomerList")
     @ResponseBody
-    public Result getCustomerList(){
-        return Result.ok().data("customerList", customerService.list());
+    public Result getCustomerList(@RequestBody Customer customer){
+        return customerService.getCustomerList(customer);
     }
 
     @PostMapping("/addCustomer")
