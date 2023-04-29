@@ -89,7 +89,6 @@
   </section>
 </template>
 <script>
-import util from "../../common/js/util";
 import {
   getContactsList,
   editContacts,
@@ -127,9 +126,6 @@ export default {
     },
     //获取客户列表
     getTableData: function () {
-      // let obj = {
-      // 	hysbh: this.search.hysbh
-      // };
       this.loading = true;
       getContactsList().then((res) => {
         console.log(res);
@@ -201,10 +197,7 @@ export default {
       this.editForm.remarks = row.remarks;
     },
     editSubmit: function () {
-      // this.$refs.editForm.validate((valid) => {
-      // 	if (valid) {
       this.editLoading = true;
-      //NProgress.start();
       var obj = {
         id: this.editForm.id,
         name: this.editForm.name,
@@ -212,9 +205,6 @@ export default {
         remarks: this.editForm.remarks,
       };
       console.log(obj);
-      // if (obj.status == "空闲") {
-      //   obj.remarks = "";
-      // }
       editContacts(obj).then((res) => {
         this.editLoading = false;
         this.$message({
@@ -222,12 +212,9 @@ export default {
           type: "success",
         });
         console.log(obj, "1111");
-        // this.$refs['editForm'].resetFields();
         this.editFormVisible = false;
         this.getTableData();
       });
-      // 	}
-      // });
     },
     cancel() {
       this.editFormVisible = false;

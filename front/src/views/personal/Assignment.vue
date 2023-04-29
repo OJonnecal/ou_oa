@@ -201,7 +201,6 @@
   </div>
 </template>
 <script>
-import util from "../../common/js/util";
 import {
   getAssignmentInCompleteList,
   getAssignmentCompleteList,
@@ -304,7 +303,6 @@ export default {
           message: res.message,
           type: "success",
         });
-        // this.$refs['editForm'].resetFields();
         this.getTableData();
       });
     },

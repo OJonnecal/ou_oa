@@ -199,7 +199,6 @@
   </section>
 </template>
 <script>
-import util from "../../common/js/util";
 import { getUserList, editUser, delUser, addUser } from "../../api/user.js";
 export default {
   data() {
@@ -328,10 +327,7 @@ export default {
       this.isAdmin = row.permission == "1" ? true : false;
     },
     editSubmit: function () {
-      // this.$refs.editForm.validate((valid) => {
-      // 	if (valid) {
       this.editLoading = true;
-      //NProgress.start();
       var obj = {
         id: this.editForm.id,
         account: this.editForm.account,
@@ -342,9 +338,6 @@ export default {
         permission: this.isAdmin ? "1" : "2",
       };
       console.log(obj);
-      // if (obj.status == "空闲") {
-      //   obj.remarks = "";
-      // }
       editUser(obj).then((res) => {
         this.editLoading = false;
         this.$message({
@@ -353,12 +346,9 @@ export default {
         });
         console.log(obj, "1111");
         1111;
-        // this.$refs['editForm'].resetFields();
         this.editFormVisible = false;
         this.getTableData();
       });
-      // 	}
-      // });
     },
     cancel() {
       this.editFormVisible = false;

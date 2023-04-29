@@ -239,7 +239,6 @@
 </template>
 
 <script>
-import util from "../../common/js/util";
 import {
   getExpenseList,
   getApplyExpenseList,

@@ -146,7 +146,6 @@
   </section>
 </template>
 <script>
-import util from "../../common/js/util";
 import {
   getProjectList,
   editProject,
@@ -195,9 +194,6 @@ export default {
     },
     //获取客户列表
     getTableData: function () {
-      // let obj = {
-      // 	hysbh: this.search.hysbh
-      // };
       this.loading = true;
       getProjectList(this.queryParams).then((res) => {
         this.projectList = res.data.projectList;
@@ -271,10 +267,7 @@ export default {
       this.editForm.createTime = row.createTime;
     },
     editSubmit: function () {
-      // this.$refs.editForm.validate((valid) => {
-      // 	if (valid) {
       this.editLoading = true;
-      //NProgress.start();
       var obj = {
         id: this.editForm.id,
         title: this.editForm.title,
@@ -282,10 +275,6 @@ export default {
         rate: this.editForm.rate,
         userName: this.editForm.userName,
       };
-      console.log(obj);
-      // if (obj.status == "空闲") {
-      //   obj.remarks = "";
-      // }
       editProject(obj).then((res) => {
         this.editLoading = false;
         const statusCode = res.code;
@@ -304,8 +293,6 @@ export default {
         this.editFormVisible = false;
         this.getTableData();
       });
-      // 	}
-      // });
     },
     cancel() {
       this.editFormVisible = false;

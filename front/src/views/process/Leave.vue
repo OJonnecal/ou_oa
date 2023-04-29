@@ -278,7 +278,6 @@
 </template>
 
 <script>
-import util from "../../common/js/util";
 import {
   getLeaveList,
   getApplyLeaveList,
@@ -361,7 +360,6 @@ export default {
       this.currentPage = val;
     },
     handleAgree(row, value) {
-      console.log(row, value);
       if (value == 1) {
         var params = {
           id: row.id,

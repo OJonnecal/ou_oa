@@ -160,6 +160,11 @@ export default {
         phone: "",
         email: "",
       },
+      queryParams: {
+        title: "",
+        userName: "",
+      },
+
       addGgFormVisible: false,
       addTopContactsFormVisible: false,
     };
@@ -174,7 +179,7 @@ export default {
       });
     },
     getJindu() {
-      getProjectList().then((res) => {
+      getProjectList(this.queryParams).then((res) => {
         this.jdArr = res.data.projectList;
       });
     },

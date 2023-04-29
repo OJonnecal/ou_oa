@@ -287,27 +287,19 @@ export default {
       this.editForm.createTime = row.createTime;
     },
     editSubmit: function () {
-      // this.$refs.editForm.validate((valid) => {
-      // 	if (valid) {
       this.editLoading = true;
-      //NProgress.start();
       var obj = {
         id: this.editForm.id,
         name: this.editForm.name,
         phone: this.editForm.phone,
         remarks: this.editForm.remarks,
       };
-      console.log(obj);
-      // if (obj.status == "空闲") {
-      //   obj.remarks = "";
-      // }
       editCustomer(obj).then((res) => {
         this.editLoading = false;
         this.$message({
           message: res.message,
           type: "success",
         });
-        console.log(obj, "1111");
         // this.$refs['editForm'].resetFields();
         this.editFormVisible = false;
         this.getTableData();

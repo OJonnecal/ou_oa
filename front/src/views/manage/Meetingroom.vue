@@ -191,7 +191,6 @@
   </section>
 </template>
 <script>
-import util from "../../common/js/util";
 import {
   getUserList,
   getHys,
@@ -315,32 +314,22 @@ export default {
       this.editForm.remarks = row.remarks;
     },
     editSubmit: function () {
-      // this.$refs.editForm.validate((valid) => {
-      // 	if (valid) {
       this.editLoading = true;
-      //NProgress.start();
       var obj = {
         name: this.editForm.name,
         status: this.editForm.status,
         remarks: this.editForm.remarks,
       };
       console.log(obj);
-      // if (obj.status == "空闲") {
-      //   obj.remarks = "";
-      // }
       editHys(obj).then((res) => {
         this.editLoading = false;
         this.$message({
           message: res.message,
           type: "success",
         });
-        console.log(obj, "1111");
-        // this.$refs['editForm'].resetFields();
         this.editFormVisible = false;
         this.getTableData();
       });
-      // 	}
-      // });
     },
     cancel() {
       this.editFormVisible = false;
