@@ -6,8 +6,8 @@
       v-if="ifAdmin"
       size="small"
       icon="el-icon-plus"
-      @click="addCustomer"
-      >添加客户</el-button
+      @click="addUser"
+      >添加用户</el-button
     >
     <el-form
       ref="queryForm"
@@ -15,11 +15,12 @@
       :model="queryParams"
       label-width="68px"
     >
-      <el-form-item label="姓名" prop="userName">
+      <el-form-item label="昵称" prop="name">
         <el-input
           v-model="queryParams.name"
           clearable
-          placeholder="请输入客户姓名"
+          placeholder="请输入用户昵称"
+          style="width: 240px"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
@@ -27,9 +28,18 @@
         <el-input
           v-model="queryParams.phone"
           clearable
-          placeholder="请输入客户手机号"
-
-          @keyup.enter="handleQuery"
+          placeholder="请输入用户手机号"
+          style="width: 240px"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="职位" prop="position">
+        <el-input
+          v-model="queryParams.position"
+          clearable
+          placeholder="请输入用户职位"
+          style="width: 240px"
+          @keyup.enter.native="handleQuery"
         />
       </el-form-item>
       <el-form-item>
@@ -38,27 +48,40 @@
         >
       </el-form-item>
     </el-form>
-    <el-dialog title="添加客户" :visible.sync="addCustomerFormVisible">
-      <el-form
-        :model="addCustomerForm"
-        label-width="100px"
-        ref="addCustomerForm"
-      >
-        <el-form-item label="姓名" prop="title">
-          <el-input v-model="addCustomerForm.name"></el-input>
+    <el-dialog title="添加用户" :visible.sync="addUserFormVisible">
+      <el-form :model="addUserForm" label-width="100px" ref="addUserForm">
+        <el-form-item label="账号" prop="account">
+          <el-input v-model="addUserForm.account"></el-input>
         </el-form-item>
-        <el-form-item label="手机号" prop="title">
-          <el-input v-model="addCustomerForm.phone"></el-input>
+        <el-form-item label="密码" prop="pwd">
+          <el-input v-model="addUserForm.pwd"></el-input>
         </el-form-item>
-        <el-form-item label="备注" prop="title">
-          <el-input v-model="addCustomerForm.remarks"></el-input>
+        <el-form-item label="昵称" prop="name">
+          <el-input v-model="addUserForm.name"></el-input>
+        </el-form-item>
+        <el-form-item label="手机号" prop="phone">
+          <el-input v-model="addUserForm.phone"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model="addUserForm.email"></el-input>
+        </el-form-item>
+        <el-form-item label="职位" prop="position">
+          <el-input v-model="addUserForm.position"></el-input>
+        </el-form-item>
+        <el-form-item label="是否为管理员" prop="permission">
+          <el-switch
+            v-model="isAdmin"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+          >
+          </el-switch>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button size="small" @click.native="addCustomerFormVisible = false"
+        <el-button size="small" @click.native="addUserFormVisible = false"
           >取消</el-button
         >
-        <el-button size="small" type="primary" @click.native="addCustomerSubmit"
+        <el-button size="small" type="primary" @click.native="addUserSubmit"
           >提交</el-button
         >
       </div>
@@ -67,10 +90,7 @@
     <template>
       <el-table
         :data="
-          customerList.slice(
-            (currentPage - 1) * pageSize,
-            currentPage * pageSize
-          )
+          userList.slice((currentPage - 1) * pageSize, currentPage * pageSize)
         "
         highlight-current-row
         v-loading="loading"
@@ -79,26 +99,27 @@
       >
         <el-table-column type="index" width="60" label="序号" align="center">
         </el-table-column>
-        <el-table-column
-          prop="name"
-          label="客户姓名"
-          width="200"
-          align="center"
-        >
+        <el-table-column prop="account" label="账号" width="150" align="center">
         </el-table-column>
-        <el-table-column prop="phone" label="手机号" width="200" align="center">
+        <el-table-column prop="name" label="昵称" align="center">
         </el-table-column>
-        <el-table-column
-          prop="remarks"
-          label="备注"
-          min-width="180"
-          align="center"
-        >
+        <el-table-column prop="phone" label="手机号" width="120" align="center">
+        </el-table-column>
+        <el-table-column prop="email" label="邮箱" width="180" align="center">
+        </el-table-column>
+        <el-table-column prop="position" label="职位" align="center">
+        </el-table-column>
+        <el-table-column prop="permission" label="权限" align="center">
+          <template #default="scope">
+            <template v-if="scope.row.permission == '1'">
+              <el-tag type="success"> 管理员 </el-tag>
+            </template>
+          </template>
         </el-table-column>
         <el-table-column
           prop="createTime"
-          label="客户创建时间"
-          min-width="180"
+          label="用户创建时间"
+          min-width="150"
           sortable
           align="center"
         >
@@ -124,7 +145,7 @@
           :page-sizes="[1, 5, 10, 20]"
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="customerList.length"
+          :total="userList.length"
         >
         </el-pagination>
       </div>
@@ -132,19 +153,33 @@
 
     <!--编辑界面-->
     <el-dialog
-      title="编辑客户信息"
+      title="编辑用户信息"
       :visible.sync="editFormVisible"
       :close-on-click-modal="false"
     >
       <el-form :model="editForm" label-width="100px" ref="editForm">
-        <el-form-item label="姓名" prop="name">
+        <el-form-item label="账号" prop="account">
+          <el-input v-model="editForm.account"></el-input>
+        </el-form-item>
+        <el-form-item label="昵称" prop="name">
           <el-input v-model="editForm.name"></el-input>
         </el-form-item>
         <el-form-item label="手机号" prop="phone">
           <el-input v-model="editForm.phone"></el-input>
         </el-form-item>
-        <el-form-item label="备注" prop="remarks">
-          <el-input type="textarea" v-model="editForm.remarks"></el-input>
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model="editForm.email"></el-input>
+        </el-form-item>
+        <el-form-item label="职位" prop="position">
+          <el-input v-model="editForm.position"></el-input>
+        </el-form-item>
+        <el-form-item label="是否为管理员" prop="permission">
+          <el-switch
+            v-model="isAdmin"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+          >
+          </el-switch>
         </el-form-item>
         <el-form-item label="创建时间" prop="createTime">
           <el-input v-model="editForm.createTime" :disabled="read"></el-input>
@@ -164,12 +199,7 @@
   </section>
 </template>
 <script>
-import {
-  getCustomerList,
-  editCustomer,
-  delCustomer,
-  addCustomer,
-} from "../../api/customer.js";
+import { getUserList, editUser, delUser, addUser } from "../../api/user.js";
 export default {
   data() {
     return {
@@ -181,24 +211,34 @@ export default {
       loading: false,
       editLoading: false,
       editFormVisible: false,
-      customerList: [],
+      userList: [],
+      isAdmin: false,
       editForm: {
         id: "",
+        account: "",
         name: "",
         phone: "",
-        remarks: "",
+        email: "",
+        position: "",
         createTime: "",
+        permission: "",
       },
-      addCustomerForm: {
+      addUserForm: {
+        account: "",
         name: "",
+        pwd: "",
         phone: "",
-        remarks: "",
+        email: "",
+        position: "",
+        createTime: "",
+        permission: "",
       },
       queryParams: {
         name: "",
         phone: "",
+        position: "",
       },
-      addCustomerFormVisible: false,
+      addUserFormVisible: false,
       currentPage: 1, // 当前页码
       total: 20, // 总条数
       pageSize: 5, // 每页的数据条数
@@ -208,32 +248,29 @@ export default {
     handleQuery() {
       this.getTableData();
     },
-    changee() {
-      console.log(this.editForm.status);
-    },
     //获取客户列表
     getTableData: function () {
-      // let obj = {
-      // 	hysbh: this.search.hysbh
-      // };
       this.loading = true;
-      getCustomerList(this.queryParams).then((res) => {
-        this.customerList = res.data.customerList;
+      getUserList(this.queryParams).then((res) => {
+        this.userList = res.data.userList;
         this.loading = false;
       });
     },
-    addCustomer() {
-      this.addCustomerFormVisible = true;
+    addUser() {
+      this.addUserFormVisible = true;
     },
-    addCustomerSubmit() {
-      //   this.addCustomerForm.time = new Date().toLocaleDateString();
+    addUserSubmit() {
       let param = {
-        name: this.addCustomerForm.name,
-        phone: this.addCustomerForm.phone,
-        remarks: this.addCustomerForm.remarks,
+        account: this.addUserForm.account,
+        name: this.addUserForm.name,
+        pwd: this.addUserForm.pwd,
+        phone: this.addUserForm.phone,
+        email: this.addUserForm.email,
+        position: this.addUserForm.position,
+        permission: this.isAdmin ? "1" : "2",
         // createTime: dateFtt("yyyy-MM-dd hh:mm:ss", new Date()),
       };
-      addCustomer(param).then((res) => {
+      addUser(param).then((res) => {
         const statusCode = res.code;
         if (statusCode == 200) {
           this.$message({
@@ -248,17 +285,17 @@ export default {
           });
         }
       });
-      this.addCustomerFormVisible = false;
+      this.addUserFormVisible = false;
     },
     handleDel(row) {
       var obj = {
         id: row.id,
       };
-      this.$confirm("确定要删除此客户吗", "提示", {
+      this.$confirm("确定要删除此用户吗", "提示", {
         type: "warning",
       })
         .then(() => {
-          delCustomer(obj).then((res) => {
+          delUser(obj).then((res) => {
             const statusCode = res.code;
             if (statusCode == 200) {
               this.$message({
@@ -281,31 +318,37 @@ export default {
     handleEdit: function (row) {
       this.editFormVisible = true;
       this.editForm.id = row.id;
+      this.editForm.account = row.account;
       this.editForm.name = row.name;
       this.editForm.phone = row.phone;
-      this.editForm.remarks = row.remarks;
+      this.editForm.email = row.email;
+      this.editForm.position = row.position;
       this.editForm.createTime = row.createTime;
+      this.isAdmin = row.permission == "1" ? true : false;
     },
     editSubmit: function () {
       this.editLoading = true;
       var obj = {
         id: this.editForm.id,
+        account: this.editForm.account,
         name: this.editForm.name,
         phone: this.editForm.phone,
-        remarks: this.editForm.remarks,
+        email: this.editForm.email,
+        position: this.editForm.position,
+        permission: this.isAdmin ? "1" : "2",
       };
-      editCustomer(obj).then((res) => {
+      console.log(obj);
+      editUser(obj).then((res) => {
         this.editLoading = false;
         this.$message({
           message: res.message,
           type: "success",
         });
-        // this.$refs['editForm'].resetFields();
+        console.log(obj, "1111");
+        1111;
         this.editFormVisible = false;
         this.getTableData();
       });
-      // 	}
-      // });
     },
     cancel() {
       this.editFormVisible = false;

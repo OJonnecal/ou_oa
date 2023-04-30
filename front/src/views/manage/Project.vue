@@ -1,35 +1,27 @@
 <template>
   <section>
-    <el-button
-      style="margin: 10px 0"
-      type="primary"
-      v-if="ifAdmin"
-      size="small"
-      icon="el-icon-plus"
-      @click="addCustomer"
-      >添加客户</el-button
-    >
     <el-form
       ref="queryForm"
       :inline="true"
       :model="queryParams"
       label-width="68px"
     >
-      <el-form-item label="姓名" prop="userName">
+      <el-form-item label="名称" prop="title">
         <el-input
-          v-model="queryParams.name"
+          v-model="queryParams.title"
           clearable
-          placeholder="请输入客户姓名"
-          @keyup.enter.native="handleQuery"
+          placeholder="请输入项目名称"
+          style="width: 240px"
+          @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="手机号" prop="phone">
+      <el-form-item label="负责人" prop="userName">
         <el-input
-          v-model="queryParams.phone"
+          v-model="queryParams.userName"
           clearable
-          placeholder="请输入客户手机号"
-
-          @keyup.enter="handleQuery"
+          placeholder="请输入项目负责人"
+          style="width: 240px"
+          @keyup.enter.native="handleQuery"
         />
       </el-form-item>
       <el-form-item>
@@ -38,36 +30,11 @@
         >
       </el-form-item>
     </el-form>
-    <el-dialog title="添加客户" :visible.sync="addCustomerFormVisible">
-      <el-form
-        :model="addCustomerForm"
-        label-width="100px"
-        ref="addCustomerForm"
-      >
-        <el-form-item label="姓名" prop="title">
-          <el-input v-model="addCustomerForm.name"></el-input>
-        </el-form-item>
-        <el-form-item label="手机号" prop="title">
-          <el-input v-model="addCustomerForm.phone"></el-input>
-        </el-form-item>
-        <el-form-item label="备注" prop="title">
-          <el-input v-model="addCustomerForm.remarks"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="small" @click.native="addCustomerFormVisible = false"
-          >取消</el-button
-        >
-        <el-button size="small" type="primary" @click.native="addCustomerSubmit"
-          >提交</el-button
-        >
-      </div>
-    </el-dialog>
     <!--列表-->
     <template>
       <el-table
         :data="
-          customerList.slice(
+          projectList.slice(
             (currentPage - 1) * pageSize,
             currentPage * pageSize
           )
@@ -80,24 +47,36 @@
         <el-table-column type="index" width="60" label="序号" align="center">
         </el-table-column>
         <el-table-column
-          prop="name"
-          label="客户姓名"
-          width="200"
+          prop="title"
+          label="项目名称"
+          width="150"
           align="center"
         >
         </el-table-column>
-        <el-table-column prop="phone" label="手机号" width="200" align="center">
+        <el-table-column
+          prop="description"
+          label="项目描述"
+          width="240"
+          align="center"
+        >
         </el-table-column>
         <el-table-column
-          prop="remarks"
-          label="备注"
-          min-width="180"
+          prop="rate"
+          label="项目进度"
+          min-width="100"
+          align="center"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="userName"
+          label="项目负责人"
+          min-width="100"
           align="center"
         >
         </el-table-column>
         <el-table-column
           prop="createTime"
-          label="客户创建时间"
+          label="项目创建时间"
           min-width="180"
           sortable
           align="center"
@@ -124,7 +103,7 @@
           :page-sizes="[1, 5, 10, 20]"
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="customerList.length"
+          :total="projectList.length"
         >
         </el-pagination>
       </div>
@@ -132,19 +111,22 @@
 
     <!--编辑界面-->
     <el-dialog
-      title="编辑客户信息"
+      title="编辑项目信息"
       :visible.sync="editFormVisible"
       :close-on-click-modal="false"
     >
       <el-form :model="editForm" label-width="100px" ref="editForm">
-        <el-form-item label="姓名" prop="name">
-          <el-input v-model="editForm.name"></el-input>
+        <el-form-item label="名称" prop="title">
+          <el-input v-model="editForm.title"></el-input>
         </el-form-item>
-        <el-form-item label="手机号" prop="phone">
-          <el-input v-model="editForm.phone"></el-input>
+        <el-form-item label="描述" prop="description">
+          <el-input type="textarea" v-model="editForm.description"></el-input>
         </el-form-item>
-        <el-form-item label="备注" prop="remarks">
-          <el-input type="textarea" v-model="editForm.remarks"></el-input>
+        <el-form-item label="进度" prop="rate">
+          <el-input v-model="editForm.rate"></el-input>
+        </el-form-item>
+        <el-form-item label="负责人" prop="userName">
+          <el-input v-model="editForm.userName"></el-input>
         </el-form-item>
         <el-form-item label="创建时间" prop="createTime">
           <el-input v-model="editForm.createTime" :disabled="read"></el-input>
@@ -165,11 +147,11 @@
 </template>
 <script>
 import {
-  getCustomerList,
-  editCustomer,
-  delCustomer,
-  addCustomer,
-} from "../../api/customer.js";
+  getProjectList,
+  editProject,
+  delProject,
+  addProject,
+} from "../../api/project.js";
 export default {
   data() {
     return {
@@ -181,24 +163,26 @@ export default {
       loading: false,
       editLoading: false,
       editFormVisible: false,
-      customerList: [],
+      projectList: [],
       editForm: {
         id: "",
-        name: "",
-        phone: "",
-        remarks: "",
+        title: "",
+        description: "",
+        rate: "",
+        userName: "",
         createTime: "",
       },
-      addCustomerForm: {
-        name: "",
-        phone: "",
-        remarks: "",
+      addProjectForm: {
+        title: "",
+        description: "",
+        rate: "",
+        userName: "",
       },
       queryParams: {
-        name: "",
-        phone: "",
+        title: "",
+        userName: "",
       },
-      addCustomerFormVisible: false,
+      addProjectFormVisible: false,
       currentPage: 1, // 当前页码
       total: 20, // 总条数
       pageSize: 5, // 每页的数据条数
@@ -208,32 +192,27 @@ export default {
     handleQuery() {
       this.getTableData();
     },
-    changee() {
-      console.log(this.editForm.status);
-    },
     //获取客户列表
     getTableData: function () {
-      // let obj = {
-      // 	hysbh: this.search.hysbh
-      // };
       this.loading = true;
-      getCustomerList(this.queryParams).then((res) => {
-        this.customerList = res.data.customerList;
+      getProjectList(this.queryParams).then((res) => {
+        this.projectList = res.data.projectList;
         this.loading = false;
       });
     },
-    addCustomer() {
-      this.addCustomerFormVisible = true;
+    addProject() {
+      this.addProjectFormVisible = true;
     },
-    addCustomerSubmit() {
+    addProjectSubmit() {
       //   this.addCustomerForm.time = new Date().toLocaleDateString();
       let param = {
-        name: this.addCustomerForm.name,
-        phone: this.addCustomerForm.phone,
-        remarks: this.addCustomerForm.remarks,
+        title: this.addProjectForm.title,
+        description: this.addProjectForm.description,
+        rate: this.addProjectForm.rate,
+        userName: this.addProjectForm.userName,
         // createTime: dateFtt("yyyy-MM-dd hh:mm:ss", new Date()),
       };
-      addCustomer(param).then((res) => {
+      addProject(param).then((res) => {
         const statusCode = res.code;
         if (statusCode == 200) {
           this.$message({
@@ -248,7 +227,7 @@ export default {
           });
         }
       });
-      this.addCustomerFormVisible = false;
+      this.addProjectFormVisible = false;
     },
     handleDel(row) {
       var obj = {
@@ -258,7 +237,7 @@ export default {
         type: "warning",
       })
         .then(() => {
-          delCustomer(obj).then((res) => {
+          delProject(obj).then((res) => {
             const statusCode = res.code;
             if (statusCode == 200) {
               this.$message({
@@ -281,31 +260,39 @@ export default {
     handleEdit: function (row) {
       this.editFormVisible = true;
       this.editForm.id = row.id;
-      this.editForm.name = row.name;
-      this.editForm.phone = row.phone;
-      this.editForm.remarks = row.remarks;
+      this.editForm.title = row.title;
+      this.editForm.description = row.description;
+      this.editForm.rate = row.rate;
+      this.editForm.userName = row.userName;
       this.editForm.createTime = row.createTime;
     },
     editSubmit: function () {
       this.editLoading = true;
       var obj = {
         id: this.editForm.id,
-        name: this.editForm.name,
-        phone: this.editForm.phone,
-        remarks: this.editForm.remarks,
+        title: this.editForm.title,
+        description: this.editForm.description,
+        rate: this.editForm.rate,
+        userName: this.editForm.userName,
       };
-      editCustomer(obj).then((res) => {
+      editProject(obj).then((res) => {
         this.editLoading = false;
-        this.$message({
-          message: res.message,
-          type: "success",
-        });
-        // this.$refs['editForm'].resetFields();
+        const statusCode = res.code;
+        if (statusCode == 200) {
+          this.$message({
+            message: res.message,
+            type: "success",
+          });
+          this.getTableData();
+        } else {
+          this.$message({
+            message: res.message,
+            type: "error",
+          });
+        }
         this.editFormVisible = false;
         this.getTableData();
       });
-      // 	}
-      // });
     },
     cancel() {
       this.editFormVisible = false;
@@ -333,5 +320,4 @@ export default {
   },
 };
 </script>
-
 <style scoped></style>

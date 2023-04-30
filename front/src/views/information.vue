@@ -48,13 +48,12 @@
         <template>
           <div>
             <div class="jdt" v-for="item in jdArr" :key="item.id">
-              <div class="word" style="display: inline">{{ item.name }}</div>
+              <div class="word" style="display: inline">{{ item.title }}</div>
               <el-progress
                 :percentage="item.rate"
                 style="margin: 0 15px"
                 type="circle"
                 :stroke-width="18"
-                :status="item.status"
               ></el-progress>
             </div>
           </div>
@@ -84,7 +83,7 @@
         </template>
       </el-tab-pane>
     </el-tabs>
-    <el-dialog title="添加公告" :visible="addGgFormVisible">
+    <el-dialog title="添加公告" :visible.sync="addGgFormVisible">
       <el-form :model="addGgForm" label-width="100px" ref="addGgForm">
         <el-form-item label="公告名称" prop="title">
           <el-input v-model="addGgForm.title"></el-input>
@@ -102,7 +101,7 @@
         >
       </div>
     </el-dialog>
-    <el-dialog title="添加常用联系人" :visible="addTopContactsFormVisible">
+    <el-dialog title="添加常用联系人" :visible.sync="addTopContactsFormVisible">
       <el-form
         :model="addTopContactsForm"
         label-width="100px"
@@ -138,7 +137,7 @@
 <script>
 import util from "../common/js/util.js";
 import { getGg, addGg, delGg } from "../api/notice.js";
-import { getJd } from "../api/project.js";
+import { getProjectList } from "../api/project.js";
 import {
   getTopContactsList,
   addTopContacts,
@@ -161,6 +160,11 @@ export default {
         phone: "",
         email: "",
       },
+      queryParams: {
+        title: "",
+        userName: "",
+      },
+
       addGgFormVisible: false,
       addTopContactsFormVisible: false,
     };
@@ -169,13 +173,13 @@ export default {
     getGonggao() {
       var user = sessionStorage.getItem("user");
       user = JSON.parse(user);
-      user.permission <= "5" ? (this.ifAdmin = true) : (this.ifAdmin = false);
+      user.permission == "1" ? (this.ifAdmin = true) : (this.ifAdmin = false);
       getGg().then((res) => {
         this.GgList = res.data.noticeList;
       });
     },
     getJindu() {
-      getJd().then((res) => {
+      getProjectList(this.queryParams).then((res) => {
         this.jdArr = res.data.projectList;
       });
     },

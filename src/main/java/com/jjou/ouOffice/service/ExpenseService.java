@@ -1,7 +1,9 @@
 package com.jjou.ouOffice.service;
 
+import com.jjou.ouOffice.common.Result;
 import com.jjou.ouOffice.entity.Expense;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.jjou.ouOffice.entity.Leave;
 
 /**
  * <p>
@@ -13,4 +15,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ExpenseService extends IService<Expense> {
 
+    Result addExpense(Expense expense);
+
+    Result agreeExpense(Expense expense);
 }

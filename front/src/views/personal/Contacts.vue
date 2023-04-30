@@ -3,62 +3,28 @@
     <el-button
       style="margin: 10px 0"
       type="primary"
-      v-if="ifAdmin"
       size="small"
       icon="el-icon-plus"
-      @click="addCustomer"
-      >添加客户</el-button
+      @click="addContacts"
+      >添加联系人</el-button
     >
-    <el-form
-      ref="queryForm"
-      :inline="true"
-      :model="queryParams"
-      label-width="68px"
-    >
-      <el-form-item label="姓名" prop="userName">
-        <el-input
-          v-model="queryParams.name"
-          clearable
-          placeholder="请输入客户姓名"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="手机号" prop="phone">
-        <el-input
-          v-model="queryParams.phone"
-          clearable
-          placeholder="请输入客户手机号"
-
-          @keyup.enter="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item>
-        <el-button icon="Search" type="primary" @click="handleQuery"
-          >搜索</el-button
-        >
-      </el-form-item>
-    </el-form>
-    <el-dialog title="添加客户" :visible.sync="addCustomerFormVisible">
-      <el-form
-        :model="addCustomerForm"
-        label-width="100px"
-        ref="addCustomerForm"
-      >
+    <el-dialog title="添加联系人" :visible.sync="addContactsFormVisible">
+      <el-form :model="addContactsForm" label-width="100px" ref="addContactsForm">
         <el-form-item label="姓名" prop="title">
-          <el-input v-model="addCustomerForm.name"></el-input>
+          <el-input v-model="addContactsForm.name"></el-input>
         </el-form-item>
         <el-form-item label="手机号" prop="title">
-          <el-input v-model="addCustomerForm.phone"></el-input>
+          <el-input v-model="addContactsForm.phone"></el-input>
         </el-form-item>
         <el-form-item label="备注" prop="title">
-          <el-input v-model="addCustomerForm.remarks"></el-input>
+          <el-input v-model="addContactsForm.remarks"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button size="small" @click.native="addCustomerFormVisible = false"
+        <el-button size="small" @click.native="addContactsFormVisible = false"
           >取消</el-button
         >
-        <el-button size="small" type="primary" @click.native="addCustomerSubmit"
+        <el-button size="small" type="primary" @click.native="addContactsSubmit"
           >提交</el-button
         >
       </div>
@@ -66,44 +32,20 @@
     <!--列表-->
     <template>
       <el-table
-        :data="
-          customerList.slice(
-            (currentPage - 1) * pageSize,
-            currentPage * pageSize
-          )
-        "
+        :data="contactsList"
         highlight-current-row
         v-loading="loading"
         style="width: 100%"
         max-height="550"
       >
-        <el-table-column type="index" width="60" label="序号" align="center">
-        </el-table-column>
-        <el-table-column
-          prop="name"
-          label="客户姓名"
-          width="200"
-          align="center"
-        >
+        <el-table-column type="index" width="60" label="序号" align="center"> </el-table-column>
+        <el-table-column prop="name" label="联系人姓名" width="200" align="center">
         </el-table-column>
         <el-table-column prop="phone" label="手机号" width="200" align="center">
         </el-table-column>
-        <el-table-column
-          prop="remarks"
-          label="备注"
-          min-width="180"
-          align="center"
-        >
+        <el-table-column prop="remarks" label="备注" min-width="180" align="center">
         </el-table-column>
-        <el-table-column
-          prop="createTime"
-          label="客户创建时间"
-          min-width="180"
-          sortable
-          align="center"
-        >
-        </el-table-column>
-        <el-table-column label="操作" width="150" v-if="ifAdmin" align="center">
+        <el-table-column label="操作" width="150" align="center">
           <template scope="scope">
             <el-button size="small" @click="handleEdit(scope.row)"
               >编辑</el-button
@@ -114,20 +56,6 @@
           </template>
         </el-table-column>
       </el-table>
-      <!-- 分页器 -->
-      <div class="block" style="margin-top: 15px">
-        <el-pagination
-          align="center"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[1, 5, 10, 20]"
-          :page-size="pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="customerList.length"
-        >
-        </el-pagination>
-      </div>
     </template>
 
     <!--编辑界面-->
@@ -146,9 +74,6 @@
         <el-form-item label="备注" prop="remarks">
           <el-input type="textarea" v-model="editForm.remarks"></el-input>
         </el-form-item>
-        <el-form-item label="创建时间" prop="createTime">
-          <el-input v-model="editForm.createTime" :disabled="read"></el-input>
-        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="cancel" size="small">取消</el-button>
@@ -165,11 +90,11 @@
 </template>
 <script>
 import {
-  getCustomerList,
-  editCustomer,
-  delCustomer,
-  addCustomer,
-} from "../../api/customer.js";
+  getContactsList,
+  editContacts,
+  delContacts,
+  addContacts,
+} from "../../api/contacts.js";
 export default {
   data() {
     return {
@@ -177,63 +102,49 @@ export default {
         name: "",
       },
       read: true,
-      ifAdmin: true,
       loading: false,
       editLoading: false,
       editFormVisible: false,
-      customerList: [],
+      contactsList: [],
       editForm: {
         id: "",
         name: "",
         phone: "",
         remarks: "",
-        createTime: "",
       },
-      addCustomerForm: {
+      addContactsForm: {
         name: "",
         phone: "",
         remarks: "",
       },
-      queryParams: {
-        name: "",
-        phone: "",
-      },
-      addCustomerFormVisible: false,
-      currentPage: 1, // 当前页码
-      total: 20, // 总条数
-      pageSize: 5, // 每页的数据条数
+      addContactsFormVisible: false,
     };
   },
   methods: {
-    handleQuery() {
-      this.getTableData();
-    },
     changee() {
       console.log(this.editForm.status);
     },
     //获取客户列表
     getTableData: function () {
-      // let obj = {
-      // 	hysbh: this.search.hysbh
-      // };
       this.loading = true;
-      getCustomerList(this.queryParams).then((res) => {
-        this.customerList = res.data.customerList;
+      getContactsList().then((res) => {
+        console.log(res);
+        this.contactsList = res.data.contactsList;
+        console.log(this.contactsList, "contactsList");
         this.loading = false;
       });
     },
-    addCustomer() {
-      this.addCustomerFormVisible = true;
+    addContacts() {
+      this.addContactsFormVisible = true;
     },
-    addCustomerSubmit() {
-      //   this.addCustomerForm.time = new Date().toLocaleDateString();
+    addContactsSubmit() {
+      //   this.addContactsForm.time = new Date().toLocaleDateString();
       let param = {
-        name: this.addCustomerForm.name,
-        phone: this.addCustomerForm.phone,
-        remarks: this.addCustomerForm.remarks,
-        // createTime: dateFtt("yyyy-MM-dd hh:mm:ss", new Date()),
+        name: this.addContactsForm.name,
+        phone: this.addContactsForm.phone,
+        remarks: this.addContactsForm.remarks,
       };
-      addCustomer(param).then((res) => {
+      addContacts(param).then((res) => {
         const statusCode = res.code;
         if (statusCode == 200) {
           this.$message({
@@ -248,7 +159,7 @@ export default {
           });
         }
       });
-      this.addCustomerFormVisible = false;
+      this.addContactsFormVisible = false;
     },
     handleDel(row) {
       var obj = {
@@ -258,7 +169,7 @@ export default {
         type: "warning",
       })
         .then(() => {
-          delCustomer(obj).then((res) => {
+          delContacts(obj).then((res) => {
             const statusCode = res.code;
             if (statusCode == 200) {
               this.$message({
@@ -284,7 +195,6 @@ export default {
       this.editForm.name = row.name;
       this.editForm.phone = row.phone;
       this.editForm.remarks = row.remarks;
-      this.editForm.createTime = row.createTime;
     },
     editSubmit: function () {
       this.editLoading = true;
@@ -294,18 +204,17 @@ export default {
         phone: this.editForm.phone,
         remarks: this.editForm.remarks,
       };
-      editCustomer(obj).then((res) => {
+      console.log(obj);
+      editContacts(obj).then((res) => {
         this.editLoading = false;
         this.$message({
           message: res.message,
           type: "success",
         });
-        // this.$refs['editForm'].resetFields();
+        console.log(obj, "1111");
         this.editFormVisible = false;
         this.getTableData();
       });
-      // 	}
-      // });
     },
     cancel() {
       this.editFormVisible = false;
@@ -313,23 +222,10 @@ export default {
     cancelNotice() {
       this.noticeFormVisible = false;
     },
-    //每页条数改变时触发 选择一页显示多少行
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
-      this.currentPage = 1;
-      this.pageSize = val;
-    },
-    //当前页改变时触发 跳转其他页
-    handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
-      this.currentPage = val;
-    },
   },
   mounted() {
-    var user = sessionStorage.getItem("user");
-    user = JSON.parse(user);
-    user.permission == "1" ? (this.ifAdmin = true) : (this.ifAdmin = false);
     this.getTableData();
+    this.getUserData();
   },
 };
 </script>

@@ -12,7 +12,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ * 项目对象
  * </p>
  *
  * @author jjou
@@ -31,7 +31,7 @@ public class Project implements Serializable {
     /**
      * 项目名称
      */
-    private String name;
+    private String title;
 
     /**
      * 项目描述
@@ -46,8 +46,28 @@ public class Project implements Serializable {
     /**
      * 项目负责人
      */
-    @TableField("user_id")
-    private Integer userId;
+    @TableField("user_name")
+    private String userName;
+
+    /**
+     * 项目申请时间
+     */
+    private String applyTime;
+
+    /**
+     * 项目创建时间
+     */
+    private String createTime;
+
+    /**
+     * 项目审批时间
+     */
+    private String approveTime;
+
+    /**
+     * 状态 2 未通过，1 通过，0 未审核
+     */
+    private Integer status;
 
     /**
      * 逻辑删除 1（true）已删除， 0（false）未删除

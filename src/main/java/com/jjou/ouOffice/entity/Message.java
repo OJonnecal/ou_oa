@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ * 消息通知对象
  * </p>
  *
  * @author jjou

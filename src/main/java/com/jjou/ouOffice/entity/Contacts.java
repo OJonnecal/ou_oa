@@ -9,7 +9,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ * 通讯录对象
  * </p>
  *
  * @author jjou
@@ -18,8 +18,8 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("address_list")
-public class AddressList implements Serializable {
+@TableName("contacts")
+public class Contacts implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -33,10 +33,22 @@ public class AddressList implements Serializable {
     private Integer userId;
 
     /**
-     * 联系人id
+     * 联系人姓名
      */
-    @TableField("contacts_id")
-    private Integer contactsId;
+    @TableField("name")
+    private String name;
+
+    /**
+     * 联系人电话
+     */
+    @TableField("phone")
+    private String phone;
+
+    /**
+     * 备注
+     */
+    @TableField("remarks")
+    private String remarks;
 
     @TableField("is_deleted")
     @TableLogic

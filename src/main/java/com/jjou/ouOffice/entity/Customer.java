@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
@@ -12,7 +13,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ * 客户对象
  * </p>
  *
  * @author jjou
@@ -38,9 +39,18 @@ public class Customer implements Serializable {
      */
     private String phone;
 
+    /**
+     * 客户创建时间
+     */
+    private String createTime;
+
+    /**
+     * 客户备注
+     */
+    private String remarks;
+
     @TableField("is_deleted")
     @TableLogic
     private Integer isDeleted;
-
 
 }

@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ * 报销申请对象
  * </p>
  *
  * @author jjou
@@ -40,15 +40,26 @@ public class Expense implements Serializable {
     private String description;
 
     /**
+     * 报销金额
+     */
+    private Integer amount;
+
+    /**
      * 报销申请时间
      */
     @TableField("create_time")
-    private LocalDateTime createTime;
+    private String createTime;
 
     /**
-     * 申请状态
+     * 报销审批时间
      */
-    private String status;
+    @TableField("approve_time")
+    private String approveTime;
+
+    /**
+     * 申请状态 2 未通过，1 通过，0 未审核
+     */
+    private Integer status;
 
     /**
      * 申请人id

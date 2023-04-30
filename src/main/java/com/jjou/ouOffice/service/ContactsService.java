@@ -1,7 +1,7 @@
 package com.jjou.ouOffice.service;
 
 import com.jjou.ouOffice.common.Result;
-import com.jjou.ouOffice.entity.User;
+import com.jjou.ouOffice.entity.Contacts;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -12,11 +12,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author jjou
  * @since 2023-01-03
  */
-public interface UserService extends IService<User> {
+public interface ContactsService extends IService<Contacts> {
 
-    Result login(User user);
-
-    Result addUser(User user);
-
-    Result getUserList(User user);
+    Result addContacts(Contacts contacts);
 }
