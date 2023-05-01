@@ -67,7 +67,7 @@
         <el-form-item label="会议室名称" prop="title">
           <el-input v-model="addHysForm.name"></el-input>
         </el-form-item>
-        <el-form-item label="会议室状态">
+        <el-form-item label="状态">
           <el-select v-model="addHysForm.status">
             <el-option label="使用中" value="使用中"></el-option>
             <el-option label="空闲" value="空闲"></el-option>
@@ -113,7 +113,7 @@
         </el-table-column>
         <el-table-column
           prop="status"
-          label="会议室状态"
+          label="状态"
           width="200"
           sortable
           align="center"

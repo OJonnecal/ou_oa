@@ -57,7 +57,7 @@ let routes = [
         children: [
             // { path: '/Approve', component: Approve, name: '请假/审批' },
             // { path: '/Log', component: Log, name: '日志系统' },
-            { path: '/Meetingroom', component: Meetingroom, name: '会议管理' },
+            { path: '/Meetingroom', component: Meetingroom, name: '会议室管理' },
             { path: '/Customer', component: Customer, name: '客户管理' },
             { path: '/User', component: User, name: '用户管理' },
             { path: '/Project', component: Project, name: '项目管理' },
@@ -66,7 +66,7 @@ let routes = [
     {
         path: '/',
         component: Home,
-        name: '个人办公',
+        name: '个人中心',
         iconCls: 'el-icon-s-custom',//图标样式class
         children: [
             { path: '/Clockin', component: Clockin, name: '考勤列表' },

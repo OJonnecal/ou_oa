@@ -2,7 +2,6 @@ package com.jjou.ouOffice.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jjou.ouOffice.common.Result;
-import com.jjou.ouOffice.entity.Customer;
 import com.jjou.ouOffice.entity.Project;
 import com.jjou.ouOffice.mapper.ProjectMapper;
 import com.jjou.ouOffice.service.ProjectService;
@@ -12,7 +11,6 @@ import org.springframework.util.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 /**
  * <p>

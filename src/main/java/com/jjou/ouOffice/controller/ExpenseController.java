@@ -4,7 +4,6 @@ package com.jjou.ouOffice.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jjou.ouOffice.common.Result;
 import com.jjou.ouOffice.entity.Expense;
-import com.jjou.ouOffice.entity.Leave;
 import com.jjou.ouOffice.service.ExpenseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

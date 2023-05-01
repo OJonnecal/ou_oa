@@ -74,16 +74,13 @@ export default {
       var _this = this;
       this.$refs.ruleForm2.validate((valid) => {
         if (valid) {
-          //_this.$router.replace('/table');
           this.logining = true;
-          //NProgress.start();
           var loginParams = {
             account: this.ruleForm2.account,
             pwd: this.ruleForm2.checkPass,
           };
           requestLogin(loginParams).then((data) => {
             this.logining = false;
-            //NProgress.done();
             const statusCode = data.code;
             const user = data.data.user;
             if (statusCode !== 200) {

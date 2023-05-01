@@ -3,7 +3,6 @@ package com.jjou.ouOffice.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jjou.ouOffice.common.Result;
-import com.jjou.ouOffice.entity.Assignment;
 import com.jjou.ouOffice.entity.Project;
 import com.jjou.ouOffice.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
 
 /**
  * 项目控制器

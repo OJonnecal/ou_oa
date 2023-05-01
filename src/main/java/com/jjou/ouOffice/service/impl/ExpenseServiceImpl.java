@@ -2,7 +2,6 @@ package com.jjou.ouOffice.service.impl;
 
 import com.jjou.ouOffice.common.Result;
 import com.jjou.ouOffice.entity.Expense;
-import com.jjou.ouOffice.entity.Leave;
 import com.jjou.ouOffice.mapper.ExpenseMapper;
 import com.jjou.ouOffice.service.ExpenseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

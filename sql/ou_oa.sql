@@ -11,7 +11,7 @@
  Target Server Version : 80028
  File Encoding         : 65001
 
- Date: 29/04/2023 12:26:38
+ Date: 01/05/2023 12:18:38
 */
 
 SET NAMES utf8mb4;
@@ -33,7 +33,7 @@ CREATE TABLE `assignment`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `user_id`(`user_id`) USING BTREE,
   CONSTRAINT `assignment_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '任务清单表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '任务清单表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of assignment
@@ -104,7 +104,7 @@ CREATE TABLE `customer`  (
   `create_time` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '客户创建时间',
   `remarks` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '客户备注',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '客户表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '客户表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of customer
@@ -155,7 +155,7 @@ CREATE TABLE `leave`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `user_id`(`user_id`) USING BTREE,
   CONSTRAINT `leave_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '请假申请表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '请假申请表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of leave
@@ -169,26 +169,6 @@ INSERT INTO `leave` VALUES (25, '1', '1', NULL, NULL, 1, '2023-04-27 11:04:42', 
 INSERT INTO `leave` VALUES (26, '1', '1', '2023-04-05 16:00:00', '2023-04-06 16:00:00', 2, '2023-04-27 17:01:12', '2023-04-29 11:36:59', 8, 0);
 INSERT INTO `leave` VALUES (27, '9', '9', '2023-04-03 16:00:00', '2023-04-04 16:00:00', 0, '2023-04-27 17:03:28', NULL, 9, 0);
 INSERT INTO `leave` VALUES (28, '1', '1', '2023-04-04 16:00:00', '2023-04-05 16:00:00', 1, '2023-04-29 11:29:55', '2023-04-29 11:36:54', 8, 0);
-
--- ----------------------------
--- Table structure for meeting_notice
--- ----------------------------
-DROP TABLE IF EXISTS `meeting_notice`;
-CREATE TABLE `meeting_notice`  (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '会议id',
-  `content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '会议内容',
-  `begin_time` datetime NULL DEFAULT NULL COMMENT '会议开始时间',
-  `end_time` datetime NULL DEFAULT NULL COMMENT '会议结束时间',
-  `place` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '会议地点',
-  `notified_person_id` int NULL DEFAULT NULL COMMENT '会议被通知人id',
-  `notifier_id` int NULL DEFAULT NULL COMMENT '会议通知人id',
-  `is_deleted` tinyint NULL DEFAULT 0 COMMENT '逻辑删除 1（true）已删除， 0（false）未删除',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '会议通知表' ROW_FORMAT = COMPACT;
-
--- ----------------------------
--- Records of meeting_notice
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for meeting_room
@@ -210,26 +190,6 @@ INSERT INTO `meeting_room` VALUES (1, '第一会议室', '空闲', '', 0);
 INSERT INTO `meeting_room` VALUES (2, '第二会议室', '使用中', NULL, 0);
 
 -- ----------------------------
--- Table structure for message
--- ----------------------------
-DROP TABLE IF EXISTS `message`;
-CREATE TABLE `message`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int NULL DEFAULT NULL COMMENT '消息所属用户id',
-  `title` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '消息标题',
-  `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '消息内容',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '消息创建时间',
-  `is_deleted` tinyint NULL DEFAULT 0,
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `user_id`(`user_id`) USING BTREE,
-  CONSTRAINT `message_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '消息通知表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of message
--- ----------------------------
-
--- ----------------------------
 -- Table structure for notice
 -- ----------------------------
 DROP TABLE IF EXISTS `notice`;
@@ -246,8 +206,12 @@ CREATE TABLE `notice`  (
 -- ----------------------------
 -- Records of notice
 -- ----------------------------
-INSERT INTO `notice` VALUES (10, '加班', '加班', '2020-11-03 00:00:00', 1, 0);
-INSERT INTO `notice` VALUES (11, '放假通知', '明天全体放假！', '2022-12-19 00:00:00', 1, 0);
+INSERT INTO `notice` VALUES (10, '加班', '加班', '2020-11-03 09:00:00', 1, 0);
+INSERT INTO `notice` VALUES (11, '放假通知', '明天全体放假！', '2022-12-19 01:02:00', 1, 0);
+INSERT INTO `notice` VALUES (55, '1', '1', '2023-05-01 00:00:00', 1, 1);
+INSERT INTO `notice` VALUES (56, '1', '1', '2023-05-01 08:00:00', 1, 1);
+INSERT INTO `notice` VALUES (57, '1', '1', '2023-05-01 08:00:00', 1, 1);
+INSERT INTO `notice` VALUES (58, '2', '2', '2023-05-01 12:00:40', 1, 1);
 
 -- ----------------------------
 -- Table structure for project
@@ -322,7 +286,7 @@ CREATE TABLE `top_contacts`  (
 -- Records of top_contacts
 -- ----------------------------
 INSERT INTO `top_contacts` VALUES (1, '欧家俊', '15915095796', '294557741@qq.com', 0);
-INSERT INTO `top_contacts` VALUES (6, '莫子晴', '19854571208', '', 0);
+INSERT INTO `top_contacts` VALUES (6, '莫子晴', '19854571208', '111', 0);
 
 -- ----------------------------
 -- Table structure for user
@@ -346,7 +310,7 @@ CREATE TABLE `user`  (
 -- Records of user
 -- ----------------------------
 INSERT INTO `user` VALUES (1, 'admin', 'admin', '1', NULL, NULL, '经理', 1, NULL, 0);
-INSERT INTO `user` VALUES (3, 'tony', 'tony', '3', '111', '111', '员工', 1, NULL, 0);
+INSERT INTO `user` VALUES (3, 'tony', 'tony', '3', '111', '111', '员工', 2, NULL, 0);
 INSERT INTO `user` VALUES (8, '欧家俊', 'ojj', '123456', '15915095796', '294557741@qq.com', '开发人员', 1, '2023-04-24 09:11:06', 0);
 INSERT INTO `user` VALUES (9, '莫子晴', 'mzq', '123456', '111', '111', '董事长', 2, '2023-04-25 11:49:41', 0);
 

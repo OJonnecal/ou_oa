@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
 
-import java.util.List;
-
-
 /**
  * 用户控制器
  *

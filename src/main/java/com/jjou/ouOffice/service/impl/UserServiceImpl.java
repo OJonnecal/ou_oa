@@ -2,7 +2,6 @@ package com.jjou.ouOffice.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jjou.ouOffice.common.Result;
-import com.jjou.ouOffice.entity.MeetingRoom;
 import com.jjou.ouOffice.entity.User;
 import com.jjou.ouOffice.mapper.UserMapper;
 import com.jjou.ouOffice.service.UserService;

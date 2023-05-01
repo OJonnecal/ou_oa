@@ -4,7 +4,6 @@ package com.jjou.ouOffice.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jjou.ouOffice.common.Result;
 import com.jjou.ouOffice.entity.Contacts;
-import com.jjou.ouOffice.entity.Customer;
 import com.jjou.ouOffice.service.ContactsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

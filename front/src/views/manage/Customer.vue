@@ -214,9 +214,6 @@ export default {
     },
     //获取客户列表
     getTableData: function () {
-      // let obj = {
-      // 	hysbh: this.search.hysbh
-      // };
       this.loading = true;
       getCustomerList(this.queryParams).then((res) => {
         this.customerList = res.data.customerList;
