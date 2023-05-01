@@ -1,6 +1,7 @@
 package com.jjou.ouOffice.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jjou.ouOffice.common.Result;
 import com.jjou.ouOffice.entity.Notice;
 import com.jjou.ouOffice.service.NoticeService;
@@ -27,9 +28,9 @@ public class NoticeController {
     @PostMapping("/getNoticeList")
     @ResponseBody
     public Result getNoticeList(){
-        List<Notice> list = noticeService.list();
-
-        return Result.ok().data("noticeList", list);
+        QueryWrapper<Notice> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("time");
+        return Result.ok().data("noticeList", noticeService.list(wrapper));
     }
 
     @PostMapping("/addNotice")

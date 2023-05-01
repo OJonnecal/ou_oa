@@ -7,6 +7,8 @@ import com.jjou.ouOffice.service.NoticeService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 /**
  * <p>
  *  服务实现类
@@ -23,6 +25,7 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
         if (notice.getTitle().isEmpty() || notice.getTitle() == null) {
             return Result.error().message("公告名称不能为空");
         }
+        notice.setTime(new Date());
         if(save(notice)){
             return Result.ok().message("新增公告成功");
         }

@@ -11,6 +11,7 @@
     >
     <el-form
       ref="queryForm"
+      size="small"
       :inline="true"
       :model="queryParams"
       label-width="68px"
@@ -300,18 +301,12 @@ export default {
           message: res.message,
           type: "success",
         });
-        // this.$refs['editForm'].resetFields();
         this.editFormVisible = false;
         this.getTableData();
       });
-      // 	}
-      // });
     },
     cancel() {
       this.editFormVisible = false;
-    },
-    cancelNotice() {
-      this.noticeFormVisible = false;
     },
     //每页条数改变时触发 选择一页显示多少行
     handleSizeChange(val) {

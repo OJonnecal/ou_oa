@@ -1,7 +1,9 @@
 package com.jjou.ouOffice.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jjou.ouOffice.common.Result;
+import com.jjou.ouOffice.entity.Customer;
 import com.jjou.ouOffice.entity.TopContacts;
 import com.jjou.ouOffice.service.TopContactsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +50,20 @@ public class TopContactsController {
             return Result.ok().message("删除常用联系人成功");
         }else{
             return Result.error().message("删除常用联系人失败");
+        }
+    }
+
+    @PostMapping("/updateTopContacts")
+    @ResponseBody
+    public Result updateTopContacts(@RequestBody TopContacts topContacts){
+        QueryWrapper<TopContacts> wrapper = new QueryWrapper<>();
+        wrapper.eq("id", topContacts.getId());
+        boolean isSuccess = topContactsService.update(topContacts, wrapper);
+
+        if (isSuccess){
+            return Result.ok().message("修改成功");
+        }else{
+            return Result.error().message("修改失败");
         }
     }
 

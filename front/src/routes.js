@@ -2,7 +2,7 @@ import Login from './views/Login.vue'
 import NotFound from './views/404.vue'
 import Home from './views/Home.vue'
 import Main from './views/Main.vue'
-import information from './views/information.vue'
+import Information from './views/Information.vue'
 import Meetingroom from './views/manage/Meetingroom.vue'
 import Customer from './views/manage/Customer.vue'
 import User from './views/manage/User.vue'
@@ -36,7 +36,7 @@ let routes = [
         iconCls: 'el-icon-news',
         leaf: true,//只有一个节点
         children: [
-            { path: '/information', component: information, name: '信息中心' }
+            { path: '/Information', component: Information, name: '信息中心' }
         ]
     },
     // {
