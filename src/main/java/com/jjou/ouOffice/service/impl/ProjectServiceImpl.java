@@ -66,13 +66,18 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
 
     @Override
     public Result updateProject(Project project) {
-        QueryWrapper<Project> wrapper = new QueryWrapper<>();
-        wrapper.eq("id", project.getId());
+        if(project.getTitle() == null || StringUtils.isEmpty(project.getTitle())){
+            return Result.error().message("项目名称不能为空！");
+        }
+        if(project.getUserName() == null || StringUtils.isEmpty(project.getUserName())){
+            return Result.error().message("项目负责人不能为空！");
+        }
         if(project.getRate() != null && (project.getRate() < 0 || project.getRate() > 100)){
             return Result.error().message("项目进度范围为0-100");
         }
-        boolean isSuccess = update(project, wrapper);
-        if (isSuccess){
+        QueryWrapper<Project> wrapper = new QueryWrapper<>();
+        wrapper.eq("id", project.getId());
+        if (update(project, wrapper)){
             return Result.ok().message("修改成功");
         }else{
             return Result.error().message("修改失败");

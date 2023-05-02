@@ -50,7 +50,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             return Result.error().message("用户职位不能为空！");
         }
         if(query().eq("name", user.getName()).count() > 0){
-            return Result.error().message("用户姓名已存在！");
+            return Result.error().message("用户昵称不能重复！");
         }
 
         Date date = new Date();
@@ -74,5 +74,28 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         wrapper.orderByDesc("create_time");
         return Result.ok().data("userList", list(wrapper));
+    }
+
+    @Override
+    public Result updateUser(User user) {
+        if(user.getName() == null || StringUtils.isEmpty(user.getName())){
+            return Result.error().message("用户账号不能为空！");
+        }
+        if(user.getPwd() == null || StringUtils.isEmpty(user.getPwd())){
+            return Result.error().message("用户密码不能为空！");
+        }
+        if(user.getPosition() == null || StringUtils.isEmpty(user.getPosition())){
+            return Result.error().message("用户职位不能为空！");
+        }
+        if(query().eq("name", user.getName()).count() > 0){
+            return Result.error().message("用户昵称不能重复！");
+        }
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.eq("id", user.getId());
+        if (update(user, wrapper)){
+            return Result.ok().message("修改成功");
+        }else{
+            return Result.error().message("修改失败");
+        }
     }
 }

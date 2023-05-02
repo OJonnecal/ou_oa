@@ -1,5 +1,6 @@
 package com.jjou.ouOffice.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jjou.ouOffice.common.Result;
 import com.jjou.ouOffice.entity.Contacts;
 import com.jjou.ouOffice.mapper.ContactsMapper;
@@ -27,7 +28,30 @@ public class ContactsServiceImpl extends ServiceImpl<ContactsMapper, Contacts> i
         if(contacts.getPhone() == null || StringUtils.isEmpty(contacts.getPhone())){
             return Result.error().message("联系人手机号不能为空！");
         }
+        if(query().eq("name", contacts.getName()).count() > 0){
+            return Result.error().message("联系人姓名不能重复！");
+        }
         save(contacts);
         return Result.ok().message("添加联系人成功！");
+    }
+
+    @Override
+    public Result updateContacts(Contacts contacts) {
+        if(contacts.getName() == null || StringUtils.isEmpty(contacts.getName())){
+            return Result.error().message("联系人姓名不能为空！");
+        }
+        if(contacts.getPhone() == null || StringUtils.isEmpty(contacts.getPhone())){
+            return Result.error().message("联系人手机号不能为空！");
+        }
+        if(query().eq("name", contacts.getName()).count() > 0){
+            return Result.error().message("联系人姓名不能重复！");
+        }
+        QueryWrapper<Contacts> wrapper = new QueryWrapper<>();
+        wrapper.eq("id", contacts.getId());
+        if (update(contacts, wrapper)){
+            return Result.ok().message("修改成功");
+        }else{
+            return Result.error().message("修改失败");
+        }
     }
 }

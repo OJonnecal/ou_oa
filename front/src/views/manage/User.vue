@@ -341,12 +341,19 @@ export default {
       console.log(obj);
       editUser(obj).then((res) => {
         this.editLoading = false;
-        this.$message({
-          message: res.message,
-          type: "success",
-        });
-        console.log(obj, "1111");
-        1111;
+        const statusCode = res.code;
+        if (statusCode == 200) {
+          this.$message({
+            message: res.message,
+            type: "success",
+          });
+          this.getTableData();
+        } else {
+          this.$message({
+            message: res.message,
+            type: "error",
+          });
+        }
         this.editFormVisible = false;
         this.getTableData();
       });

@@ -161,7 +161,7 @@
     >
       <el-form :model="editForm" label-width="100px" ref="editForm">
         <el-form-item label="会议室名称" prop="name">
-          <el-input v-model="editForm.name" :disabled="read"></el-input>
+          <el-input v-model="editForm.name"></el-input>
         </el-form-item>
         <el-form-item label="会议室状态" prop="status">
           <el-select v-model="editForm.status">
@@ -211,6 +211,7 @@ export default {
       editFormVisible: false,
       meetingroomList: [],
       editForm: {
+        id: "",
         name: "",
         status: "",
         remarks: "",
@@ -309,6 +310,7 @@ export default {
     //编辑按钮触发事件
     handleEdit: function (row) {
       this.editFormVisible = true;
+      this.editForm.id = row.id;
       this.editForm.name = row.name;
       this.editForm.status = row.status;
       this.editForm.remarks = row.remarks;
@@ -316,17 +318,26 @@ export default {
     editSubmit: function () {
       this.editLoading = true;
       var obj = {
+        id: this.editForm.id,
         name: this.editForm.name,
         status: this.editForm.status,
         remarks: this.editForm.remarks,
       };
-      console.log(obj);
       editHys(obj).then((res) => {
         this.editLoading = false;
-        this.$message({
-          message: res.message,
-          type: "success",
-        });
+        const statusCode = res.code;
+        if (statusCode == 200) {
+          this.$message({
+            message: res.message,
+            type: "success",
+          });
+          this.getTableData();
+        } else {
+          this.$message({
+            message: res.message,
+            type: "error",
+          });
+        }
         this.editFormVisible = false;
         this.getTableData();
       });

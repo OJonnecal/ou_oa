@@ -209,7 +209,6 @@ export default {
         title: "",
         userName: "",
       },
-
       addGgFormVisible: false,
       addTopContactsFormVisible: false,
     };
@@ -360,10 +359,19 @@ export default {
       };
       editTopContacts(obj).then((res) => {
         this.editLoading = false;
-        this.$message({
-          message: res.message,
-          type: "success",
-        });
+        const statusCode = res.code;
+        if (statusCode == 200) {
+          this.$message({
+            message: res.message,
+            type: "success",
+          });
+          this.getTableData();
+        } else {
+          this.$message({
+            message: res.message,
+            type: "error",
+          });
+        }
         this.editFormVisible = false;
         this.getTopContacts();
       });

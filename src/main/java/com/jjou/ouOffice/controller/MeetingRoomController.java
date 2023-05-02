@@ -37,15 +37,8 @@ public class MeetingRoomController {
     @PostMapping("/updateMeetingRoom")
     @ResponseBody
     public Result updateMeetingRoom(@RequestBody MeetingRoom meetingRoom){
-        QueryWrapper<MeetingRoom> wrapper = new QueryWrapper<>();
-        wrapper.eq("name", meetingRoom.getName());
-        boolean isSuccess = meetingRoomService.update(meetingRoom, wrapper);
+        return meetingRoomService.updateMeetingRoom(meetingRoom);
 
-        if (isSuccess){
-            return Result.ok().message("修改成功");
-        }else{
-            return Result.error().message("修改失败");
-        }
     }
 
     @PostMapping("/delMeetingRoom")

@@ -29,7 +29,6 @@
           v-model="queryParams.phone"
           clearable
           placeholder="请输入客户手机号"
-
           @keyup.enter="handleQuery"
         />
       </el-form-item>
@@ -46,10 +45,16 @@
         ref="addCustomerForm"
       >
         <el-form-item label="姓名" prop="title">
-          <el-input v-model="addCustomerForm.name" placeholder="姓名不能为空"></el-input>
+          <el-input
+            v-model="addCustomerForm.name"
+            placeholder="姓名不能为空"
+          ></el-input>
         </el-form-item>
         <el-form-item label="手机号" prop="title">
-          <el-input v-model="addCustomerForm.phone" placeholder="手机号不能为空"></el-input>
+          <el-input
+            v-model="addCustomerForm.phone"
+            placeholder="手机号不能为空"
+          ></el-input>
         </el-form-item>
         <el-form-item label="备注" prop="title">
           <el-input v-model="addCustomerForm.remarks"></el-input>
@@ -294,10 +299,19 @@ export default {
       };
       editCustomer(obj).then((res) => {
         this.editLoading = false;
-        this.$message({
-          message: res.message,
-          type: "success",
-        });
+        const statusCode = res.code;
+        if (statusCode == 200) {
+          this.$message({
+            message: res.message,
+            type: "success",
+          });
+          this.getTableData();
+        } else {
+          this.$message({
+            message: res.message,
+            type: "error",
+          });
+        }
         this.editFormVisible = false;
         this.getTableData();
       });

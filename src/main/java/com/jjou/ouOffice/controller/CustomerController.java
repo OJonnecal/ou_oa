@@ -52,15 +52,8 @@ public class CustomerController {
     @PostMapping("/updateCustomer")
     @ResponseBody
     public Result updateCustomer(@RequestBody Customer customer){
-        QueryWrapper<Customer> wrapper = new QueryWrapper<>();
-        wrapper.eq("id", customer.getId());
-        boolean isSuccess = customerService.update(customer, wrapper);
+        return customerService.updateCustomer(customer);
 
-        if (isSuccess){
-            return Result.ok().message("修改成功");
-        }else{
-            return Result.error().message("修改失败");
-        }
     }
 
 }

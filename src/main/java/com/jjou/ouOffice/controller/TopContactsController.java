@@ -55,15 +55,7 @@ public class TopContactsController {
     @PostMapping("/updateTopContacts")
     @ResponseBody
     public Result updateTopContacts(@RequestBody TopContacts topContacts){
-        QueryWrapper<TopContacts> wrapper = new QueryWrapper<>();
-        wrapper.eq("id", topContacts.getId());
-        boolean isSuccess = topContactsService.update(topContacts, wrapper);
-
-        if (isSuccess){
-            return Result.ok().message("修改成功");
-        }else{
-            return Result.error().message("修改失败");
-        }
+        return topContactsService.updateTopContacts(topContacts);
     }
 
 }

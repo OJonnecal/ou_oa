@@ -56,15 +56,7 @@ public class UserController {
     @PostMapping("/updateUser")
     @ResponseBody
     public Result updateUser(@RequestBody User user) {
-        QueryWrapper<User> wrapper = new QueryWrapper<>();
-        wrapper.eq("id", user.getId());
-
-        boolean isSuccess = userService.update(user, wrapper);
-        if (isSuccess){
-            return Result.ok().message("修改成功");
-        }else{
-            return Result.error().message("修改失败");
-        }
+        return userService.updateUser(user);
     }
 }
 

@@ -50,4 +50,25 @@ public class MeetingRoomServiceImpl extends ServiceImpl<MeetingRoomMapper, Meeti
         }
         return Result.ok().data("meetingRoomList", list(wrapper));
     }
+
+    @Override
+    public Result updateMeetingRoom(MeetingRoom meetingRoom) {
+        if(meetingRoom.getName() == null || meetingRoom.getName().isEmpty()){
+            return Result.error().message("会议室名称不能为空");
+        }
+        Integer count = query().eq("name", meetingRoom.getName()).count();
+        if(count >= 1){
+            return Result.error().message("会议室名称不能重复");
+        }
+        if(meetingRoom.getStatus() == null || meetingRoom.getStatus().isEmpty()){
+            return Result.error().message("会议室状态不能为空");
+        }
+        QueryWrapper<MeetingRoom> wrapper = new QueryWrapper<>();
+        wrapper.eq("id", meetingRoom.getId());
+        if (update(meetingRoom, wrapper)){
+            return Result.ok().message("修改成功");
+        }else{
+            return Result.error().message("修改失败");
+        }
+    }
 }
