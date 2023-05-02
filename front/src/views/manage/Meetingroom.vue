@@ -41,15 +41,15 @@
         <el-input
           v-model="queryParams.name"
           clearable
-          placeholder="请输入会议室名称"
           @keyup.enter.native="handleQuery"
+          placeholder="请输入会议室名称"
         />
       </el-form-item>
       <el-form-item label="状态" prop="status">
         <el-select
           v-model="queryParams.status"
           :clearable="true"
-          placeholder="请选择"
+          placeholder="会议室状态"
         >
           <el-option key="1" label="使用中" value="使用中" />
           <el-option key="2" label="空闲" value="空闲" />
@@ -65,10 +65,10 @@
     <el-dialog title="添加会议室" :visible.sync="addHysFormVisible">
       <el-form :model="addHysForm" label-width="100px" ref="addHysForm">
         <el-form-item label="会议室名称" prop="title">
-          <el-input v-model="addHysForm.name"></el-input>
+          <el-input v-model="addHysForm.name" placeholder="会议室名称不能为空"></el-input>
         </el-form-item>
         <el-form-item label="状态">
-          <el-select v-model="addHysForm.status">
+          <el-select v-model="addHysForm.status" placeholder="状态不能为空">
             <el-option label="使用中" value="使用中"></el-option>
             <el-option label="空闲" value="空闲"></el-option>
             <el-option label="维修中" value="维修中"></el-option>

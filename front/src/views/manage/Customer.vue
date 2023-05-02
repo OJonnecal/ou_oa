@@ -46,10 +46,10 @@
         ref="addCustomerForm"
       >
         <el-form-item label="姓名" prop="title">
-          <el-input v-model="addCustomerForm.name"></el-input>
+          <el-input v-model="addCustomerForm.name" placeholder="姓名不能为空"></el-input>
         </el-form-item>
         <el-form-item label="手机号" prop="title">
-          <el-input v-model="addCustomerForm.phone"></el-input>
+          <el-input v-model="addCustomerForm.phone" placeholder="手机号不能为空"></el-input>
         </el-form-item>
         <el-form-item label="备注" prop="title">
           <el-input v-model="addCustomerForm.remarks"></el-input>

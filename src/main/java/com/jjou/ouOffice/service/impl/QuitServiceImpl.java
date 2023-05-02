@@ -27,6 +27,9 @@ public class QuitServiceImpl extends ServiceImpl<QuitMapper, Quit> implements Qu
         if(quit.getReason() == null || StringUtils.isEmpty(quit.getReason())){
             return Result.error().message("离职原因不能为空！");
         }
+        if(quit.getQuitTime() == null || StringUtils.isEmpty(quit.getQuitTime())){
+            return Result.error().message("离职时间不能为空！");
+        }
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         quit.setCreateTime(sdf.format(date));

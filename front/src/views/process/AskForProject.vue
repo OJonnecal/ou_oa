@@ -163,7 +163,7 @@
     >
       <el-form :model="addForm" label-width="100px" ref="addForm">
         <el-form-item label="项目名称" prop="title">
-          <el-input v-model="addForm.title"></el-input>
+          <el-input v-model="addForm.title" placeholder="项目名称不能为空"></el-input>
         </el-form-item>
         <el-form-item label="描述" prop="description">
           <el-input type="textarea" v-model="addForm.description"></el-input>

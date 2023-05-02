@@ -13,7 +13,7 @@
         type="text"
         v-model="ruleForm2.account"
         auto-complete="off"
-        placeholder="账号"
+        placeholder="请输入账号"
         @keyup.enter.native="handleSubmit2"
       ></el-input>
     </el-form-item>
@@ -22,13 +22,13 @@
         type="password"
         v-model="ruleForm2.checkPass"
         auto-complete="off"
-        placeholder="密码"
+        placeholder="请输入密码"
         @keyup.enter.native="handleSubmit2"
       ></el-input>
     </el-form-item>
-    <el-checkbox v-model="checked" checked class="remember"
+    <!-- <el-checkbox v-model="checked" checked class="remember"
       >记住密码</el-checkbox
-    >
+    > -->
     <el-form-item style="width: 100%">
       <el-button
         type="primary"
@@ -50,8 +50,8 @@ export default {
     return {
       logining: false,
       ruleForm2: {
-        account: "ojj",
-        checkPass: "123456",
+        account: "",
+        checkPass: "",
       },
       rules2: {
         account: [
@@ -94,11 +94,10 @@ export default {
                 message: data.message,
                 type: "success",
               });
-              this.$router.push({ path: "/information" });
+              this.$router.push({ path: "/Information" });
             }
           });
         } else {
-          console.log("error submit!!");
           return false;
         }
       });

@@ -248,13 +248,13 @@
     >
       <el-form :model="addForm" label-width="100px" ref="addForm">
         <el-form-item label="请假原因" prop="title">
-          <el-input v-model="addForm.reason"></el-input>
+          <el-input v-model="addForm.reason" placeholder="请假原因不能为空"></el-input>
         </el-form-item>
         <el-form-item label="描述" prop="description">
           <el-input type="textarea" v-model="addForm.description"></el-input>
         </el-form-item>
         <el-form-item>
-          <span class="demonstration">默认</span>
+          <span class="demonstration">请假时间</span>
           <el-date-picker
             v-model="leaveTime"
             type="datetimerange"

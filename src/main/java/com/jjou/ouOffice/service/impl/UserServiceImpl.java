@@ -27,7 +27,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public Result login(User user) {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.eq("account", user.getAccount());
-//        User loginUser = baseMapper.selectById(user.getId());
         User loginUser = baseMapper.selectOne(wrapper);
         if(loginUser == null){
             return Result.error().message("账号不存在！");
