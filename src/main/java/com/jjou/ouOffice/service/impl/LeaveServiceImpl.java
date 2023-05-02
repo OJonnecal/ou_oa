@@ -39,9 +39,7 @@ public class LeaveServiceImpl extends ServiceImpl<LeaveMapper, Leave> implements
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         leave.setApproveTime((sdf.format(date)));
-        boolean isSuccess = updateById(leave);
-
-        if (isSuccess) {
+        if (updateById(leave)) {
             if(leave.getStatus() == 1) {
                 return Result.ok().message("请假申请通过！");
             }else{

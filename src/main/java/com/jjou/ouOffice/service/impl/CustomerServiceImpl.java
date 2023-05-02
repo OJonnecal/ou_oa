@@ -44,10 +44,12 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
     @Override
     public Result getCustomerList(Customer customer) {
         QueryWrapper<Customer> wrapper = new QueryWrapper<>();
-        if (customer != null && customer.getName() != null && !StringUtils.isEmpty(customer.getName())){
+        if (customer != null && customer.getName() != null
+                && !StringUtils.isEmpty(customer.getName())){
             wrapper.like("name", customer.getName());
         }
-        if(customer != null && customer.getPhone() != null && !StringUtils.isEmpty(customer.getPhone())){
+        if(customer != null && customer.getPhone() != null
+                && !StringUtils.isEmpty(customer.getPhone())){
             wrapper.like("phone", customer.getPhone());
         }
         return Result.ok().data("customerList", list(wrapper));
@@ -66,7 +68,6 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
         }
         QueryWrapper<Customer> wrapper = new QueryWrapper<>();
         wrapper.eq("id", customer.getId());
-
         if (update(customer, wrapper)){
             return Result.ok().message("修改成功");
         }else{
