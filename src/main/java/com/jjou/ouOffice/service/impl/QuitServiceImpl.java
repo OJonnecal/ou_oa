@@ -54,9 +54,9 @@ public class QuitServiceImpl extends ServiceImpl<QuitMapper, Quit> implements Qu
 
         if (isSuccess) {
             if(quit.getStatus() == 1) {
-                return Result.ok().message("离职申请通过！");
+                return Result.ok().message("离职申请通过审批！");
             }else{
-                return Result.ok().message("离职申请拒绝！");
+                return Result.ok().message("离职申请未通过审批！");
             }
         }else{
             return Result.error().message("审批失败！");

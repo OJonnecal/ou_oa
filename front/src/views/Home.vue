@@ -20,8 +20,8 @@
             {{ sysUserName }}</span
           >
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item >个人中心</el-dropdown-item>
-            <el-dropdown-item divided @click.native="logout"
+            <!-- <el-dropdown-item >个人中心</el-dropdown-item> -->
+            <el-dropdown-item @click.native="logout"
               >退出登录</el-dropdown-item
             >
           </el-dropdown-menu>

@@ -51,9 +51,9 @@ public class ExpenseServiceImpl extends ServiceImpl<ExpenseMapper, Expense> impl
 
         if (isSuccess) {
             if(expense.getStatus() == 1) {
-                return Result.ok().message("报销申请通过！");
+                return Result.ok().message("报销申请通过审批！");
             }else{
-                return Result.ok().message("报销申请拒绝！");
+                return Result.ok().message("报销申请未通过审批！");
             }
         }else{
             return Result.error().message("审批失败！");

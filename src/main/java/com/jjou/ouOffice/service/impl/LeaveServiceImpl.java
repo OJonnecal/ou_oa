@@ -49,9 +49,9 @@ public class LeaveServiceImpl extends ServiceImpl<LeaveMapper, Leave> implements
         leave.setApproveTime((sdf.format(date)));
         if (updateById(leave)) {
             if(leave.getStatus() == 1) {
-                return Result.ok().message("请假申请通过！");
+                return Result.ok().message("请假申请通过审批！");
             }else{
-                return Result.ok().message("请假申请拒绝！");
+                return Result.ok().message("请假申请未通过审批！");
             }
         }else{
             return Result.error().message("审批失败！");
