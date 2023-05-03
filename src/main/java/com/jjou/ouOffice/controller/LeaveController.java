@@ -26,26 +26,19 @@ public class LeaveController {
     @PostMapping(value = "/getApplyLeaveList")
     @ResponseBody
     public Result getApplyLeaveList(@RequestBody Leave leave) {
-        QueryWrapper<Leave> wrapper = new QueryWrapper<>();
-        wrapper.eq("status", 0).eq("user_id", leave.getUserId()).orderByDesc("create_time");
-        return Result.ok().data("applyLeaveList", leaveService.list(wrapper));
-
+        return leaveService.getApplyLeaveList(leave);
     }
 
     @PostMapping(value = "/getLeaveList")
     @ResponseBody
     public Result getLeaveList(@RequestBody Leave leave) {
-        QueryWrapper<Leave> wrapper = new QueryWrapper<>();
-        wrapper.eq("status", 1).eq("user_id", leave.getUserId()).orderByDesc("approve_time");
-        return Result.ok().data("leaveList", leaveService.list(wrapper));
+        return leaveService.getLeaveList(leave);
     }
 
     @PostMapping(value = "/getFailLeaveList")
     @ResponseBody
     public Result getFailLeaveList(@RequestBody Leave leave) {
-        QueryWrapper<Leave> wrapper = new QueryWrapper<>();
-        wrapper.eq("status", 2).eq("user_id", leave.getUserId()).orderByDesc("approve_time");
-        return Result.ok().data("failLeaveList", leaveService.list(wrapper));
+        return leaveService.getFailLeaveList(leave);
     }
 
     @PostMapping("/delLeave")
@@ -77,6 +70,5 @@ public class LeaveController {
     public Result agreeLeave(@RequestBody Leave leave){
         return leaveService.agreeLeave(leave);
     }
-
 }
 

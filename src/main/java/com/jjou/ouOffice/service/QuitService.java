@@ -17,4 +17,10 @@ public interface QuitService extends IService<Quit> {
     Result addQuit(Quit quit);
 
     Result agreeQuit(Quit quit);
+
+    Result getApplyQuitList(Quit quit);
+
+    Result getQuitList(Quit quit);
+
+    Result getFailQuitList(Quit quit);
 }

@@ -37,15 +37,21 @@
           <el-table-column
             prop="quitTime"
             label="离职时间"
-            width="250"
+            width="200"
             sortable
             align="center"
             :formatter="formatDate"
           ></el-table-column>
           <el-table-column
+            prop="userName"
+            label="申请人"
+            width="150"
+            align="center"
+          ></el-table-column>
+          <el-table-column
             prop="createTime"
             label="申请时间"
-            width="250"
+            width="200"
             sortable
             align="center"
           ></el-table-column>
@@ -94,7 +100,7 @@
         >
           <el-table-column type="index" width="60" label="序号" align="center">
           </el-table-column>
-          <el-table-column
+         <el-table-column
             prop="reason"
             label="离职原因"
             width="200"
@@ -108,10 +114,16 @@
           <el-table-column
             prop="quitTime"
             label="离职时间"
-            width="250"
+            width="200"
             sortable
             align="center"
             :formatter="formatDate"
+          ></el-table-column>
+          <el-table-column
+            prop="approveName"
+            label="审批人"
+            min-width="150"
+            align="center"
           ></el-table-column>
           <el-table-column
             prop="approveTime"
@@ -174,10 +186,16 @@
           <el-table-column
             prop="quitTime"
             label="离职时间"
-            width="250"
+            width="200"
             sortable
             align="center"
             :formatter="formatDate"
+          ></el-table-column>
+          <el-table-column
+            prop="approveName"
+            label="审批人"
+            min-width="150"
+            align="center"
           ></el-table-column>
           <el-table-column
             prop="approveTime"
@@ -230,7 +248,11 @@
           <el-input type="textarea" v-model="addForm.description"></el-input>
         </el-form-item>
         <el-form-item label="离职时间" prop="quitTime">
-          <el-date-picker v-model="quitTime" type="date" placeholder="离职时间不能为空">
+          <el-date-picker
+            v-model="quitTime"
+            type="date"
+            placeholder="离职时间不能为空"
+          >
           </el-date-picker>
         </el-form-item>
       </el-form>
@@ -289,15 +311,18 @@ export default {
       this.currentPage = val;
     },
     handleAgree(row, value) {
-      console.log(row, value);
+      var user = sessionStorage.getItem("user");
+      user = JSON.parse(user);
       if (value == 1) {
         var params = {
           id: row.id,
+          approveName: user.name,
           status: "1",
         };
       } else {
         var params = {
           id: row.id,
+          approveName: user.name,
           status: "2",
         };
       }
@@ -323,7 +348,7 @@ export default {
       user = JSON.parse(user);
       user.permission == "1" ? (this.ifAdmin = true) : (this.ifAdmin = false);
       var params = {
-        userId: user.id,
+        userName: user.name,
       };
       getApplyQuitList(params).then((res) => {
         this.applyQuitList = res.data.applyQuitList;
@@ -353,7 +378,7 @@ export default {
         description: this.addForm.description,
         quitTime: this.quitTime,
         status: "0",
-        userId: user.id,
+        userName: user.name,
       };
       addQuit(param).then((res) => {
         const statusCode = res.code;

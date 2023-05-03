@@ -118,6 +118,12 @@
             align="center"
           ></el-table-column>
           <el-table-column
+            prop="approveName"
+            label="审批人"
+            min-width="150"
+            align="center"
+          ></el-table-column>
+          <el-table-column
             prop="approveTime"
             label="审批时间"
             min-width="180"
@@ -221,15 +227,18 @@ export default {
       this.currentPage = val;
     },
     handleAgree(row, value) {
-      console.log(row, value);
+      var user = sessionStorage.getItem("user");
+      user = JSON.parse(user);
       if (value == 1) {
         var params = {
           id: row.id,
+          approveName: user.name,
           status: "1",
         };
       } else {
         var params = {
           id: row.id,
+          approveName: user.name,
           status: "2",
         };
       }

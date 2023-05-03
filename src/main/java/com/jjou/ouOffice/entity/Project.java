@@ -60,6 +60,11 @@ public class Project implements Serializable {
     private String createTime;
 
     /**
+     * 项目审批人
+     */
+    private String approveName;
+
+    /**
      * 项目审批时间
      */
     private String approveTime;

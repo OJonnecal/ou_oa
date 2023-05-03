@@ -29,9 +29,7 @@ public class ProjectController {
     @PostMapping(value = "/getApplyProjectList")
     @ResponseBody
     public Result getApplyProjectList(@RequestBody Project project) {
-        QueryWrapper<Project> wrapper = new QueryWrapper<>();
-        wrapper.eq("status", 0).eq("user_name", project.getUserName()).orderByDesc("apply_time");
-        return Result.ok().data("applyProjectList", projectService.list(wrapper));
+        return projectService.getApplyProjectList(project);
     }
 
     @PostMapping(value = "/getProjectList")
@@ -43,9 +41,7 @@ public class ProjectController {
     @PostMapping(value = "/getFailProjectList")
     @ResponseBody
     public Result getFailProjectList(@RequestBody Project project) {
-        QueryWrapper<Project> wrapper = new QueryWrapper<>();
-        wrapper.eq("status", 2).eq("user_name", project.getUserName()).orderByDesc("approve_time");
-        return Result.ok().data("failProjectList", projectService.list(wrapper));
+        return projectService.getFailProjectList(project);
     }
 
     @PostMapping("/delProject")

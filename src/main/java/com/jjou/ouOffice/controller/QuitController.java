@@ -29,25 +29,19 @@ public class QuitController {
     @PostMapping(value = "/getApplyQuitList")
     @ResponseBody
     public Result getApplyQuitList(@RequestBody Quit quit) {
-        QueryWrapper<Quit> wrapper = new QueryWrapper<>();
-        wrapper.eq("status", 0).eq("user_id", quit.getUserId()).orderByDesc("create_time");
-        return Result.ok().data("applyQuitList", quitService.list(wrapper));
+        return quitService.getApplyQuitList(quit);
     }
 
     @PostMapping(value = "/getQuitList")
     @ResponseBody
     public Result getQuitList(@RequestBody Quit quit) {
-        QueryWrapper<Quit> wrapper = new QueryWrapper<>();
-        wrapper.eq("status", 1).eq("user_id", quit.getUserId()).orderByDesc("approve_time");
-        return Result.ok().data("quitList", quitService.list(wrapper));
+        return quitService.getQuitList(quit);
     }
 
     @PostMapping(value = "/getFailQuitList")
     @ResponseBody
     public Result getFailQuitList(@RequestBody Quit quit) {
-        QueryWrapper<Quit> wrapper = new QueryWrapper<>();
-        wrapper.eq("status", 2).eq("user_id", quit.getUserId()).orderByDesc("approve_time");
-        return Result.ok().data("failQuitList", quitService.list(wrapper));
+        return quitService.getFailQuitList(quit);
     }
 
     @PostMapping("/delQuit")

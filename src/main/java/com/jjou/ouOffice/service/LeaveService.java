@@ -17,4 +17,10 @@ public interface LeaveService extends IService<Leave> {
     Result addLeave(Leave leave);
 
     Result agreeLeave(Leave leave);
+
+    Result getApplyLeaveList(Leave leave);
+
+    Result getLeaveList(Leave leave);
+
+    Result getFailLeaveList(Leave leave);
 }

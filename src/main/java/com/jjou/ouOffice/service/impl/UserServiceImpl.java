@@ -49,6 +49,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if(user.getPosition() == null || StringUtils.isEmpty(user.getPosition())){
             return Result.error().message("用户职位不能为空！");
         }
+        if(query().eq("account", user.getAccount()).count() > 0){
+            return Result.error().message("用户账号不能重复！");
+        }
         if(query().eq("name", user.getName()).count() > 0){
             return Result.error().message("用户昵称不能重复！");
         }

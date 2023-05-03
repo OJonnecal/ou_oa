@@ -52,6 +52,11 @@ public class Quit implements Serializable {
     private String createTime;
 
     /**
+     * 离职审批人
+     */
+    private String approveName;
+
+    /**
      * 离职审批时间
      */
     private String approveTime;
@@ -64,8 +69,8 @@ public class Quit implements Serializable {
     /**
      * 离职申请人
      */
-    @TableField("user_id")
-    private Integer userId;
+    @TableField("user_name")
+    private String userName;
 
     @TableField("is_deleted")
     @TableLogic

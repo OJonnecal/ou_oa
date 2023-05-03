@@ -160,7 +160,7 @@
     >
       <el-form :model="editForm" label-width="100px" ref="editForm">
         <el-form-item label="账号" prop="account">
-          <el-input v-model="editForm.account"></el-input>
+          <el-input v-model="editForm.account" :disabled="read"></el-input>
         </el-form-item>
         <el-form-item label="昵称" prop="name">
           <el-input v-model="editForm.name"></el-input>

@@ -26,7 +26,7 @@
           <el-table-column
             prop="reason"
             label="请假原因"
-            width="200"
+            width="150"
             align="center"
           ></el-table-column>
           <el-table-column
@@ -37,7 +37,7 @@
           <el-table-column
             prop="beginTime"
             label="请假开始时间"
-            width="200"
+            width="180"
             sortable
             align="center"
             :formatter="formatDate"
@@ -45,15 +45,21 @@
           <el-table-column
             prop="endTime"
             label="结束时间"
-            width="200"
+            width="180"
             sortable
             align="center"
             :formatter="formatDate"
           ></el-table-column>
           <el-table-column
+            prop="userName"
+            label="申请人"
+            width="150"
+            align="center"
+          ></el-table-column>
+          <el-table-column
             prop="createTime"
             label="申请时间"
-            width="250"
+            width="180"
             sortable
             align="center"
           ></el-table-column>
@@ -108,7 +114,7 @@
           <el-table-column
             prop="reason"
             label="请假原因"
-            width="200"
+            width="150"
             align="center"
           ></el-table-column>
           <el-table-column
@@ -119,7 +125,7 @@
           <el-table-column
             prop="beginTime"
             label="请假开始时间"
-            width="200"
+            width="180"
             sortable
             align="center"
             :formatter="formatDate"
@@ -127,15 +133,27 @@
           <el-table-column
             prop="endTime"
             label="结束时间"
-            width="200"
+            width="180"
             sortable
             align="center"
             :formatter="formatDate"
           ></el-table-column>
           <el-table-column
+            prop="userName"
+            label="申请人"
+            width="150"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="approveName"
+            label="审批人"
+            width="150"
+            align="center"
+          ></el-table-column>
+          <el-table-column
             prop="approveTime"
             label="审批时间"
-            min-width="200"
+            min-width="180"
             sortable
             align="center"
           ></el-table-column>
@@ -183,7 +201,7 @@
           <el-table-column
             prop="reason"
             label="请假原因"
-            width="200"
+            width="150"
             align="center"
           ></el-table-column>
           <el-table-column
@@ -194,7 +212,7 @@
           <el-table-column
             prop="beginTime"
             label="请假开始时间"
-            width="200"
+            width="180"
             sortable
             align="center"
             :formatter="formatDate"
@@ -202,15 +220,27 @@
           <el-table-column
             prop="endTime"
             label="结束时间"
-            width="200"
+            width="180"
             sortable
             align="center"
             :formatter="formatDate"
           ></el-table-column>
           <el-table-column
+            prop="userName"
+            label="申请人"
+            width="150"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="approveName"
+            label="审批人"
+            width="150"
+            align="center"
+          ></el-table-column>
+          <el-table-column
             prop="approveTime"
             label="审批时间"
-            min-width="200"
+            min-width="180"
             sortable
             align="center"
           ></el-table-column>
@@ -248,7 +278,10 @@
     >
       <el-form :model="addForm" label-width="100px" ref="addForm">
         <el-form-item label="请假原因" prop="title">
-          <el-input v-model="addForm.reason" placeholder="请假原因不能为空"></el-input>
+          <el-input
+            v-model="addForm.reason"
+            placeholder="请假原因不能为空"
+          ></el-input>
         </el-form-item>
         <el-form-item label="描述" prop="description">
           <el-input type="textarea" v-model="addForm.description"></el-input>
@@ -344,7 +377,18 @@ export default {
         dtuSeconds = "0" + dtc.getSeconds();
       }
       //组装年月日时分秒,按自己的要求来
-      let dd = dtc.getFullYear() + "-" + dtuMonth + "-" + dtuDay + " " + dtuHours + ":" + dtuMinutes + ":" + dtuSeconds;
+      let dd =
+        dtc.getFullYear() +
+        "-" +
+        dtuMonth +
+        "-" +
+        dtuDay +
+        " " +
+        dtuHours +
+        ":" +
+        dtuMinutes +
+        ":" +
+        dtuSeconds;
       return (row.TableIsbibei = dd);
       //+ " " + dtuHours + ":" + dtuMinutes + ":" + dtuSeconds
     },
@@ -360,14 +404,18 @@ export default {
       this.currentPage = val;
     },
     handleAgree(row, value) {
+      var user = sessionStorage.getItem("user");
+      user = JSON.parse(user);
       if (value == 1) {
         var params = {
           id: row.id,
+          approveName: user.name,
           status: "1",
         };
       } else {
         var params = {
           id: row.id,
+          approveName: user.name,
           status: "2",
         };
       }
@@ -393,7 +441,7 @@ export default {
       user = JSON.parse(user);
       user.permission == "1" ? (this.ifAdmin = true) : (this.ifAdmin = false);
       var params = {
-        userId: user.id,
+        userName: user.name,
       };
       getApplyLeaveList(params).then((res) => {
         this.applyLeaveList = res.data.applyLeaveList;
@@ -424,7 +472,7 @@ export default {
         beginTime: this.leaveTime[0],
         endTime: this.leaveTime[1],
         status: "0",
-        userId: user.id,
+        userName: user.name,
       };
       addLeave(param).then((res) => {
         const statusCode = res.code;

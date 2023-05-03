@@ -29,25 +29,19 @@ public class ExpenseController {
     @PostMapping(value = "/getApplyExpenseList")
     @ResponseBody
     public Result getApplyExpenseList(@RequestBody Expense expense) {
-        QueryWrapper<Expense> wrapper = new QueryWrapper<>();
-        wrapper.eq("status", 0).eq("user_id", expense.getUserId()).orderByDesc("create_time");
-        return Result.ok().data("applyExpenseList", expenseService.list(wrapper));
+        return expenseService.getApplyExpenseList(expense);
     }
 
     @PostMapping(value = "/getExpenseList")
     @ResponseBody
     public Result getExpenseList(@RequestBody Expense expense) {
-        QueryWrapper<Expense> wrapper = new QueryWrapper<>();
-        wrapper.eq("status", 1).eq("user_id", expense.getUserId()).orderByDesc("approve_time");
-        return Result.ok().data("expenseList", expenseService.list(wrapper));
+        return expenseService.getExpenseList(expense);
     }
 
     @PostMapping(value = "/getFailExpenseList")
     @ResponseBody
     public Result getFailExpenseList(@RequestBody Expense expense) {
-        QueryWrapper<Expense> wrapper = new QueryWrapper<>();
-        wrapper.eq("status", 2).eq("user_id", expense.getUserId()).orderByDesc("approve_time");
-        return Result.ok().data("failExpenseList", expenseService.list(wrapper));
+        return expenseService.getFailExpenseList(expense);
     }
 
     @PostMapping("/delExpense")

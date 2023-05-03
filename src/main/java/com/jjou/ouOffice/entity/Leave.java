@@ -68,8 +68,14 @@ public class Leave implements Serializable {
     /**
      * 请假人
      */
-    @TableField("user_id")
-    private Integer userId;
+    @TableField("user_name")
+    private String userName;
+
+    /**
+     * 审批人
+     */
+    @TableField("approve_name")
+    private String approveName;
 
     /**
      * 逻辑删除 1（true）已删除， 0（false）未删除

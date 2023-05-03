@@ -51,6 +51,12 @@ public class Expense implements Serializable {
     private String createTime;
 
     /**
+     * 报销审批人
+     */
+    @TableField("approve_name")
+    private String approveName;
+
+    /**
      * 报销审批时间
      */
     @TableField("approve_time")
@@ -62,10 +68,10 @@ public class Expense implements Serializable {
     private Integer status;
 
     /**
-     * 申请人id
+     * 申请人
      */
-    @TableField("user_id")
-    private Integer userId;
+    @TableField("user_name")
+    private String userName;
 
     @TableField("is_deleted")
     @TableLogic
