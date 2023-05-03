@@ -2,8 +2,8 @@ package com.jjou.ouOffice.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 
-import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.util.Date;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -42,13 +42,13 @@ public class Leave implements Serializable {
      * 请假开始时间
      */
     @TableField("begin_time")
-    private LocalDateTime beginTime;
+    private Date beginTime;
 
     /**
      * 请假结束时间
      */
     @TableField("end_time")
-    private LocalDateTime endTime;
+    private Date endTime;
 
     /**
      * 请假状态 2 未通过，1 通过，0 未审核

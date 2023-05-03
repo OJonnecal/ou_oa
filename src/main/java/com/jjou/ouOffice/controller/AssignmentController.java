@@ -38,7 +38,7 @@ public class AssignmentController {
     @ResponseBody
     public Result getAssignmentCompleteList(){
         QueryWrapper<Assignment> wrapper = new QueryWrapper<>();
-        wrapper.eq("status", 1);
+        wrapper.eq("status", 1).orderByDesc("complete_time");
         return Result.ok().data("assignmentCompleteList", assignmentService.list(wrapper));
     }
 
