@@ -49,18 +49,24 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
         }else if(project.getStatus() == 1){
             project.setCreateTime(sdf.format(date));
         }
-        save(project);
-        return Result.ok().message("项目申请添加成功！");
+        if(save(project)){
+            return Result.ok().message("项目申请添加成功！");
+        }else{
+            return Result.error().message("项目添加失败！");
+        }
+
     }
 
     @Override
     public Result agreeProject(Project project) {
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        project.setApproveTime((sdf.format(date)));
-        boolean isSuccess = updateById(project);
-
-        if (isSuccess) {
+        if(project.getStatus() == 0){
+            project.setApplyTime(sdf.format(date));
+        }else if(project.getStatus() == 1){
+            project.setCreateTime(sdf.format(date));
+        }
+        if (updateById(project)) {
             if(project.getStatus() == 1) {
                 return Result.ok().message("项目通过审批！");
             }else{

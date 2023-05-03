@@ -110,11 +110,12 @@
             prop="description"
             label="描述"
             align="center"
+            width="200"
           ></el-table-column>
           <el-table-column
             prop="userName"
             label="负责人"
-            width="180"
+            width="150"
             align="center"
           ></el-table-column>
           <el-table-column
@@ -132,7 +133,7 @@
           ></el-table-column>
           <el-table-column
             label="操作"
-            width="200"
+            width="100"
             v-if="ifAdmin"
             align="center"
           >
