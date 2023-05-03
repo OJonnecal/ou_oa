@@ -4,7 +4,6 @@ package com.jjou.ouOffice.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jjou.ouOffice.common.Result;
 import com.jjou.ouOffice.entity.Contacts;
-import com.jjou.ouOffice.entity.Customer;
 import com.jjou.ouOffice.service.ContactsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,16 +52,7 @@ public class ContactsController {
     @PostMapping("/updateContacts")
     @ResponseBody
     public Result updateContacts(@RequestBody Contacts contacts){
-        QueryWrapper<Contacts> wrapper = new QueryWrapper<>();
-        wrapper.eq("id", contacts.getId());
-        boolean isSuccess = contactsService.update(contacts, wrapper);
-
-        if (isSuccess){
-            return Result.ok().message("修改成功");
-        }else{
-            return Result.error().message("修改失败");
-        }
+        return contactsService.updateContacts(contacts);
     }
-
 }
 

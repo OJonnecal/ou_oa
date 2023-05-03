@@ -18,6 +18,8 @@
       @click="addTopContacts"
       >添加常用联系人</el-button
     >
+
+    <!-- 列表 -->
     <el-tabs type="border-card">
       <el-tab-pane label="公告栏">
         <el-table :data="GgList">
@@ -30,7 +32,9 @@
           <el-table-column
             prop="time"
             label="公告发布时间"
-            width="120"
+            width="150"
+            sortable
+            :formatter="formatDate"
           ></el-table-column>
           <el-table-column label="操作" width="150" v-if="ifAdmin">
             <template scope="scope">
@@ -71,6 +75,9 @@
             <el-table-column prop="email" label="邮箱"></el-table-column>
             <el-table-column label="操作" width="150" v-if="ifAdmin">
               <template scope="scope">
+                <el-button size="small" @click="handleEdit(scope.row)"
+                  >编辑</el-button
+                >
                 <el-button
                   type="danger"
                   size="small"
@@ -131,6 +138,35 @@
         >
       </div>
     </el-dialog>
+
+    <!--编辑界面-->
+    <el-dialog
+      title="编辑客户信息"
+      :visible.sync="editFormVisible"
+      :close-on-click-modal="false"
+    >
+      <el-form :model="editForm" label-width="100px" ref="editForm">
+        <el-form-item label="姓名" prop="name">
+          <el-input v-model="editForm.name"></el-input>
+        </el-form-item>
+        <el-form-item label="手机号" prop="phone">
+          <el-input v-model="editForm.phone"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model="editForm.email"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cancel" size="small">取消</el-button>
+        <el-button
+          type="primary"
+          size="small"
+          @click.native="editSubmit"
+          :loading="editLoading"
+          >提交</el-button
+        >
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -142,6 +178,7 @@ import {
   getTopContactsList,
   addTopContacts,
   delTopContacts,
+  editTopContacts,
 } from "../api/topcontacts.js";
 export default {
   data() {
@@ -150,6 +187,14 @@ export default {
       jdArr: [],
       topContactsList: [],
       ifAdmin: false,
+      editLoading: false,
+      editFormVisible: false,
+      editForm: {
+        id: "",
+        name: "",
+        phone: "",
+        email: "",
+      },
       addGgForm: {
         title: "",
         content: "",
@@ -164,7 +209,6 @@ export default {
         title: "",
         userName: "",
       },
-
       addGgFormVisible: false,
       addTopContactsFormVisible: false,
     };
@@ -251,24 +295,25 @@ export default {
       };
       this.$confirm("确定要删除此公告吗", "提示", {
         type: "warning",
-      }).then(() => {
-        delGg(obj).then((res) => {
-          const statusCode = res.code;
-          if (statusCode == 200) {
-            this.$message({
-              message: res.message,
-              type: "success",
-            });
-            this.getGonggao();
-          } else {
-            this.$message({
-              message: res.message,
-              type: "error",
-            });
-          }
-        })
       })
-      .catch(() => {});
+        .then(() => {
+          delGg(obj).then((res) => {
+            const statusCode = res.code;
+            if (statusCode == 200) {
+              this.$message({
+                message: res.message,
+                type: "success",
+              });
+              this.getGonggao();
+            } else {
+              this.$message({
+                message: res.message,
+                type: "error",
+              });
+            }
+          });
+        })
+        .catch(() => {});
     },
     handleDelTopContacts(row) {
       var obj = {
@@ -276,24 +321,103 @@ export default {
       };
       this.$confirm("确定要删除此常用联系人吗", "提示", {
         type: "warning",
-      }).then(() => {
-        delTopContacts(obj).then((res) => {
+      })
+        .then(() => {
+          delTopContacts(obj).then((res) => {
+            const statusCode = res.code;
+            if (statusCode == 200) {
+              this.$message({
+                message: res.message,
+                type: "success",
+              });
+              this.getTopContacts();
+            } else {
+              this.$message({
+                message: res.message,
+                type: "error",
+              });
+            }
+          });
+        })
+        .catch(() => {});
+    },
+    //编辑按钮触发事件
+    handleEdit: function (row) {
+      this.editFormVisible = true;
+      this.editForm.id = row.id;
+      this.editForm.name = row.name;
+      this.editForm.phone = row.phone;
+      this.editForm.email = row.email;
+    },
+    editSubmit: function () {
+      this.editLoading = true;
+      var obj = {
+        id: this.editForm.id,
+        name: this.editForm.name,
+        phone: this.editForm.phone,
+        email: this.editForm.email,
+      };
+      editTopContacts(obj).then((res) => {
+        this.editLoading = false;
         const statusCode = res.code;
         if (statusCode == 200) {
           this.$message({
             message: res.message,
             type: "success",
           });
-          this.getTopContacts();
+          this.getTableData();
         } else {
           this.$message({
             message: res.message,
             type: "error",
           });
         }
-      })
-    })
-      .catch(() => {});
+        this.editFormVisible = false;
+        this.getTopContacts();
+      });
+    },
+    cancel() {
+      this.editFormVisible = false;
+    },
+    //时间格式化
+    formatDate(row, column) {
+      // 获取单元格数据
+      let datac = row[column.property];
+      let dtc = new Date(datac);
+      //获取月,默认月份从0开始
+      let dtuMonth = dtc.getMonth() + 1;
+      //获取日
+      let dtuDay = dtc.getDate();
+      //处理1-9月前面加0
+      if (dtuMonth < 10) {
+        dtuMonth = "0" + (dtc.getMonth() + 1);
+      }
+      //处理1-9天前面加0
+      if (dtuDay < 10) {
+        dtuDay = "0" + dtc.getDate();
+      }
+      //获取小时
+      let dtuHours = dtc.getHours();
+      //处理1-9时前面加0
+      if (dtuHours < 10) {
+        dtuHours = "0" + dtc.getHours();
+      }
+      //获取分钟
+      let dtuMinutes = dtc.getMinutes();
+      //处理1-9分前面加0
+      if (dtuMinutes < 10) {
+        dtuMinutes = "0" + dtc.getMinutes();
+      }
+      //获取秒
+      let dtuSeconds = dtc.getSeconds();
+      //处理1-9秒前面加0
+      if (dtuSeconds < 10) {
+        dtuSeconds = "0" + dtc.getSeconds();
+      }
+      //组装年月日时分秒,按自己的要求来
+      let dd = dtc.getFullYear() + "-" + dtuMonth + "-" + dtuDay + " " + dtuHours + ":" + dtuMinutes + ":" + dtuSeconds;
+      return (row.TableIsbibei = dd);
+      //+ " " + dtuHours + ":" + dtuMinutes + ":" + dtuSeconds
     },
   },
   mounted() {

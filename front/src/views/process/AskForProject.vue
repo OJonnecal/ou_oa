@@ -118,6 +118,12 @@
             align="center"
           ></el-table-column>
           <el-table-column
+            prop="approveName"
+            label="审批人"
+            min-width="150"
+            align="center"
+          ></el-table-column>
+          <el-table-column
             prop="approveTime"
             label="审批时间"
             min-width="180"
@@ -163,7 +169,7 @@
     >
       <el-form :model="addForm" label-width="100px" ref="addForm">
         <el-form-item label="项目名称" prop="title">
-          <el-input v-model="addForm.title"></el-input>
+          <el-input v-model="addForm.title" placeholder="项目名称不能为空"></el-input>
         </el-form-item>
         <el-form-item label="描述" prop="description">
           <el-input type="textarea" v-model="addForm.description"></el-input>
@@ -221,15 +227,18 @@ export default {
       this.currentPage = val;
     },
     handleAgree(row, value) {
-      console.log(row, value);
+      var user = sessionStorage.getItem("user");
+      user = JSON.parse(user);
       if (value == 1) {
         var params = {
           id: row.id,
+          approveName: user.name,
           status: "1",
         };
       } else {
         var params = {
           id: row.id,
+          approveName: user.name,
           status: "2",
         };
       }

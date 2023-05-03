@@ -173,13 +173,13 @@
         ref="addAssignmentForm"
       >
         <el-form-item label="标题" prop="title">
-          <el-input v-model="addAssignmentForm.title"></el-input>
+          <el-input v-model="addAssignmentForm.title" placeholder="标题不能为空"></el-input>
         </el-form-item>
         <el-form-item label="内容" prop="content">
           <el-input v-model="addAssignmentForm.content"></el-input>
         </el-form-item>
         <el-form-item label="紧急程度">
-          <el-select v-model="addAssignmentForm.level">
+          <el-select v-model="addAssignmentForm.level" placeholder="紧急程度不能为空">
             <el-option label="紧急" value="1"></el-option>
             <el-option label="正常" value="2"></el-option>
             <el-option label="不紧急" value="3"></el-option>

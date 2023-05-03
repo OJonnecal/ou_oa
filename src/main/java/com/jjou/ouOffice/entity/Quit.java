@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
@@ -42,13 +43,18 @@ public class Quit implements Serializable {
     /**
      * 离职时间
      */
-    private String quitTime;
+    private Date quitTime;
 
     /**
      * 离职申请时间
      */
     @TableField("create_time")
     private String createTime;
+
+    /**
+     * 离职审批人
+     */
+    private String approveName;
 
     /**
      * 离职审批时间
@@ -63,8 +69,8 @@ public class Quit implements Serializable {
     /**
      * 离职申请人
      */
-    @TableField("user_id")
-    private Integer userId;
+    @TableField("user_name")
+    private String userName;
 
     @TableField("is_deleted")
     @TableLogic

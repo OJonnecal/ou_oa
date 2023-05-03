@@ -1,6 +1,7 @@
 package com.jjou.ouOffice.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jjou.ouOffice.common.Result;
 import com.jjou.ouOffice.entity.TopContacts;
 import com.jjou.ouOffice.service.TopContactsService;
@@ -49,6 +50,12 @@ public class TopContactsController {
         }else{
             return Result.error().message("删除常用联系人失败");
         }
+    }
+
+    @PostMapping("/updateTopContacts")
+    @ResponseBody
+    public Result updateTopContacts(@RequestBody TopContacts topContacts){
+        return topContactsService.updateTopContacts(topContacts);
     }
 
 }

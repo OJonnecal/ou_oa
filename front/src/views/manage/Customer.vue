@@ -11,6 +11,7 @@
     >
     <el-form
       ref="queryForm"
+      size="small"
       :inline="true"
       :model="queryParams"
       label-width="68px"
@@ -28,7 +29,6 @@
           v-model="queryParams.phone"
           clearable
           placeholder="请输入客户手机号"
-
           @keyup.enter="handleQuery"
         />
       </el-form-item>
@@ -45,10 +45,16 @@
         ref="addCustomerForm"
       >
         <el-form-item label="姓名" prop="title">
-          <el-input v-model="addCustomerForm.name"></el-input>
+          <el-input
+            v-model="addCustomerForm.name"
+            placeholder="姓名不能为空"
+          ></el-input>
         </el-form-item>
         <el-form-item label="手机号" prop="title">
-          <el-input v-model="addCustomerForm.phone"></el-input>
+          <el-input
+            v-model="addCustomerForm.phone"
+            placeholder="手机号不能为空"
+          ></el-input>
         </el-form-item>
         <el-form-item label="备注" prop="title">
           <el-input v-model="addCustomerForm.remarks"></el-input>
@@ -213,9 +219,6 @@ export default {
     },
     //获取客户列表
     getTableData: function () {
-      // let obj = {
-      // 	hysbh: this.search.hysbh
-      // };
       this.loading = true;
       getCustomerList(this.queryParams).then((res) => {
         this.customerList = res.data.customerList;
@@ -296,22 +299,25 @@ export default {
       };
       editCustomer(obj).then((res) => {
         this.editLoading = false;
-        this.$message({
-          message: res.message,
-          type: "success",
-        });
-        // this.$refs['editForm'].resetFields();
+        const statusCode = res.code;
+        if (statusCode == 200) {
+          this.$message({
+            message: res.message,
+            type: "success",
+          });
+          this.getTableData();
+        } else {
+          this.$message({
+            message: res.message,
+            type: "error",
+          });
+        }
         this.editFormVisible = false;
         this.getTableData();
       });
-      // 	}
-      // });
     },
     cancel() {
       this.editFormVisible = false;
-    },
-    cancelNotice() {
-      this.noticeFormVisible = false;
     },
     //每页条数改变时触发 选择一页显示多少行
     handleSizeChange(val) {

@@ -37,14 +37,21 @@
           <el-table-column
             prop="quitTime"
             label="离职时间"
-            width="250"
+            width="200"
             sortable
+            align="center"
+            :formatter="formatDate"
+          ></el-table-column>
+          <el-table-column
+            prop="userName"
+            label="申请人"
+            width="150"
             align="center"
           ></el-table-column>
           <el-table-column
             prop="createTime"
             label="申请时间"
-            width="250"
+            width="200"
             sortable
             align="center"
           ></el-table-column>
@@ -93,7 +100,7 @@
         >
           <el-table-column type="index" width="60" label="序号" align="center">
           </el-table-column>
-          <el-table-column
+         <el-table-column
             prop="reason"
             label="离职原因"
             width="200"
@@ -107,8 +114,15 @@
           <el-table-column
             prop="quitTime"
             label="离职时间"
-            width="250"
+            width="200"
             sortable
+            align="center"
+            :formatter="formatDate"
+          ></el-table-column>
+          <el-table-column
+            prop="approveName"
+            label="审批人"
+            min-width="150"
             align="center"
           ></el-table-column>
           <el-table-column
@@ -172,8 +186,15 @@
           <el-table-column
             prop="quitTime"
             label="离职时间"
-            width="250"
+            width="200"
             sortable
+            align="center"
+            :formatter="formatDate"
+          ></el-table-column>
+          <el-table-column
+            prop="approveName"
+            label="审批人"
+            min-width="150"
             align="center"
           ></el-table-column>
           <el-table-column
@@ -218,13 +239,20 @@
     >
       <el-form :model="addForm" label-width="100px" ref="addForm">
         <el-form-item label="离职原因" prop="title">
-          <el-input v-model="addForm.reason"></el-input>
+          <el-input
+            v-model="addForm.reason"
+            placeholder="离职原因不能为空"
+          ></el-input>
         </el-form-item>
         <el-form-item label="描述" prop="description">
           <el-input type="textarea" v-model="addForm.description"></el-input>
         </el-form-item>
         <el-form-item label="离职时间" prop="quitTime">
-          <el-date-picker v-model="quitTime" type="date" placeholder="选择日期">
+          <el-date-picker
+            v-model="quitTime"
+            type="date"
+            placeholder="离职时间不能为空"
+          >
           </el-date-picker>
         </el-form-item>
       </el-form>
@@ -241,7 +269,6 @@
 </template>
 
 <script>
-import util from "../../common/js/util";
 import {
   getQuitList,
   getApplyQuitList,
@@ -284,15 +311,18 @@ export default {
       this.currentPage = val;
     },
     handleAgree(row, value) {
-      console.log(row, value);
+      var user = sessionStorage.getItem("user");
+      user = JSON.parse(user);
       if (value == 1) {
         var params = {
           id: row.id,
+          approveName: user.name,
           status: "1",
         };
       } else {
         var params = {
           id: row.id,
+          approveName: user.name,
           status: "2",
         };
       }
@@ -318,7 +348,7 @@ export default {
       user = JSON.parse(user);
       user.permission == "1" ? (this.ifAdmin = true) : (this.ifAdmin = false);
       var params = {
-        userId: user.id,
+        userName: user.name,
       };
       getApplyQuitList(params).then((res) => {
         this.applyQuitList = res.data.applyQuitList;
@@ -346,9 +376,9 @@ export default {
       let param = {
         reason: this.addForm.reason,
         description: this.addForm.description,
-        quitTime: this.quitTime.toLocaleDateString(),
+        quitTime: this.quitTime,
         status: "0",
-        userId: user.id,
+        userName: user.name,
       };
       addQuit(param).then((res) => {
         const statusCode = res.code;
@@ -393,6 +423,46 @@ export default {
           });
         })
         .catch(() => {});
+    },
+    //时间格式化
+    formatDate(row, column) {
+      // 获取单元格数据
+      let datac = row[column.property];
+      let dtc = new Date(datac);
+      //获取月,默认月份从0开始
+      let dtuMonth = dtc.getMonth() + 1;
+      //获取日
+      let dtuDay = dtc.getDate();
+      //处理1-9月前面加0
+      if (dtuMonth < 10) {
+        dtuMonth = "0" + (dtc.getMonth() + 1);
+      }
+      //处理1-9天前面加0
+      if (dtuDay < 10) {
+        dtuDay = "0" + dtc.getDate();
+      }
+      //获取小时
+      let dtuHours = dtc.getHours();
+      //处理1-9时前面加0
+      if (dtuHours < 10) {
+        dtuHours = "0" + dtc.getHours();
+      }
+      //获取分钟
+      let dtuMinutes = dtc.getMinutes();
+      //处理1-9分前面加0
+      if (dtuMinutes < 10) {
+        dtuMinutes = "0" + dtc.getMinutes();
+      }
+      //获取秒
+      let dtuSeconds = dtc.getSeconds();
+      //处理1-9秒前面加0
+      if (dtuSeconds < 10) {
+        dtuSeconds = "0" + dtc.getSeconds();
+      }
+      //组装年月日时分秒,按自己的要求来
+      let dd = dtc.getFullYear() + "-" + dtuMonth + "-" + dtuDay;
+      return (row.TableIsbibei = dd);
+      //+ " " + dtuHours + ":" + dtuMinutes + ":" + dtuSeconds
     },
   },
 };

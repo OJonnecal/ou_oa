@@ -2,6 +2,7 @@
   <section>
     <el-form
       ref="queryForm"
+      size="small"
       :inline="true"
       :model="queryParams"
       label-width="68px"

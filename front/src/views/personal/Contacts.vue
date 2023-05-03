@@ -11,10 +11,10 @@
     <el-dialog title="添加联系人" :visible.sync="addContactsFormVisible">
       <el-form :model="addContactsForm" label-width="100px" ref="addContactsForm">
         <el-form-item label="姓名" prop="title">
-          <el-input v-model="addContactsForm.name"></el-input>
+          <el-input v-model="addContactsForm.name" placeholder="姓名不能为空"></el-input>
         </el-form-item>
         <el-form-item label="手机号" prop="title">
-          <el-input v-model="addContactsForm.phone"></el-input>
+          <el-input v-model="addContactsForm.phone" placeholder="手机号不能为空"></el-input>
         </el-form-item>
         <el-form-item label="备注" prop="title">
           <el-input v-model="addContactsForm.remarks"></el-input>
@@ -207,11 +207,19 @@ export default {
       console.log(obj);
       editContacts(obj).then((res) => {
         this.editLoading = false;
-        this.$message({
-          message: res.message,
-          type: "success",
-        });
-        console.log(obj, "1111");
+        const statusCode = res.code;
+        if (statusCode == 200) {
+          this.$message({
+            message: res.message,
+            type: "success",
+          });
+          this.getTableData();
+        } else {
+          this.$message({
+            message: res.message,
+            type: "error",
+          });
+        }
         this.editFormVisible = false;
         this.getTableData();
       });

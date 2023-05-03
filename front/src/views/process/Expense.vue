@@ -37,13 +37,19 @@
           <el-table-column
             prop="amount"
             label="金额"
-            width="200"
+            width="150"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="userName"
+            label="申请人"
+            width="150"
             align="center"
           ></el-table-column>
           <el-table-column
             prop="createTime"
             label="申请时间"
-            width="250"
+            width="200"
             sortable
             align="center"
           ></el-table-column>
@@ -113,6 +119,12 @@
             align="center"
           ></el-table-column>
           <el-table-column
+            prop="approveName"
+            label="审批人"
+            width="150"
+            align="center"
+          ></el-table-column>
+          <el-table-column
             prop="approveTime"
             label="审批时间"
             min-width="200"
@@ -159,7 +171,7 @@
         >
           <el-table-column type="index" width="60" label="序号" align="center">
           </el-table-column>
-          <el-table-column
+         <el-table-column
             prop="reason"
             label="请假原因"
             width="200"
@@ -174,6 +186,12 @@
             prop="amount"
             label="金额"
             width="200"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="approveName"
+            label="审批人"
+            width="150"
             align="center"
           ></el-table-column>
           <el-table-column
@@ -217,7 +235,7 @@
     >
       <el-form :model="addForm" label-width="100px" ref="addForm">
         <el-form-item label="请假原因" prop="title">
-          <el-input v-model="addForm.reason"></el-input>
+          <el-input v-model="addForm.reason" placeholder="报销原因不能为空"></el-input>
         </el-form-item>
         <el-form-item label="描述" prop="description">
           <el-input type="textarea" v-model="addForm.description"></el-input>
@@ -282,15 +300,18 @@ export default {
       this.currentPage = val;
     },
     handleAgree(row, value) {
-      console.log(row, value);
+      var user = sessionStorage.getItem("user");
+      user = JSON.parse(user);
       if (value == 1) {
         var params = {
           id: row.id,
+          approveName: user.name,
           status: "1",
         };
       } else {
         var params = {
           id: row.id,
+          approveName: user.name,
           status: "2",
         };
       }
@@ -316,7 +337,7 @@ export default {
       user = JSON.parse(user);
       user.permission == "1" ? (this.ifAdmin = true) : (this.ifAdmin = false);
       var params = {
-        userId: user.id,
+        userName: user.name,
       };
       getApplyExpenseList(params).then((res) => {
         this.applyExpenseList = res.data.applyExpenseList;
@@ -346,7 +367,7 @@ export default {
         description: this.addForm.description,
         amount: this.addForm.amount,
         status: "0",
-        userId: user.id,
+        userName: user.name,
       };
       addExpense(param).then((res) => {
         const statusCode = res.code;

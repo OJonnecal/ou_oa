@@ -11,6 +11,7 @@
     >
     <el-form
       ref="queryForm"
+      size="small"
       :inline="true"
       :model="queryParams"
       label-width="68px"
@@ -51,10 +52,10 @@
     <el-dialog title="添加用户" :visible.sync="addUserFormVisible">
       <el-form :model="addUserForm" label-width="100px" ref="addUserForm">
         <el-form-item label="账号" prop="account">
-          <el-input v-model="addUserForm.account"></el-input>
+          <el-input v-model="addUserForm.account" placeholder="账号不能为空"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="pwd">
-          <el-input v-model="addUserForm.pwd"></el-input>
+          <el-input v-model="addUserForm.pwd" placeholder="密码不能为空"></el-input>
         </el-form-item>
         <el-form-item label="昵称" prop="name">
           <el-input v-model="addUserForm.name"></el-input>
@@ -65,8 +66,8 @@
         <el-form-item label="邮箱" prop="email">
           <el-input v-model="addUserForm.email"></el-input>
         </el-form-item>
-        <el-form-item label="职位" prop="position">
-          <el-input v-model="addUserForm.position"></el-input>
+        <el-form-item label="职位" prop="position" >
+          <el-input v-model="addUserForm.position" placeholder="职位不能为空"></el-input>
         </el-form-item>
         <el-form-item label="是否为管理员" prop="permission">
           <el-switch
@@ -159,7 +160,7 @@
     >
       <el-form :model="editForm" label-width="100px" ref="editForm">
         <el-form-item label="账号" prop="account">
-          <el-input v-model="editForm.account"></el-input>
+          <el-input v-model="editForm.account" :disabled="read"></el-input>
         </el-form-item>
         <el-form-item label="昵称" prop="name">
           <el-input v-model="editForm.name"></el-input>
@@ -340,12 +341,19 @@ export default {
       console.log(obj);
       editUser(obj).then((res) => {
         this.editLoading = false;
-        this.$message({
-          message: res.message,
-          type: "success",
-        });
-        console.log(obj, "1111");
-        1111;
+        const statusCode = res.code;
+        if (statusCode == 200) {
+          this.$message({
+            message: res.message,
+            type: "success",
+          });
+          this.getTableData();
+        } else {
+          this.$message({
+            message: res.message,
+            type: "error",
+          });
+        }
         this.editFormVisible = false;
         this.getTableData();
       });

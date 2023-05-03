@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
@@ -42,7 +42,7 @@ public class Notice implements Serializable {
     /**
      * 公告时间
      */
-    private LocalDate time;
+    private Date time;
 
     /**
      * 是否展示，0不展示，1展示

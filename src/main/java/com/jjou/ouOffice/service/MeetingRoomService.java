@@ -17,4 +17,6 @@ public interface MeetingRoomService extends IService<MeetingRoom> {
     Result addMeetingRoom(MeetingRoom meetingRoom);
 
     Result getMeetingRoomList(MeetingRoom meetingRoom);
+
+    Result updateMeetingRoom(MeetingRoom meetingRoom);
 }

@@ -2,17 +2,19 @@ package com.jjou.ouOffice.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jjou.ouOffice.common.Result;
-import com.jjou.ouOffice.entity.Customer;
+import com.jjou.ouOffice.entity.Leave;
 import com.jjou.ouOffice.entity.Project;
+import com.jjou.ouOffice.entity.User;
 import com.jjou.ouOffice.mapper.ProjectMapper;
+import com.jjou.ouOffice.mapper.UserMapper;
 import com.jjou.ouOffice.service.ProjectService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 /**
  * <p>
@@ -24,6 +26,9 @@ import java.util.List;
  */
 @Service
 public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> implements ProjectService {
+
+    @Resource
+    private UserMapper userMapper;
 
     @Override
     public Result addProject(Project project) {
@@ -68,13 +73,18 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
 
     @Override
     public Result updateProject(Project project) {
-        QueryWrapper<Project> wrapper = new QueryWrapper<>();
-        wrapper.eq("id", project.getId());
+        if(project.getTitle() == null || StringUtils.isEmpty(project.getTitle())){
+            return Result.error().message("项目名称不能为空！");
+        }
+        if(project.getUserName() == null || StringUtils.isEmpty(project.getUserName())){
+            return Result.error().message("项目负责人不能为空！");
+        }
         if(project.getRate() != null && (project.getRate() < 0 || project.getRate() > 100)){
             return Result.error().message("项目进度范围为0-100");
         }
-        boolean isSuccess = update(project, wrapper);
-        if (isSuccess){
+        QueryWrapper<Project> wrapper = new QueryWrapper<>();
+        wrapper.eq("id", project.getId());
+        if (update(project, wrapper)){
             return Result.ok().message("修改成功");
         }else{
             return Result.error().message("修改失败");
@@ -92,5 +102,39 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
         }
         wrapper.eq("status", 1).orderByDesc("create_time");
         return Result.ok().data("projectList", list(wrapper));
+    }
+
+    @Override
+    public Result getApplyProjectList(Project project) {
+        //获取登录用户
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("name", project.getUserName());
+        User user = userMapper.selectOne(userQueryWrapper);
+
+        QueryWrapper<Project> wrapper = new QueryWrapper<>();
+        //判断用户是否是管理员
+        if(user != null && user.getPermission() == 1){
+            wrapper.eq("status", 0).orderByDesc("create_time");
+        }else {
+            wrapper.eq("status", 0).eq("user_name", project.getUserName()).orderByDesc("apply_time");
+        }
+        return Result.ok().data("applyProjectList", list(wrapper));
+    }
+
+    @Override
+    public Result getFailProjectList(Project project) {
+        //获取登录用户
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("name", project.getUserName());
+        User user = userMapper.selectOne(userQueryWrapper);
+
+        QueryWrapper<Project> wrapper = new QueryWrapper<>();
+        //判断用户是否是管理员
+        if(user != null && user.getPermission() == 1){
+            wrapper.eq("status", 2).orderByDesc("approve_time");
+        }else {
+            wrapper.eq("status", 2).eq("user_name", project.getUserName()).orderByDesc("approve_time");
+        }
+        return Result.ok().data("failProjectList", list(wrapper));
     }
 }

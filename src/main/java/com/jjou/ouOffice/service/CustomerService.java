@@ -17,4 +17,6 @@ public interface CustomerService extends IService<Customer> {
     Result addCustomer(Customer customer);
 
     Result getCustomerList(Customer customer);
+
+    Result updateCustomer(Customer customer);
 }

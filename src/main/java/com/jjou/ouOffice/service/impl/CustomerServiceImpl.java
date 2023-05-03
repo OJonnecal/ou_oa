@@ -31,6 +31,9 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
         if(customer.getPhone() == null || StringUtils.isEmpty(customer.getPhone())){
             return Result.error().message("客户手机号不能为空！");
         }
+        if(query().eq("name", customer.getName()).count() > 0){
+            return Result.error().message("客户姓名不能重复！");
+        }
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         customer.setCreateTime(sdf.format(date));
@@ -41,12 +44,34 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
     @Override
     public Result getCustomerList(Customer customer) {
         QueryWrapper<Customer> wrapper = new QueryWrapper<>();
-        if (customer != null && customer.getName() != null && !StringUtils.isEmpty(customer.getName())){
+        if (customer != null && customer.getName() != null
+                && !StringUtils.isEmpty(customer.getName())){
             wrapper.like("name", customer.getName());
         }
-        if(customer != null && customer.getPhone() != null && !StringUtils.isEmpty(customer.getPhone())){
+        if(customer != null && customer.getPhone() != null
+                && !StringUtils.isEmpty(customer.getPhone())){
             wrapper.like("phone", customer.getPhone());
         }
         return Result.ok().data("customerList", list(wrapper));
+    }
+
+    @Override
+    public Result updateCustomer(Customer customer) {
+        if(customer.getName() == null || StringUtils.isEmpty(customer.getName())){
+            return Result.error().message("客户姓名不能为空！");
+        }
+        if(customer.getPhone() == null || StringUtils.isEmpty(customer.getPhone())){
+            return Result.error().message("客户手机号不能为空！");
+        }
+        if(query().eq("name", customer.getName()).count() > 0){
+            return Result.error().message("客户姓名不能重复！");
+        }
+        QueryWrapper<Customer> wrapper = new QueryWrapper<>();
+        wrapper.eq("id", customer.getId());
+        if (update(customer, wrapper)){
+            return Result.ok().message("修改成功");
+        }else{
+            return Result.error().message("修改失败");
+        }
     }
 }

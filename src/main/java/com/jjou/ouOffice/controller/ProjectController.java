@@ -3,7 +3,6 @@ package com.jjou.ouOffice.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jjou.ouOffice.common.Result;
-import com.jjou.ouOffice.entity.Assignment;
 import com.jjou.ouOffice.entity.Project;
 import com.jjou.ouOffice.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
 
 /**
  * 项目控制器
@@ -32,9 +29,7 @@ public class ProjectController {
     @PostMapping(value = "/getApplyProjectList")
     @ResponseBody
     public Result getApplyProjectList(@RequestBody Project project) {
-        QueryWrapper<Project> wrapper = new QueryWrapper<>();
-        wrapper.eq("status", 0).eq("user_name", project.getUserName()).orderByDesc("apply_time");
-        return Result.ok().data("applyProjectList", projectService.list(wrapper));
+        return projectService.getApplyProjectList(project);
     }
 
     @PostMapping(value = "/getProjectList")
@@ -46,9 +41,7 @@ public class ProjectController {
     @PostMapping(value = "/getFailProjectList")
     @ResponseBody
     public Result getFailProjectList(@RequestBody Project project) {
-        QueryWrapper<Project> wrapper = new QueryWrapper<>();
-        wrapper.eq("status", 2).eq("user_name", project.getUserName()).orderByDesc("approve_time");
-        return Result.ok().data("failProjectList", projectService.list(wrapper));
+        return projectService.getFailProjectList(project);
     }
 
     @PostMapping("/delProject")

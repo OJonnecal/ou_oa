@@ -18,4 +18,10 @@ public interface ExpenseService extends IService<Expense> {
     Result addExpense(Expense expense);
 
     Result agreeExpense(Expense expense);
+
+    Result getApplyExpenseList(Expense expense);
+
+    Result getExpenseList(Expense expense);
+
+    Result getFailExpenseList(Expense expense);
 }

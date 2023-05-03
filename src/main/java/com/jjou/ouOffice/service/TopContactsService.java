@@ -15,4 +15,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface TopContactsService extends IService<TopContacts> {
 
     Result addTopContacts(TopContacts topContacts);
+
+    Result updateTopContacts(TopContacts topContacts);
 }

@@ -4,8 +4,6 @@ package com.jjou.ouOffice.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jjou.ouOffice.common.Result;
 import com.jjou.ouOffice.entity.Customer;
-import com.jjou.ouOffice.entity.MeetingRoom;
-import com.jjou.ouOffice.entity.Notice;
 import com.jjou.ouOffice.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,9 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
-
 /**
  * 客户管理控制器
  *
@@ -57,15 +52,8 @@ public class CustomerController {
     @PostMapping("/updateCustomer")
     @ResponseBody
     public Result updateCustomer(@RequestBody Customer customer){
-        QueryWrapper<Customer> wrapper = new QueryWrapper<>();
-        wrapper.eq("id", customer.getId());
-        boolean isSuccess = customerService.update(customer, wrapper);
+        return customerService.updateCustomer(customer);
 
-        if (isSuccess){
-            return Result.ok().message("修改成功");
-        }else{
-            return Result.error().message("修改失败");
-        }
     }
 
 }

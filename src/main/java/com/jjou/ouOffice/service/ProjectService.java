@@ -24,4 +24,8 @@ public interface ProjectService extends IService<Project> {
     Result updateProject(Project project);
 
     Result getProjectList(Project project);
+
+    Result getApplyProjectList(Project project);
+
+    Result getFailProjectList(Project project);
 }
