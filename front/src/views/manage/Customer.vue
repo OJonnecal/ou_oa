@@ -214,9 +214,6 @@ export default {
     handleQuery() {
       this.getTableData();
     },
-    changee() {
-      console.log(this.editForm.status);
-    },
     //获取客户列表
     getTableData: function () {
       this.loading = true;

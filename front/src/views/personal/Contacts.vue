@@ -8,6 +8,38 @@
       @click="addContacts"
       >添加联系人</el-button
     >
+    <el-form
+      ref="queryForm"
+      :inline="true"
+      :model="queryParams"
+      label-width="68px"
+      size="small"
+    >
+      <el-form-item label="姓名" prop="userName">
+        <el-input
+          v-model="queryParams.name"
+          clearable
+          placeholder="请输入联系人姓名"
+          style="width: 240px"
+          @keyup.enter="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="手机号" prop="phone">
+        <el-input
+          v-model="queryParams.phone"
+          clearable
+          placeholder="请输入联系人手机号"
+          style="width: 240px"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-button icon="Search" type="primary" @click="handleQuery"
+          >搜索</el-button
+        >
+      </el-form-item>
+    </el-form>
+
     <el-dialog title="添加联系人" :visible.sync="addContactsFormVisible">
       <el-form :model="addContactsForm" label-width="100px" ref="addContactsForm">
         <el-form-item label="姓名" prop="title">
@@ -32,7 +64,10 @@
     <!--列表-->
     <template>
       <el-table
-        :data="contactsList"
+        :data="contactsList.slice(
+              (currentPage - 1) * pageSize,
+              currentPage * pageSize
+            )"
         highlight-current-row
         v-loading="loading"
         style="width: 100%"
@@ -56,6 +91,20 @@
           </template>
         </el-table-column>
       </el-table>
+      <!-- 分页器 -->
+        <div class="block" style="margin-top: 15px">
+          <el-pagination
+            align="center"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[1, 5, 10, 20]"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="contactsList.length"
+          >
+          </el-pagination>
+        </div>
     </template>
 
     <!--编辑界面-->
@@ -117,20 +166,25 @@ export default {
         phone: "",
         remarks: "",
       },
+      queryParams: {
+        name: "",
+        phone: "",
+      },
       addContactsFormVisible: false,
+      currentPage: 1, // 当前页码
+      total: 20, // 总条数
+      pageSize: 5, // 每页的数据条数
     };
   },
   methods: {
-    changee() {
-      console.log(this.editForm.status);
+    handleQuery() {
+      this.getTableData();
     },
     //获取客户列表
     getTableData: function () {
       this.loading = true;
-      getContactsList().then((res) => {
-        console.log(res);
+      getContactsList(this.queryParams).then((res) => {
         this.contactsList = res.data.contactsList;
-        console.log(this.contactsList, "contactsList");
         this.loading = false;
       });
     },
@@ -138,8 +192,11 @@ export default {
       this.addContactsFormVisible = true;
     },
     addContactsSubmit() {
+      var user = sessionStorage.getItem("user");
+      user = JSON.parse(user);
       //   this.addContactsForm.time = new Date().toLocaleDateString();
       let param = {
+        userId: user.id,
         name: this.addContactsForm.name,
         phone: this.addContactsForm.phone,
         remarks: this.addContactsForm.remarks,
@@ -229,6 +286,17 @@ export default {
     },
     cancelNotice() {
       this.noticeFormVisible = false;
+    },
+    //每页条数改变时触发 选择一页显示多少行
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+      this.currentPage = 1;
+      this.pageSize = val;
+    },
+    //当前页改变时触发 跳转其他页
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.currentPage = val;
     },
   },
   mounted() {

@@ -27,8 +27,8 @@ public class ContactsController {
 
     @PostMapping("/getContactsList")
     @ResponseBody
-    public Result getContactsList(){
-        return Result.ok().data("contactsList", contactsService.list());
+    public Result getContactsList(@RequestBody Contacts contacts){
+        return contactsService.getContactsList(contacts);
     }
 
     @PostMapping("/addContacts")
