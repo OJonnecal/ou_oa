@@ -52,6 +52,7 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
                 && !StringUtils.isEmpty(customer.getPhone())){
             wrapper.like("phone", customer.getPhone());
         }
+        wrapper.orderByDesc("create_time");
         return Result.ok().data("customerList", list(wrapper));
     }
 
@@ -63,8 +64,11 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
         if(customer.getPhone() == null || StringUtils.isEmpty(customer.getPhone())){
             return Result.error().message("客户手机号不能为空！");
         }
-        if(query().eq("name", customer.getName()).count() > 0){
-            return Result.error().message("客户姓名不能重复！");
+        Customer oldCustomer = query().eq("id", customer.getId()).one();
+        if(!oldCustomer.getName().equals(customer.getName())) {
+            if (query().eq("name", customer.getName()).count() > 0) {
+                return Result.error().message("客户姓名不能重复！");
+            }
         }
         QueryWrapper<Customer> wrapper = new QueryWrapper<>();
         wrapper.eq("id", customer.getId());

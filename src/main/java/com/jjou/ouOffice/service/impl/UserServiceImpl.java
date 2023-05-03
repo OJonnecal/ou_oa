@@ -84,14 +84,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if(user.getName() == null || StringUtils.isEmpty(user.getName())){
             return Result.error().message("用户账号不能为空！");
         }
-        if(user.getPwd() == null || StringUtils.isEmpty(user.getPwd())){
-            return Result.error().message("用户密码不能为空！");
-        }
         if(user.getPosition() == null || StringUtils.isEmpty(user.getPosition())){
             return Result.error().message("用户职位不能为空！");
         }
-        if(query().eq("name", user.getName()).count() > 0){
-            return Result.error().message("用户昵称不能重复！");
+        User oldUser = query().eq("id", user.getId()).one();
+        if(!oldUser.getName().equals(user.getName())) {
+            if (query().eq("name", user.getName()).count() > 0) {
+                return Result.error().message("用户昵称不能重复！");
+            }
         }
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.eq("id", user.getId());

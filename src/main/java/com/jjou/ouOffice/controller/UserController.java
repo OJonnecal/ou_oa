@@ -58,5 +58,7 @@ public class UserController {
     public Result updateUser(@RequestBody User user) {
         return userService.updateUser(user);
     }
+
+    //TODO 修改密码
 }
 

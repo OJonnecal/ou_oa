@@ -56,9 +56,12 @@ public class MeetingRoomServiceImpl extends ServiceImpl<MeetingRoomMapper, Meeti
         if(meetingRoom.getName() == null || meetingRoom.getName().isEmpty()){
             return Result.error().message("会议室名称不能为空");
         }
-        Integer count = query().eq("name", meetingRoom.getName()).count();
-        if(count >= 1){
-            return Result.error().message("会议室名称不能重复");
+        MeetingRoom oldMeetingRoom = query().eq("id", meetingRoom.getId()).one();
+        if(!oldMeetingRoom.getName().equals(meetingRoom.getName())) {
+            Integer count = query().eq("name", meetingRoom.getName()).count();
+            if (count >= 1) {
+                return Result.error().message("会议室名称不能重复");
+            }
         }
         if(meetingRoom.getStatus() == null || meetingRoom.getStatus().isEmpty()){
             return Result.error().message("会议室状态不能为空");
