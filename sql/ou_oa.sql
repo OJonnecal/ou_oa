@@ -11,7 +11,7 @@
  Target Server Version : 80028
  File Encoding         : 65001
 
- Date: 03/05/2023 12:36:43
+ Date: 03/05/2023 16:37:02
 */
 
 SET NAMES utf8mb4;
@@ -27,7 +27,9 @@ CREATE TABLE `assignment`  (
   `title` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '任务标题',
   `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '任务内容',
   `level` int NULL DEFAULT NULL COMMENT '紧急程度 1 紧急 2 正常 3 不紧急',
-  `create_time` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '任务创建时间',
+  `end_time` datetime NULL DEFAULT NULL COMMENT '任务截至时间',
+  `complete_time` datetime NULL DEFAULT NULL COMMENT '任务完成时间',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '任务创建时间',
   `status` tinyint NULL DEFAULT 0 COMMENT '任务状态 1（true）已完成， 0（false）未完成',
   `is_deleted` tinyint NULL DEFAULT 0 COMMENT '逻辑删除 1（true）已删除， 0（false）未删除',
   PRIMARY KEY (`id`) USING BTREE,
@@ -38,11 +40,9 @@ CREATE TABLE `assignment`  (
 -- ----------------------------
 -- Records of assignment
 -- ----------------------------
-INSERT INTO `assignment` VALUES (1, NULL, '1', '1', 1, '2023-04-24 05:04:44', 0, 1);
-INSERT INTO `assignment` VALUES (2, NULL, '1', '1', 1, '2023-04-24 05:07:41', 1, 1);
-INSERT INTO `assignment` VALUES (3, NULL, '1', '1', 1, '2023-04-24 05:11:44', 1, 1);
-INSERT INTO `assignment` VALUES (4, NULL, '加班', '加班', 1, '2023-04-24 05:12:09', 1, 0);
-INSERT INTO `assignment` VALUES (5, NULL, '1', '1', 3, '2023-04-29 12:10:42', 0, 0);
+INSERT INTO `assignment` VALUES (9, NULL, '论文查重', '提交设计论文', 1, '2023-05-10 00:00:00', NULL, '2023-05-03 15:33:07', 0, 0);
+INSERT INTO `assignment` VALUES (10, NULL, '论文答辩', '进行论文答辩', 2, '2023-05-18 00:00:00', NULL, '2023-05-03 15:33:33', 0, 0);
+INSERT INTO `assignment` VALUES (11, NULL, '提交中期检查', '提交中期检查报告', 2, '2023-03-25 00:00:00', '2023-03-24 15:34:56', '2023-03-03 15:34:36', 1, 0);
 
 -- ----------------------------
 -- Table structure for clock_in
@@ -56,8 +56,7 @@ CREATE TABLE `clock_in`  (
   `date` datetime NULL DEFAULT NULL COMMENT '打卡时期',
   `is_deleted` tinyint NULL DEFAULT 0 COMMENT '逻辑删除 1（true）已删除， 0（false）未删除',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `user_id`(`user_id`) USING BTREE,
-  CONSTRAINT `clock_in_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  INDEX `user_id`(`user_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '打卡表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
@@ -90,7 +89,10 @@ CREATE TABLE `contacts`  (
 -- ----------------------------
 -- Records of contacts
 -- ----------------------------
-INSERT INTO `contacts` VALUES (1, NULL, '欧家俊', '15915095796', '1', 0);
+INSERT INTO `contacts` VALUES (2, 8, '张三', '15915012345', '', 0);
+INSERT INTO `contacts` VALUES (3, 8, '李四', '15915012346', '', 0);
+INSERT INTO `contacts` VALUES (4, 8, '王五', '15915012347', '', 0);
+INSERT INTO `contacts` VALUES (5, 8, '林六', '15915012348', '', 0);
 
 -- ----------------------------
 -- Table structure for customer
@@ -109,10 +111,12 @@ CREATE TABLE `customer`  (
 -- ----------------------------
 -- Records of customer
 -- ----------------------------
-INSERT INTO `customer` VALUES (1, '欧家俊', '15915095796', 0, '2023-04-21 17:12:54', '');
-INSERT INTO `customer` VALUES (6, '1', '1', 0, '2023-04-29 11:04:59', '1');
-INSERT INTO `customer` VALUES (7, '2', '2', 1, '2023-05-03 10:55:52', '');
-INSERT INTO `customer` VALUES (8, '2', '2', 1, '2023-05-03 11:01:46', '');
+INSERT INTO `customer` VALUES (1, '欧家俊', '15915095796', 0, '2023-04-21 17:12:54', '资深客户');
+INSERT INTO `customer` VALUES (9, '陈三', '15915054321', 0, '2023-05-02 14:56:51', '合作伙伴');
+INSERT INTO `customer` VALUES (10, '叶四', '15915054322', 0, '2023-05-03 14:59:01', '潜力客户');
+INSERT INTO `customer` VALUES (11, '姚五', '15915054323', 0, '2023-05-04 14:59:28', '老客户');
+INSERT INTO `customer` VALUES (12, '余总', '15915054324', 0, '2023-05-05 15:00:00', '老板客户');
+INSERT INTO `customer` VALUES (13, '林六', '15915054325', 0, '2023-05-06 15:01:41', '合作伙伴');
 
 -- ----------------------------
 -- Table structure for expense
@@ -165,10 +169,6 @@ CREATE TABLE `leave`  (
 -- ----------------------------
 -- Records of leave
 -- ----------------------------
-INSERT INTO `leave` VALUES (37, '1', '', '2023-05-03 16:00:00', '2023-05-04 16:00:00', 0, '2023-05-03 11:52:39', NULL, '管理员', NULL, 0);
-INSERT INTO `leave` VALUES (38, '2', '', '2023-05-03 16:00:00', '2023-05-04 16:00:00', 0, '2023-05-03 11:52:41', NULL, '管理员', NULL, 0);
-INSERT INTO `leave` VALUES (39, '3', '', '2023-05-03 16:00:00', '2023-05-04 16:00:00', 2, '2023-05-03 11:52:43', '2023-05-03 11:57:54', '管理员', '欧家俊', 0);
-INSERT INTO `leave` VALUES (40, '4', '', '2023-05-03 16:00:00', '2023-05-04 16:00:00', 1, '2023-05-03 11:52:45', '2023-05-03 11:52:57', '管理员', '欧家俊', 0);
 
 -- ----------------------------
 -- Table structure for meeting_room
@@ -187,7 +187,8 @@ CREATE TABLE `meeting_room`  (
 -- Records of meeting_room
 -- ----------------------------
 INSERT INTO `meeting_room` VALUES (1, '第一会议室', '空闲', '', 0);
-INSERT INTO `meeting_room` VALUES (2, '第二会议室', '使用中', NULL, 0);
+INSERT INTO `meeting_room` VALUES (2, '第二会议室', '使用中', '领导正在开会', 0);
+INSERT INTO `meeting_room` VALUES (12, '第三会议室', '维修中', '等待维修灯管', 0);
 
 -- ----------------------------
 -- Table structure for notice
@@ -206,12 +207,8 @@ CREATE TABLE `notice`  (
 -- ----------------------------
 -- Records of notice
 -- ----------------------------
-INSERT INTO `notice` VALUES (10, '加班', '加班', '2020-11-03 09:00:00', 1, 0);
-INSERT INTO `notice` VALUES (11, '放假通知', '明天全体放假！', '2022-12-19 01:02:00', 1, 0);
-INSERT INTO `notice` VALUES (55, '1', '1', '2023-05-01 00:00:00', 1, 1);
-INSERT INTO `notice` VALUES (56, '1', '1', '2023-05-01 08:00:00', 1, 1);
-INSERT INTO `notice` VALUES (57, '1', '1', '2023-05-01 08:00:00', 1, 1);
-INSERT INTO `notice` VALUES (58, '2', '2', '2023-05-01 12:00:40', 1, 1);
+INSERT INTO `notice` VALUES (59, '加班', '今晚加班', '2023-04-25 14:47:16', 1, 0);
+INSERT INTO `notice` VALUES (60, '放假通知', '五一放假4.28-5.3', '2023-04-26 14:47:46', 1, 0);
 
 -- ----------------------------
 -- Table structure for project
@@ -236,13 +233,6 @@ CREATE TABLE `project`  (
 -- ----------------------------
 -- Records of project
 -- ----------------------------
-INSERT INTO `project` VALUES (5, '项目1', '1', 12, 'ojj', NULL, NULL, NULL, NULL, 1, 0);
-INSERT INTO `project` VALUES (6, '项目2', '2', 22, 'ojj', NULL, NULL, NULL, NULL, 1, 0);
-INSERT INTO `project` VALUES (7, '项目3', '3', 33, 'ojj', NULL, NULL, NULL, NULL, 1, 0);
-INSERT INTO `project` VALUES (12, '6', '6', 11, '6', '2023-04-26 04:41:09', '欧家俊', '2023-05-03 12:09:03', NULL, 2, 0);
-INSERT INTO `project` VALUES (13, '7', '7', 11, '7', '2023-04-26 16:44:12', NULL, '2023-04-27 09:58:20', NULL, 2, 0);
-INSERT INTO `project` VALUES (15, '1', '1', 0, '欧家俊', '2023-04-27 10:46:47', NULL, NULL, NULL, 0, 0);
-INSERT INTO `project` VALUES (16, '1', '1', 0, '管理员', '2023-05-03 11:20:18', '欧家俊', '2023-05-03 12:09:07', NULL, 2, 0);
 
 -- ----------------------------
 -- Table structure for quit
@@ -266,9 +256,6 @@ CREATE TABLE `quit`  (
 -- ----------------------------
 -- Records of quit
 -- ----------------------------
-INSERT INTO `quit` VALUES (9, '1', '', '2023-05-04 00:00:00', '2023-05-03 12:36:00', '欧家俊', '2023-05-03 12:36:28', 2, '管理员', 0);
-INSERT INTO `quit` VALUES (10, '2', '', '2023-05-05 00:00:00', '2023-05-03 12:36:05', '欧家俊', '2023-05-03 12:36:28', 2, '管理员', 0);
-INSERT INTO `quit` VALUES (11, '3', '', '2023-05-06 00:00:00', '2023-05-03 12:36:09', '欧家俊', '2023-05-03 12:36:27', 1, '管理员', 0);
 
 -- ----------------------------
 -- Table structure for top_contacts
@@ -287,9 +274,10 @@ CREATE TABLE `top_contacts`  (
 -- ----------------------------
 -- Records of top_contacts
 -- ----------------------------
-INSERT INTO `top_contacts` VALUES (1, '欧家俊', '15915095796', '294557741@qq.com', 0);
-INSERT INTO `top_contacts` VALUES (6, '莫子晴', '19854571208', '111', 0);
-INSERT INTO `top_contacts` VALUES (11, '1', '1', '', 1);
+INSERT INTO `top_contacts` VALUES (12, '欧家俊', '15915095796', '294557741@qq.com', 0);
+INSERT INTO `top_contacts` VALUES (13, '张三', '15915012345', '1234567890@qq.com', 0);
+INSERT INTO `top_contacts` VALUES (14, '李四', '15915012346', '1234567891@qq.com', 0);
+INSERT INTO `top_contacts` VALUES (15, '王五', '15915012347', '1234567892@qq.com', 0);
 
 -- ----------------------------
 -- Table structure for user
@@ -312,10 +300,11 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, 'admin', 'admin', '1', NULL, NULL, '经理', 1, NULL, 1);
-INSERT INTO `user` VALUES (3, 'tony', 'tony', '3', '111', '111', '员工', 2, NULL, 1);
 INSERT INTO `user` VALUES (8, '欧家俊', 'ojj', '123456', '15915095796', '294557741@qq.com', '开发人员', 1, '2023-04-24 09:11:06', 0);
-INSERT INTO `user` VALUES (9, '莫子晴', 'mzq', '123456', '111', '111', '董事长', 2, '2023-04-25 11:49:41', 0);
-INSERT INTO `user` VALUES (10, '管理员', 'admin', 'admin', '1', '1', '管理员', 1, '2023-05-02 09:47:40', 0);
+INSERT INTO `user` VALUES (9, '莫子晴', 'mzq', '123456', '1985457120', '1234567895@qq.com', '董事长', 1, '2023-04-25 11:49:41', 0);
+INSERT INTO `user` VALUES (10, '管理员', 'admin', 'admin', '15915098765', '1234567894@qq.com', '管理员', 1, '2023-05-02 09:47:40', 0);
+INSERT INTO `user` VALUES (11, '李四', 'ls', '123456', '15915012346', '1234567891@qq.com', '测试工程师', 2, '2023-05-03 15:09:37', 0);
+INSERT INTO `user` VALUES (12, '张三', 'zs', '123456', '15915012345', '1234567890@qq.com', '运维工程师', 2, '2023-05-03 15:10:31', 0);
+INSERT INTO `user` VALUES (13, '王五', 'wangwu', '123456', '15915012347', '1234567892@qq.com', '前端工程师', 2, '2023-05-03 15:11:00', 0);
 
 SET FOREIGN_KEY_CHECKS = 1;
