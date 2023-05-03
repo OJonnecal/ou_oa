@@ -10,10 +10,14 @@
     >
     <el-tabs type="border-card">
       <el-tab-pane label="待完成任务">
-        <el-table :data="assignmentInCompleteList.slice(
-            (currentPage - 1) * pageSize,
-            currentPage * pageSize
-          )">
+        <el-table
+          :data="
+            assignmentInCompleteList.slice(
+              (currentPage - 1) * pageSize,
+              currentPage * pageSize
+            )
+          "
+        >
           <el-table-column label="序号" type="index" width="60" align="center">
           </el-table-column>
           <el-table-column
@@ -26,7 +30,7 @@
           <el-table-column
             prop="content"
             label="内容"
-            width="400"
+            width="200"
             align="center"
           >
           </el-table-column>
@@ -49,11 +53,21 @@
             </template>
           </el-table-column>
           <el-table-column
+            prop="endTime"
+            label="截至时间"
+            min-width="180"
+            sortable
+            align="center"
+            :formatter="formatDate"
+          >
+          </el-table-column>
+          <el-table-column
             prop="createTime"
             label="创建时间"
             min-width="180"
             sortable
             align="center"
+            :formatter="formatDate"
           >
           </el-table-column>
           <el-table-column label="操作" width="150" align="center">
@@ -71,26 +85,28 @@
           </el-table-column>
         </el-table>
         <!-- 分页器 -->
-      <div class="block" style="margin-top: 15px">
-        <el-pagination
-          align="center"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[1, 5, 10, 20]"
-          :page-size="pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="assignmentInCompleteList.length"
-        >
-        </el-pagination>
-      </div>
+        <div class="block" style="margin-top: 15px">
+          <el-pagination
+            align="center"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[1, 5, 10, 20]"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="assignmentInCompleteList.length"
+          >
+          </el-pagination>
+        </div>
       </el-tab-pane>
       <el-tab-pane label="已完成任务">
         <el-table
-          :data="assignmentCompleteList.slice(
-            (currentPage - 1) * pageSize,
-            currentPage * pageSize
-          )"
+          :data="
+            assignmentCompleteList.slice(
+              (currentPage - 1) * pageSize,
+              currentPage * pageSize
+            )
+          "
           highlight-current-row
           v-loading="loading"
           style="width: 100%"
@@ -108,7 +124,7 @@
           <el-table-column
             prop="content"
             label="内容"
-            width="400"
+            width="200"
             align="center"
           >
           </el-table-column>
@@ -131,11 +147,21 @@
             </template>
           </el-table-column>
           <el-table-column
-            prop="createTime"
-            label="创建时间"
+            prop="endTime"
+            label="截至时间"
             min-width="180"
             sortable
             align="center"
+            :formatter="formatDate"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="completeTime"
+            label="完成时间"
+            min-width="180"
+            sortable
+            align="center"
+            :formatter="formatDate"
           >
           </el-table-column>
           <el-table-column label="操作" width="150" align="center">
@@ -150,19 +176,19 @@
           </el-table-column>
         </el-table>
         <!-- 分页器 -->
-      <div class="block" style="margin-top: 15px">
-        <el-pagination
-          align="center"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[1, 5, 10, 20]"
-          :page-size="pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="assignmentCompleteList.length"
-        >
-        </el-pagination>
-      </div>
+        <div class="block" style="margin-top: 15px">
+          <el-pagination
+            align="center"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[1, 5, 10, 20]"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="assignmentCompleteList.length"
+          >
+          </el-pagination>
+        </div>
       </el-tab-pane>
     </el-tabs>
 
@@ -173,17 +199,31 @@
         ref="addAssignmentForm"
       >
         <el-form-item label="标题" prop="title">
-          <el-input v-model="addAssignmentForm.title" placeholder="标题不能为空"></el-input>
+          <el-input
+            v-model="addAssignmentForm.title"
+            placeholder="标题不能为空"
+          ></el-input>
         </el-form-item>
         <el-form-item label="内容" prop="content">
           <el-input v-model="addAssignmentForm.content"></el-input>
         </el-form-item>
         <el-form-item label="紧急程度">
-          <el-select v-model="addAssignmentForm.level" placeholder="紧急程度不能为空">
+          <el-select
+            v-model="addAssignmentForm.level"
+            placeholder="紧急程度不能为空"
+          >
             <el-option label="紧急" value="1"></el-option>
             <el-option label="正常" value="2"></el-option>
             <el-option label="不紧急" value="3"></el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item label="截至时间">
+          <el-date-picker
+            v-model="endTime"
+            type="datetime"
+            placeholder="选择日期时间"
+          >
+          </el-date-picker>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -216,6 +256,7 @@ export default {
       },
       read: true,
       loading: false,
+      endTime: '',
       assignmentCompleteList: [],
       assignmentInCompleteList: [],
       addAssignmentForm: {
@@ -251,6 +292,7 @@ export default {
         title: this.addAssignmentForm.title,
         content: this.addAssignmentForm.content,
         level: this.addAssignmentForm.level,
+        endTime: this.endTime,
       };
       addAssignment(param).then((res) => {
         const statusCode = res.code;
@@ -299,10 +341,19 @@ export default {
     //完成按钮触发事件
     handleComplete: function (row) {
       completeAssignment(row.id).then((res) => {
-        this.$message({
-          message: res.message,
-          type: "success",
-        });
+        const statusCode = res.code;
+        if (statusCode == 200) {
+          this.$message({
+            message: res.message,
+            type: "success",
+          });
+          this.getTableData();
+        } else {
+          this.$message({
+            message: res.message,
+            type: "error",
+          });
+        }
         this.getTableData();
       });
     },
@@ -322,6 +373,57 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
+    },
+    //时间格式化
+    formatDate(row, column) {
+      // 获取单元格数据
+      let datac = row[column.property];
+      let dtc = new Date(datac);
+      //获取月,默认月份从0开始
+      let dtuMonth = dtc.getMonth() + 1;
+      //获取日
+      let dtuDay = dtc.getDate();
+      //处理1-9月前面加0
+      if (dtuMonth < 10) {
+        dtuMonth = "0" + (dtc.getMonth() + 1);
+      }
+      //处理1-9天前面加0
+      if (dtuDay < 10) {
+        dtuDay = "0" + dtc.getDate();
+      }
+      //获取小时
+      let dtuHours = dtc.getHours();
+      //处理1-9时前面加0
+      if (dtuHours < 10) {
+        dtuHours = "0" + dtc.getHours();
+      }
+      //获取分钟
+      let dtuMinutes = dtc.getMinutes();
+      //处理1-9分前面加0
+      if (dtuMinutes < 10) {
+        dtuMinutes = "0" + dtc.getMinutes();
+      }
+      //获取秒
+      let dtuSeconds = dtc.getSeconds();
+      //处理1-9秒前面加0
+      if (dtuSeconds < 10) {
+        dtuSeconds = "0" + dtc.getSeconds();
+      }
+      //组装年月日时分秒,按自己的要求来
+      let dd =
+        dtc.getFullYear() +
+        "-" +
+        dtuMonth +
+        "-" +
+        dtuDay +
+        " " +
+        dtuHours +
+        ":" +
+        dtuMinutes +
+        ":" +
+        dtuSeconds;
+      return (row.TableIsbibei = dd);
+      //+ " " + dtuHours + ":" + dtuMinutes + ":" + dtuSeconds
     },
   },
   mounted() {

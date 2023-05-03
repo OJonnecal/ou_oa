@@ -29,9 +29,7 @@ public class AssignmentServiceImpl extends ServiceImpl<AssignmentMapper, Assignm
         }else if(assignment.getLevel() == null){
             return Result.error().message("任务紧急程序不能为空！");
         }
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        assignment.setCreateTime(sdf.format(date));
+        assignment.setCreateTime(new Date());
         save(assignment);
         return Result.ok().message("添加任务成功！");
     }
@@ -40,6 +38,7 @@ public class AssignmentServiceImpl extends ServiceImpl<AssignmentMapper, Assignm
     public Result completeAssignment(Integer id) {
         Assignment assignment = query().eq("id", id).one();
         assignment.setStatus(1);
+        assignment.setCompleteTime(new Date());
         if (updateById(assignment)){
             return Result.ok().message("恭喜你完成了任务！");
         }else{

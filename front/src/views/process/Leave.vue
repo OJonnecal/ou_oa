@@ -286,8 +286,7 @@
         <el-form-item label="描述" prop="description">
           <el-input type="textarea" v-model="addForm.description"></el-input>
         </el-form-item>
-        <el-form-item>
-          <span class="demonstration">请假时间</span>
+        <el-form-item label="请假时间">
           <el-date-picker
             v-model="leaveTime"
             type="datetimerange"

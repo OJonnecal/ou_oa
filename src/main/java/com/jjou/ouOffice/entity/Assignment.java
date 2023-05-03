@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
@@ -56,10 +57,22 @@ public class Assignment implements Serializable {
     private Integer status;
 
     /**
+     * 任务截至时间
+     */
+    @TableField("end_time")
+    private Date endTime;
+
+    /**
+     * 任务完成时间
+     */
+    @TableField("complete_time")
+    private Date completeTime;
+
+    /**
      * 任务创建时间
      */
     @TableField("create_time")
-    private String createTime;
+    private Date createTime;
 
     @TableField("is_deleted")
     @TableLogic
