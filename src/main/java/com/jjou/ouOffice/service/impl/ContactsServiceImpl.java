@@ -44,9 +44,13 @@ public class ContactsServiceImpl extends ServiceImpl<ContactsMapper, Contacts> i
         if(contacts.getPhone() == null || StringUtils.isEmpty(contacts.getPhone())){
             return Result.error().message("联系人手机号不能为空！");
         }
-        if(query().eq("name", contacts.getName()).count() > 0){
-            return Result.error().message("联系人姓名不能重复！");
+        Contacts oldContacts = query().eq("id", contacts.getId()).one();
+        if(!oldContacts.getName().equals(contacts.getName())){
+            if(query().eq("name", contacts.getName()).count() > 0){
+                return Result.error().message("联系人姓名不能重复！");
+            }
         }
+
         QueryWrapper<Contacts> wrapper = new QueryWrapper<>();
         wrapper.eq("id", contacts.getId());
         if (update(contacts, wrapper)){
