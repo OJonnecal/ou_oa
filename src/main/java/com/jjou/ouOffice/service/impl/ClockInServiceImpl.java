@@ -35,12 +35,6 @@ public class ClockInServiceImpl extends ServiceImpl<ClockInMapper, ClockIn> impl
         LocalDateTime time = LocalDateTime.now();
         LocalDate date = LocalDate.now();
 
-        //判断是否在上班打卡指定时间
-        int hour = time.getHour();
-        if(!(hour <= 9 && hour >= 6)){
-            return Result.error().message("不在上班打卡时间 6:00-9:00");
-        }
-
         //判断是否已经上班打卡
         Integer count = query().eq("user_id", userId)
                 .eq("date", date)
@@ -48,6 +42,12 @@ public class ClockInServiceImpl extends ServiceImpl<ClockInMapper, ClockIn> impl
                 .count();
         if(count > 0){
             return Result.error().message("请勿重复上班打卡");
+        }
+
+        //判断是否在上班打卡指定时间
+        int hour = time.getHour();
+        if(!(hour <= 9 && hour >= 6)){
+            return Result.error().message("不在上班打卡时间 6:00-9:00");
         }
 
         ClockIn clockIn = new ClockIn();
@@ -72,13 +72,6 @@ public class ClockInServiceImpl extends ServiceImpl<ClockInMapper, ClockIn> impl
         LocalDateTime time = LocalDateTime.now();
         LocalDate date = LocalDate.now();
 
-        //判断是否在下班打卡指定时间
-        int hour = time.getHour();
-        if(hour < 17){
-            return Result.error().message("不在下班打卡时间 18:00-24:00 ");
-        }
-
-
         //判断是否已经下班打卡
         Integer endCount = query().eq("user_id", userId)
                 .eq("date", date)
@@ -87,6 +80,13 @@ public class ClockInServiceImpl extends ServiceImpl<ClockInMapper, ClockIn> impl
         if(endCount > 0){
             return Result.error().message("请勿重复下班打卡");
         }
+
+        //判断是否在下班打卡指定时间
+        int hour = time.getHour();
+        if(hour < 17){
+            return Result.error().message("不在下班打卡时间 18:00-24:00 ");
+        }
+
 
         ClockIn clockIn = new ClockIn();
         clockIn.setUserId(userId);
